@@ -1,0 +1,19 @@
+<!-- Ici page détail d'une element en fonction de son identifiant -->
+<section>
+    <article>
+        <div class="image-couverture-page-tempo couleur-element-temp"
+            *ngIf="element.imageUrl === ''||'undefined' else imageCouv">
+        </div>
+        <ng-template #imageCouv>
+            <img src="{{ element.imageUrl }}" class="image-couverture-card-tempo image-de-fond">
+        </ng-template>
+    </article>
+</section>
+<section class="container-general">
+    <article class="marges">
+
+        <h2>L'element : {{element.label}}</h2>
+        <p>Description : {{ element.description }}
+        <p>({{ element._id }})</p>
+    </article>
+</section>

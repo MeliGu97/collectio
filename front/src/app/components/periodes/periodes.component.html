@@ -1,0 +1,61 @@
+<section class="image-couverture-page-tempo couleur-theme">
+    <h1>Période</h1>
+</section>
+<!-- <section class="container-general">
+    <article class="marges">
+        <h2>Ajouter une période</h2>
+        <form (ngSubmit)="ajouterPeriode()">
+            <label for="label">Label : </label>
+            <input type="text" id="label" [(ngModel)]="nouvelPeriode.label" name="label" required>
+            <br><br>
+            <button type="submit">Ajouter une période</button>
+        </form>
+    </article>
+</section> -->
+<section class="container-general">
+    <h2>Liste des périodes</h2>
+    <article class="marges">
+        <ul>
+            <li *ngFor="let periode of periodes" class="indienne centrer-sur-horizon espacement-entre">
+                <div class="centrer-en-colonne">
+                    <div class="card-picto {{ periode.couleur }}">
+                        <img src="{{ periode.imageUrl }}" class="picto">
+                    </div>
+                    <div>
+                        <p class="tag {{ periode.couleur }} tag-periode-L">{{ periode.label }}</p>
+                        <p>{{ periode.dateDebut }}</p>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    </article>
+    <article class="marges">
+        <ul class="espacement-entre">
+            <li *ngFor="let periode of periodes" class="indienne centrer-sur-horizon espacement-entre">
+                <div class="centrer-en-colonne">
+                    <p class="tag {{ periode.couleur }} tag-periode-M">{{ periode.label.slice(0, 2) }}</p>
+                    <div class="tag {{ periode.couleur }} tag-periode-S"></div>
+                    <p>{{ periode.dateDebut }}</p>
+                </div>
+            </li>
+        </ul>
+    </article>
+</section>
+
+<section>
+    <article class="centrer-sur-horizon espacement-entre">
+        <div class=" centrer-en-colonne">
+            <div class="card-picto couleur-theme"></div>
+            <p class=" tag couleur-theme tag-periode-L">Truc</p>
+        </div>
+        <div class="centrer-en-colonne">
+            <div class="card-picto couleur-theme"></div>
+            <p class=" tag couleur-theme tag-periode-L">bidule</p>
+        </div>
+        <div class="centrer-en-colonne">
+            <div class="card-picto couleur-theme"></div>
+            <p class=" tag couleur-theme tag-periode-L">machine chouette</p>
+        </div>
+    </article>
+</section>

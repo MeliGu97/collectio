@@ -1,0 +1,38 @@
+<!-- Ici page utilisateur avec liste des collections -->
+<section>
+  <article class="container-image-couverture-page couleur-home-utili-tempo">
+    <h1>Page utilisateur</h1>
+  </article>
+</section>
+<section class="container-general">
+  <article class="marges">
+    <div>
+      <h2>Mes collections</h2>
+      <button><a routerLink="/ajouterCollection">Ajouter une collection</a></button>
+    </div>
+    <ul>
+      <li *ngIf="collections.length == 0"> Aucune collection </li>
+      <li *ngFor="let collection of collections" class="card medium">
+        <!-- Au clic sur une collection redirige vers le détail de la collection en question -->
+        <a [routerLink]="['/collections', collection._id]">
+          <!-- si pas d'image de couverture alors met une couleur définit, sinon affiche l'image de couv -->
+          <div class="image-couverture-card-tempo couleur-element-tempo"
+            *ngIf="collection.imageUrl === '' else imageCouv"></div>
+          <ng-template #imageCouv>
+            <img src="{{ collection.imageUrl }}" class="image-couverture-card-tempo image-de-fond">
+          </ng-template>
+          <div class="card-paragraphe">
+            <p>({{ collection._id }})</p>
+            <h5><strong>Label : {{ collection.label }}</strong></h5>
+            <p>Description : {{ collection.description }}
+            <ul>
+              <li *ngFor="let element of collection.elements">
+                - {{ element }}
+              </li>
+            </ul>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </article>
+</section>

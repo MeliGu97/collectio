@@ -1,0 +1,53 @@
+<section class="image-couverture-form-tempo couleur-formulaire-tempo">
+  <h1>Formulaire élément</h1>
+</section>
+
+<section class="container-general">
+  <article class="marges">
+    <h2>Ajouter un élément</h2>
+    <form (ngSubmit)="ajouterElement()">
+      <label for="label">Label :</label>
+      <input type="text" id="label" [(ngModel)]="nouvelElement.label" name="label" required />
+      <br /><br />
+      <label for="description">Description :</label>
+      <input type="text" id="description" [(ngModel)]="nouvelElement.description" name="description" required />
+      <br /><br />
+      <!-- <label for="collection">Collection :</label>
+      <input type="text" id="collections" [(ngModel)]="nouvelElement.collections" name="collections" required />
+      <br /><br /> -->
+      <label for="imageUrl">Chemin de l'image : </label>
+      <input type="text" id="imageUrl" [(ngModel)]="nouvelElement.imageUrl" name="imageUrl" required>
+      <br><br>
+      <button type="submit">Ajouter un élément</button>
+    </form>
+  </article>
+
+  <article class="marges">
+    <h2>Liste des Éléments</h2>
+    <ul>
+      <ng-container *ngIf="elements$ | async as elements; else loading">
+        <li *ngIf="elements.length === 0">Aucun élément</li>
+        <li *ngFor="let element of elements" class="card medium centrer-sur-horizon">
+          <div class="image-couverture-card-tempo couleur-element-tempo" *ngIf="element.imageUrl === '' else imageCouv">
+          </div>
+          <ng-template #imageCouv>
+            <img src="{{ element.imageUrl }}" class="image-couverture-card-tempo image-de-fond">
+          </ng-template>
+          <div class="card-paragraphe">
+            <p>({{ element._id }})</p>
+            <h5><strong>Label : {{ element.label }}</strong></h5>
+            <p>Description : {{ element.description }}</p>
+            <p>{{ element.collection }}</p>
+            <p>
+              <button (click)="supprimerElementParId(element._id.toString())">Supprimer cet élément</button>
+            </p>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+  </article>
+</section>
+
+<ng-template #loading>
+  <li>Chargement en cours...</li>
+</ng-template>

@@ -1,27 +1,20 @@
 # Collectio
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.9.
+Projet nodejs avec Angular en Front et Express en Back. La BDD est mangoDB à l'adresse mongodb://localhost:27017
 
-## Development server
+créer une bdd nommé "collectio"
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Pour les droits de suppression et modification de données, ajouter un user avec les droits dans mongosh
+db.createUser({
+user: "meli",
+pwd: "admin",
+roles: [{ role: "readWrite", db: "collectio" }]
+})
 
-## Code scaffolding
+## Démarrer le projet
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- dans un terminal (si windows, faire touche Windows+R puis taper "cmd") lancer : `mangosh`
+- - astuce : si besoin de modifier facilement la BDD, utiliser l'interface du logiciel "MongoDB Compass", puis cliquer sur "connect"
+- rentrer dans le dossier back puis `npm i` + `npm ci` + `npm run start` = http://localhost:3000/elements
+- rentrer dans le dossier front puis `npm i` + `npm ci` + `npm run start` = http://localhost:4200
+- donc, RDV à l'adresse http://localhost:4200 pour voir le site Collectio !

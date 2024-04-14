@@ -1,0 +1,36 @@
+<!-- Ici page détail d'une collection en fonction de son identifiant -->
+<section>
+    <article class="container-image-couverture-page couleur-collection-tempo">
+        <!-- <img src="{{ collection.imageUrl }}" class="image-couverture-page-tempo image-de-fond"> -->
+
+    </article>
+</section>
+<section class="container-general">
+    <article class="marges">
+        <h2>La collection : {{collection.label}}</h2>
+        <p>Description : {{ collection.description }}
+    </article>
+    <article>
+        <ul *ngIf="collection.elements.length != 0">
+            <li *ngFor="let element of collection.elements">
+                <a [routerLink]="['/elements', element]">
+                    - {{ element }}
+                </a>
+            </li>
+        </ul>
+
+        <ul *ngIf="collection.elements.length != 0">
+            <li *ngFor="let element of collection.elements" class="card medium centrer-sur-horizon">
+                <a [routerLink]="['/elements', element]">
+                    <div class="image-couverture-card-tempo couleur-element-tempo">
+                        <br />
+                    </div>
+                    <div class="card-paragraphe">
+                        <app-element-detail [idElement]="element"></app-element-detail>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </article>
+
+</section>

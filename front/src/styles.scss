@@ -1,0 +1,247 @@
+body {
+  margin: 0px;
+}
+// -----------------------------------
+// -------------- THEME --------------
+// ------------- couleur -------------
+:root {
+  background: whitesmoke;
+}
+$fond-page: whitesmoke;
+$light: white;
+$black: black;
+
+$primary-light-5: #FDF8F4;
+$primary-light-4: #FBF2EA;
+$primary-light-3: #F6DECA;
+$primary-light-2: #F0C9AA;
+$primary-light-1: #E4A16B;
+$primary-neutral: #D9792B;
+$primary-dark-1: #C36D27;
+$primary-dark-2: #A35B20;
+$primary-dark-3: #82491A;
+$primary-dark-4: #6A3B15;
+
+$secondry-light-1: #7A867F;
+$secondary-neutral: #415248;
+
+
+
+.couleur-theme{background-color: #0C564C;}
+.couleur-catégorie{background-color: #3B8E83;}
+.couleur-sous-catégorie{background-color: #9bb0a5;}
+
+.couleur-ultra-contempo{background-color: #F76848;}
+.couleur-contempo{background-color: #F7C548;}
+.couleur-moderne{background-color: #A98743;}
+.couleur-medieval{background-color: #27A4D0;}
+.couleur-antique{background-color: #437C90;}
+.couleur-prehist{background-color: #43A960;}
+
+
+// ------------- ombrage ------------
+@mixin card-shadow {
+  box-shadow: 0px 4px 12px rgba($black, .5);
+}
+
+
+// ------------- taille et espacement -----------
+// telephone
+@media (min-width: 0px) and (max-width: 768px) {
+  .marges{
+      margin: 0% 1% 0% 1%;
+  }
+  .card{
+    margin: 5px;
+  }
+}
+//  tablette
+@media (min-width: 768px) and (max-width: 1024px) { 
+  .marges{
+      margin: 0% 10% 0% 10%;
+  }
+  .card{
+    margin: 10px;
+  }
+}
+//  ordi et plus
+@media (min-width: 1024px) { 
+  .marges{
+      margin: 0% 20% 0% 20%;
+  }
+  .card{
+    margin: 15px;
+  }
+}
+
+
+
+// -------------- TEXTE ----------------
+a {
+  text-decoration: none;
+  color: $black;
+}
+
+
+// ------------ PATERNE ---------------
+.card {
+  @include card-shadow;
+}
+
+
+
+// CSS A TRANSFORMER
+// -------------------------------------
+// -------------- TEXTE ----------------
+// -------------------------------------
+
+h5 {
+  font-size: 14px;
+  margin: 0px;
+}
+
+
+
+// -------------------------------------
+// -------------- PATERNE --------------
+// -------------------------------------
+.centrer-sur-horizon {
+  display: flex;
+  justify-content: center;
+}
+.centrer-en-colonne{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.centrer-milieu{
+  justify-content: center;
+  align-items: center;
+}
+.indienne{
+  display: inline-block;
+}
+.espacement-entre{
+  justify-content: space-around;
+}
+
+
+button {
+  cursor: pointer;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+// ------------- card ----------------
+
+.card {
+  background-color: $light;
+  border-radius: 10px;
+  display: inline-block;
+  word-wrap: break-word;
+  vertical-align: top;
+}
+.card-paragraphe {
+  padding: 10px;
+}
+.card p {
+  font-size: 12px;
+}
+
+
+.large {
+  width: 95%;
+}
+.medium {
+  width: 45%;
+}
+.miniature {
+  width: 25%;
+}
+
+.card-picto{
+  display: flex;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+// Picto
+.picto{
+  height: 30px;
+}
+//  ------------- tag ----
+
+.tag {
+  color: $primary-light-5;
+  border: solid 2px $primary-light-5;
+  border-radius: 20px;
+  text-align: center;
+}
+.tag-periode-L{
+  padding: 2px 12px;
+}
+.tag-periode-M{
+  width: 30px;
+  padding: 2px 8px;
+}
+.tag-periode-S{
+  width: 15px;
+  height: 15px;
+}
+
+// ------------------------------------------------------------
+// ------------------------------------------------------------
+// -----------temporaire
+.couleur-home-utili-tempo{
+  background-color: $secondary-neutral;
+}
+.couleur-collection-tempo{
+  background-color: #6A3B15;
+}
+.couleur-element-tempo{
+  background-color: #D9792B;
+}
+
+.couleur-formulaire-tempo{
+  background-color: #4c85aa;
+}
+
+.image-couverture-card-tempo {
+  height: 100px;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.image-couverture-page-tempo{
+  height: 200px;
+  padding: 10px;
+}
+.image-couverture-form-tempo{
+  height: 100px;
+  padding: 10px;
+}
+.image-de-fond{
+  width: 100%;
+  object-fit: cover;
+}
+.container-image-couverture-page{
+  height: 200px;
+  padding: 10px;
+}
+
+
+.container-general{
+  border-radius: 40px 40px 0px 0px;
+  margin-top: -50px;
+  background-color: $fond-page;
+  padding: 10px;
+  display: block;
+  z-index: 100;
+}
