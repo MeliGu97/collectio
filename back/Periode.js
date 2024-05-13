@@ -6,7 +6,7 @@ const periodeSchema = new mongoose.Schema({
   dateFin: Number,
   imageUrl: String,
   couleur: String,
-  collections: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Collection' }]
+  collectionsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Collection' }]
 })
 
 module.exports = mongoose.model('Periode', periodeSchema)

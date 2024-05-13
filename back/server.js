@@ -180,7 +180,7 @@ try {
   const nouvelElement = new Element({
     label: req.body.label,
     description: req.body.description,
-    collections: req.body.collections,
+    collectionsId: req.body.collectionsId,
     imageUrl: req.body.imageUrl,
   });
     //console.log("nouvel element :",nouvelElement);
@@ -202,6 +202,7 @@ try {
     label: req.body.label,
     description: req.body.description,
     imageUrl: req.body.imageUrl,
+    elementsId: req.boby.elementsId,
   });
     //console.log("nouvel collection :",nouvelCollection);
     const collectionEnregistre = await nouvelCollection.save();
@@ -219,6 +220,7 @@ try {
   const nouvelEvenement = new Evenement({
     label: req.body.label,
     date: req.body.date,
+    elementsId: req.bobyelementsId,
   });
     const evenementEnregistre = await nouvelEvenement.save();
     res.status(201).json(evenementEnregistre);
@@ -234,7 +236,7 @@ try {
   const nouvelPeriode = new Periode({
     label: req.body.label,
     dateEvents: req.body.dateEvent,
-    collections: req.body.collections
+    collectionsId: req.body.collectionsId,
   });
     const periodeEnregistre = await nouvelPeriode.save();
     res.status(201).json(periodeEnregistre);
