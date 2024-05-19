@@ -17,7 +17,7 @@ const { ObjectId } = require('mongodb');
 var corsOptions = {
   origin: "http://localhost:4200"
 };
-  
+
 app.use(cors(corsOptions));
 // Middleware pour parser le JSON
 //app.use(express.urlencoded({ extended: true }));
@@ -72,21 +72,34 @@ app.get('/elements', async (req, res) => {
 // -----------------------------------------
 app.get('/collections', async (req, res) => {
   try {
-    //console.log("collectionsssss");
-    const collections = await Collection.find();
+    //const collections = await Collection.find();
+    //pour faire auto matcher les tables lors de la récupération des données
+    //recupere un obj avec collection ET toutes les periodes associées
+    const collections = await Collection.find().populate('periodesId');
     //console.log("collectionsssss",collections);
     res.json(collections);
   } catch (error) {
-    //console.log("erreur");
     res.status(500).json({ message: error.message });
   }
 });
 
 
 // -----------------------------------------
+// app.get('/evenements', async (req, res) => {
+//   try {
+//     const evenements = await Evenement.find();
+//     res.json(evenements);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 app.get('/evenements', async (req, res) => {
   try {
-    const evenements = await Evenement.find();
+    const elementId = req.query.elementId;
+    if (!elementId) {
+      return res.status(400).json({ message: 'elementId est requis' });
+    }
+    const evenements = await Evenement.find({ elementId });
     res.json(evenements);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -124,31 +137,43 @@ try {
 
 // -----------------------------------------
 app.get('/collections/:id', async (req, res) => {
-try {
-  const objectId = req.params.id; // L'ID est déjà dans le format attendu
-  const collectionCible = await Collection.findById(objectId);
-  if (!collectionCible) {
-    return res.status(404).json({ message: 'Collection non trouvée' });
+  try {
+    const collection = await Collection.findById(req.params.id).populate('periodesId');
+    if (!collection) {
+      return res.status(404).json({ message: 'Collection non trouvée' });
+    }
+    res.json(collection);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  res.json(collectionCible);
-} catch (error) {
-  res.status(500).json({ message: error.message });
-}
 });
 
 // -----------------------------------------
+// app.get('/evenements/:id', async (req, res) => {
+// try {
+//   const objectId = req.params.id; // L'ID est déjà dans le format attendu
+//   const evenementCible = await Evenement.findById(objectId);
+//   if (!evenementCible) {
+//     return res.status(404).json({ message: 'Evenement non trouvé' });
+//   }
+//   res.json(evenementCible);
+// } catch (error) {
+//   res.status(500).json({ message: error.message });
+// }
+// });
 app.get('/evenements/:id', async (req, res) => {
-try {
-  const objectId = req.params.id; // L'ID est déjà dans le format attendu
-  const evenementCible = await Evenement.findById(objectId);
-  if (!evenementCible) {
-    return res.status(404).json({ message: 'Evenement non trouvé' });
+  try {
+    const objectId = req.params.id;
+    const evenementCible = await Evenement.findById(objectId);
+    if (!evenementCible) {
+      return res.status(404).json({ message: 'Evenement non trouvé' });
+    }
+    res.json(evenementCible);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  res.json(evenementCible);
-} catch (error) {
-  res.status(500).json({ message: error.message });
-}
 });
+
 
 // ----------------------------------------
 app.get('/periodes/:id', async (req, res) => {
@@ -164,7 +189,24 @@ try {
 }
 });
 
-
+// -----------------------------------------
+// Route pour récupérer 1 élément d'une autre table par son id
+// -----------------------------------------
+// app.get('/collections/:id/periodes/couleurs', async (req, res) => {
+//   try {
+//     const collectionId = req.params.id;
+//     // Recherche de la collection par son ID avec les périodes associées
+//     const collection = await Collection.findById(collectionId).populate('periodesId');
+//     if (!collection) {
+//       return res.status(404).json({ message: 'Collection non trouvée' });
+//     }
+//     // Extraction des couleurs des périodes
+//     const couleurs = collection.periodesId.map(periode => periode.couleur);
+//     res.json({ couleurs });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 
 
 // -----------------------------------------
@@ -194,18 +236,20 @@ try {
 // -----------------------------------------
 
 app.post('/collections', async (req, res) => {
-//console.log(req)
+console.log("req : ", req)
 try {
   //console.log('Requête POST reçue pour ajouter une collection', req.body);
   //console.log('Requête POST reçue pour ajouter un élément');
-  const nouvelCollection = new Collection({
+  const newCollection = new Collection({
     label: req.body.label,
     description: req.body.description,
     imageUrl: req.body.imageUrl,
-    elementsId: req.boby.elementsId,
+    picto: req.body.picto,
+    elementsId: req.body.elementsId,
+    periodesId: req.body.periodesId,
   });
-    //console.log("nouvel collection :",nouvelCollection);
-    const collectionEnregistre = await nouvelCollection.save();
+    // console.log("new collection :",newCollection);
+    const collectionEnregistre = await newCollection.save();
     res.status(201).json(collectionEnregistre);
 } catch (error) {
     res.status(500).json({ message: error.message });
@@ -220,7 +264,7 @@ try {
   const nouvelEvenement = new Evenement({
     label: req.body.label,
     date: req.body.date,
-    elementsId: req.bobyelementsId,
+    elementId: req.body.elementId,
   });
     const evenementEnregistre = await nouvelEvenement.save();
     res.status(201).json(evenementEnregistre);

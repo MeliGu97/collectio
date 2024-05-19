@@ -1,35 +1,97 @@
 <!-- Ici page utilisateur avec liste des collections -->
 <section>
   <article class="container-image-couverture-page couleur-home-utili-tempo">
-    <h1>Page utilisateur</h1>
+    <br>
+    <h1 class="centrer-en-colonne">Page utilisateur</h1>
   </article>
 </section>
+
 <section class="container-general">
   <article class="marges">
-    <div>
+    <div class="espacement-vertical-L">
       <h2>Mes collections</h2>
-      <button><a routerLink="/ajouterCollection">Ajouter une collection</a></button>
+      <!-- AJOUTER UNE COLLECTION : ouvre pop up formulaire -->
+      <div class="aligner-droite margin-droite-flexible">
+        <button (click)="openPopup()" class="btn-primary">
+          <i class="fa-solid fa-plus"></i>
+          <p>Ajouter une collection</p>
+        </button>
+      </div>
     </div>
+  </article>
+
+  <article class="marges">
+    <!-- POUR CHAQUE COLLECTION  -->
     <ul>
-      <li *ngIf="collections.length == 0"> Aucune collection </li>
-      <li *ngFor="let collection of collections" class="card medium">
+      <p *ngIf=" collections.length==0"> Aucune collection </p>
+      <li *ngFor="let collection of collections" class="card around medium espacement-entre">
         <!-- Au clic sur une collection redirige vers le détail de la collection en question -->
         <a [routerLink]="['/collections', collection._id]">
+
           <!-- si pas d'image de couverture alors met une couleur définit, sinon affiche l'image de couv -->
           <div class="image-couverture-card-tempo couleur-element-tempo"
-            *ngIf="collection.imageUrl === '' else imageCouv"></div>
+            *ngIf="collection.imageUrl === '' else imageCouv">
+          </div>
           <ng-template #imageCouv>
             <img src="{{ collection.imageUrl }}" class="image-couverture-card-tempo image-de-fond">
           </ng-template>
+
+
+          <!-- Detail de la collection -->
           <div class="card-paragraphe">
-            <p>({{ collection._id }})</p>
-            <h5><strong>Label : {{ collection.label }}</strong></h5>
-            <p>Description : {{ collection.description }}
-            <ul>
-              <li *ngFor="let element of collection.elements">
-                - {{ element }}
-              </li>
-            </ul>
+            <div class="centrer-sur-horizon espacement-entre">
+              <div *ngIf=" collection.periodesId.length==1">
+                <div *ngFor=" let periode of collection.periodesId">
+                  <!-- Picto du theme -->
+                  <p class="circle-picto circle-picto-S margin-top-S-negatif"
+                    [ngStyle]="{'background': periode.couleur}"><i class="fa-solid {{ collection.picto }}"></i>
+                  </p>
+                </div>
+              </div>
+              <div *ngIf=" collection.periodesId.length>=2">
+                <!-- Picto du theme -->
+                <p class="circle-picto circle-picto-S margin-top-S-negatif"
+                  [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">
+                  <i class="fa-solid {{ collection.picto }}"></i>
+                </p>
+              </div>
+              <div>
+                <!-- Pastille periode -->
+                <ul>
+                  <li>
+                    <div *ngFor="let periode of collection.periodesId" class="indienne">
+                      <!-- <app-periode-detail [idPeriode]="periodeId" periodeTaille="S"></app-periode-detail> -->
+                      <!-- <div class="tag tag-S" [ngStyle]="{'background': periode.couleur}"></div> -->
+                      <p class="tag tag-M" [ngStyle]="{'background': periode.couleur}">{{ periode.label.slice(0, 2) }}
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <h5><strong>{{ collection.label }}</strong></h5>
+            <p>{{ collection.description }}</p>
+
+            <!-- Categorie et sous-categorie -->
+            <div *ngIf=" collection.periodesId.length==1">
+              <div *ngFor="let periode of collection.periodesId" class="espacement-vertical-S">
+                <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">Categorie</p>
+                <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">Sous-categorie</p>
+              </div>
+            </div>
+            <div *ngIf=" collection.periodesId.length>=2">
+              <div class="espacement-vertical-S">
+                <p class="tag tag-L" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">Categorie</p>
+                <p class="tag tag-L" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">Sous-categorie
+                </p>
+              </div>
+            </div>
+            <div class="espacement-vertical-M espacement-entre texte-discret">
+              <p>Nombre d'élément</p>
+              <p>{{ collection.elementsId.length }}</p>
+            </div>
+
           </div>
         </a>
       </li>

@@ -1,58 +1,83 @@
+// ----------- TYPOGRAPHIE ----------
+@font-face {
+  font-family: 'courier-prime';
+  src: url(../src/font/Courier_Prime/CourierPrime-Regular.ttf);
+}
+@font-face {
+  font-family: 'NotoSans-Black';
+  src: url(../src/font/Noto_Sans/static/NotoSans_Condensed-Regular.ttf);
+}
+
+// ---------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
+// -------------- THEME --------------
 body {
   margin: 0px;
 }
-// -----------------------------------
-// -------------- THEME --------------
+
 // ------------- couleur -------------
 :root {
   background: whitesmoke;
 }
+
 $fond-page: whitesmoke;
 $light: white;
-$black: black;
+$black: #1A2F37;
+$black90: #2E4249;
+$black70:#57666C;
+$black50:#7F8A8E;
+$black30:#A9AFB2;
+$black10: #D2D4D5;
+$black5:#DADBDC;
 
-$primary-light-5: #FDF8F4;
-$primary-light-4: #FBF2EA;
-$primary-light-3: #F6DECA;
-$primary-light-2: #F0C9AA;
-$primary-light-1: #E4A16B;
-$primary-neutral: #D9792B;
-$primary-dark-1: #C36D27;
-$primary-dark-2: #A35B20;
-$primary-dark-3: #82491A;
-$primary-dark-4: #6A3B15;
+$error: red;
+$succes: green;
 
-$secondry-light-1: #7A867F;
-$secondary-neutral: #415248;
+// .couleur-theme{background-color: $black70;}
+// .couleur-categorie{background-color: $black50;}
+// .couleur-sous-categorie{background-color: $black30;}
 
-
-
-.couleur-theme{background-color: #0C564C;}
-.couleur-catégorie{background-color: #3B8E83;}
-.couleur-sous-catégorie{background-color: #9bb0a5;}
-
-.couleur-ultra-contempo{background-color: #F76848;}
-.couleur-contempo{background-color: #F7C548;}
-.couleur-moderne{background-color: #A98743;}
-.couleur-medieval{background-color: #27A4D0;}
-.couleur-antique{background-color: #437C90;}
-.couleur-prehist{background-color: #43A960;}
+// .couleur-ultra-contempo{background-color: #F76848;}
+// .couleur-contempo{background-color: #F7C548;}
+// .couleur-moderne{background-color: #A98743;}
+// .couleur-medieval{background-color: #27A4D0;}
+// .couleur-antique{background-color: #437C90;}
+// .couleur-prehist{background-color: #43A960;}
 
 
 // ------------- ombrage ------------
-@mixin card-shadow {
-  box-shadow: 0px 4px 12px rgba($black, .5);
+@mixin shadow {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+@mixin around {
+  border-radius: 10px;
 }
 
-
-// ------------- taille et espacement -----------
+// ---------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
+// ------------- TAILLE ET ESPACEMENT -----------
+// ------ Different support ----
 // telephone
 @media (min-width: 0px) and (max-width: 768px) {
   .marges{
-      margin: 0% 1% 0% 1%;
+      margin: 0% 2% 0% 2%;
   }
   .card{
-    margin: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 3%;
+  }
+  .large {
+    width: 95%;
+  }
+  .medium {
+    width: 45%;
+  }
+  .miniature {
+    width: 25%;
+  }
+  .margin-droite-flexible{
+    right: 1%;
   }
 }
 //  tablette
@@ -63,6 +88,18 @@ $secondary-neutral: #415248;
   .card{
     margin: 10px;
   }
+  .large {
+    width: 95%;
+  }
+  .medium {
+    width: 45%;
+  }
+  .miniature {
+    width: 25%;
+  }
+  .margin-droite-flexible{
+    right: 10%;
+  }
 }
 //  ordi et plus
 @media (min-width: 1024px) { 
@@ -70,43 +107,26 @@ $secondary-neutral: #415248;
       margin: 0% 20% 0% 20%;
   }
   .card{
-    margin: 15px;
+    margin: 1%;
+  }
+  .large {
+    width: 45%;
+  }
+  .medium {
+    width: 23%;
+  }
+  .miniature {
+    width: 11%;
+  }
+  .margin-droite-flexible{
+    right: 20%;
   }
 }
 
-
-
-// -------------- TEXTE ----------------
-a {
-  text-decoration: none;
-  color: $black;
-}
-
-
-// ------------ PATERNE ---------------
-.card {
-  @include card-shadow;
-}
-
-
-
-// CSS A TRANSFORMER
-// -------------------------------------
-// -------------- TEXTE ----------------
-// -------------------------------------
-
-h5 {
-  font-size: 14px;
-  margin: 0px;
-}
-
-
-
-// -------------------------------------
-// -------------- PATERNE --------------
-// -------------------------------------
+// A REFAIRE
+// ------------ EMPLACEMENT -------
 .centrer-sur-horizon {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
 }
 .centrer-en-colonne{
@@ -121,15 +141,166 @@ h5 {
 .indienne{
   display: inline-block;
 }
+.aligner-droite{
+  display: flex;
+  position:absolute;
+}
+
+
+.margin-droite-S{
+  right: 20px;
+}
+
 .espacement-entre{
+  display: flex;
+  justify-content: space-between;
+}
+
+.espacement-autour{
   justify-content: space-around;
 }
-
-
-button {
-  cursor: pointer;
+.espacement-vertical-L{
+  margin: 35px 0px;
+}
+.espacement-vertical-M{
+  margin: 15px 0px;
+}
+.espacement-vertical-S{
+  margin: 5px 0px;
 }
 
+.margin-top-S-negatif{
+  margin-top: -10px;
+}
+
+
+
+.full-width{
+  width: 100%;
+}
+// ---------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
+// -------------- TEXTE ----------------
+h1{
+  font-family: 'NotoSans-Black';
+  font-size: 35px;
+  margin-bottom: 0px;
+  margin-top: 10px;
+}
+
+h2{
+  font-family: 'NotoSans-Black';
+  font-size: 25px;
+  margin-bottom: 0px;
+}
+h3{
+  margin-top: 0px;
+}
+h5 {
+  font-family: 'NotoSans-Black';
+  font-size: 15px;
+  margin: 0px;
+}
+
+p{
+  font-family: 'courier-prime';
+  margin: 0px;
+}
+a {
+  text-decoration: none;
+  color: $black;
+}
+
+.texte-discret{
+  color: $black30;
+}
+.texte-discret :hover{
+  color: $black90;
+}
+
+.texte-error{
+  color: $error;
+}
+
+// ---------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
+// ------------ PATERNE ---------------
+
+.around{
+  @include around;
+}
+// ------------- card ----------------
+.card {
+  display: inline-block;
+  word-wrap: break-word;
+  vertical-align: top;
+  @include shadow;
+}
+.card-paragraphe {
+  background-color: $light;
+  padding: 10px;
+  font-size: 12px;
+  // effet de pointillé
+  background-image: radial-gradient(circle, $black10 10%, transparent 10%), radial-gradient(circle, $black10 10%, transparent 10%);
+  background-size: 16px 16px;
+  border-radius: 0px 0px 10px 10px ;
+}
+.card-paragraphe:hover{
+  background-color: whitesmoke;
+}
+.card-paragraphe > .tag{
+  font-size: 10px;
+}
+.card-paragraphe > .texte-discret{
+  font-size: 10px;
+}
+// ------------- circle ----------------
+
+.circle-picto{
+  display: inline-flex;
+  border-radius: 50px;
+  border: solid 2px white;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.circle-picto-M{
+  width: 50px;
+  height: 50px;
+}
+.circle-picto-S{
+  width: 30px;
+  height: 30px;
+}
+
+// Picto
+.picto{
+  height: 30px;
+}
+
+//  ------------- tag ----
+.tag {
+  color: white;
+  border: solid 2px white;
+  border-radius: 20px;
+  text-align: center;
+  margin-left: 2px;
+  display: inline-block;
+}
+
+.tag-L{
+  padding: 4px 12px;
+}
+.tag-M{
+  width: 30px;
+  padding: 2px 8px;
+}
+.tag-S{
+  width: 15px;
+  height: 15px;
+}
+
+// ------------- liste ----
 ul,
 li {
   list-style: none;
@@ -137,111 +308,138 @@ li {
   margin: 0;
 }
 
-// ------------- card ----------------
 
-.card {
-  background-color: $light;
-  border-radius: 10px;
-  display: inline-block;
+
+// -------- formulaire --- 
+form{
+  margin: 10px;
+  margin-right: 15px;
+}
+label{
+  font-family: 'NotoSans-Black';
+  font-weight: 100;
+  font-size: 15px;
+  font-family: 'courier-prime';
+  color: $black90;
+}
+
+input{
+  width: 100%;
+  border: 1px solid $black30;
+  border-radius: 2px ;
+  height: 25px;
+  margin: 0px 0px 15px 0px;
+  background-color: white;
+  // outline: 0;
+}
+
+input:focus {
+  outline: 1px solid blue;
+}
+.checkbox:focus{
+  outline: 0px;
+}
+
+
+// A REFAIRE = PAS ASSEZ REUTILISABLE
+// --- Bouton ---
+button {
+  cursor: pointer;
+}
+
+.btn-primary{
+  background-color: white;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  padding: 10px 20px;
+  // position: relative;
+  transition: background-color 0.1s cubic-bezier(0.3, 0, 0.5, 1);
+  
+  white-space: nowrap;
   word-wrap: break-word;
-  vertical-align: top;
-}
-.card-paragraphe {
-  padding: 10px;
-}
-.card p {
-  font-size: 12px;
-}
-
-
-.large {
-  width: 95%;
-}
-.medium {
-  width: 45%;
-}
-.miniature {
-  width: 25%;
-}
-
-.card-picto{
   display: flex;
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  vertical-align: middle;
 }
 
-// Picto
-.picto{
-  height: 30px;
-}
-//  ------------- tag ----
-
-.tag {
-  color: $primary-light-5;
-  border: solid 2px $primary-light-5;
-  border-radius: 20px;
-  text-align: center;
-}
-.tag-periode-L{
-  padding: 2px 12px;
-}
-.tag-periode-M{
-  width: 30px;
-  padding: 2px 8px;
-}
-.tag-periode-S{
-  width: 15px;
-  height: 15px;
+.btn-primary:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
 }
 
-// ------------------------------------------------------------
-// ------------------------------------------------------------
+.btn-primary:disabled {
+  background: linear-gradient(45deg, #F3F4F6 5%, #fff 5%, #fff 45%, #F3F4F6 45%, #F3F4F6 55%, #fff 55%, #fff 95%, #F3F4F6 95%);
+  background-size: 10px 10px;
+  
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+.btn-primary:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+.btn-primary:focus {
+  outline: 1px transparent;
+}
+
+.btn-primary > i {
+  margin-right: 5px;
+}
+
+// ---------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
 // -----------temporaire
 .couleur-home-utili-tempo{
-  background-color: $secondary-neutral;
+  background-color: $black70;
 }
 .couleur-collection-tempo{
   background-color: #6A3B15;
 }
-.couleur-element-tempo{
-  background-color: #D9792B;
-}
 
-.couleur-formulaire-tempo{
-  background-color: #4c85aa;
-}
 
+.valide{
+  background-color: $succes;
+}
+.error{
+  background-color: $error;
+}
 .image-couverture-card-tempo {
   height: 100px;
   border-radius: 10px 10px 0px 0px;
 }
 
-.image-couverture-page-tempo{
-  height: 200px;
-  padding: 10px;
-}
-.image-couverture-form-tempo{
+.image-couverture-card-element-tempo {
   height: 100px;
-  padding: 10px;
+  background-color: white;
 }
+.couleur-element-tempo{
+  background-color: #D2D4D5;
+}
+
+.image-couverture-page-tempo{
+  height: 250px;
+}
+
 .image-de-fond{
   width: 100%;
   object-fit: cover;
+
 }
 .container-image-couverture-page{
-  height: 200px;
-  padding: 10px;
+  height: 250px;
+  // padding: 10px;
 }
 
 
-.container-general{
-  border-radius: 40px 40px 0px 0px;
-  margin-top: -50px;
-  background-color: $fond-page;
-  padding: 10px;
-  display: block;
-  z-index: 100;
+.container-general{  
+  min-height: 500px;
 }
+

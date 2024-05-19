@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ElementsComponent } from './elements.component'
+import { FormElementComponent } from './form-element.component'
 
-describe('ElementsComponent', () => {
-  let component: ElementsComponent
-  let fixture: ComponentFixture<ElementsComponent>
+describe('FormElementComponent', () => {
+  let component: FormElementComponent
+  let fixture: ComponentFixture<FormElementComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ElementsComponent]
+      imports: [FormElementComponent]
     }).compileComponents()
 
-    fixture = TestBed.createComponent(ElementsComponent)
+    fixture = TestBed.createComponent(FormElementComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })
@@ -19,4 +19,5 @@ describe('ElementsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy()
   })
+  
 })

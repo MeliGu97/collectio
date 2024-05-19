@@ -1,0 +1,42 @@
+<app-popup>
+    <section>
+        <article class="centrer-sur-horizon">
+            <h3><i class="fa-solid fa-calendar-days"></i> Ajouter un événement</h3>
+            <button class="aligner-droite margin-droite-S centrer-milieu btn-primary" (click)="dialogRef.close()">
+                <i class="fa-solid fa-xmark"></i> Fermer</button>
+        </article>
+        <article>
+            <form [formGroup]="nouvelEvenementForm" (ngSubmit)="ajouterEvenement()">
+                <div class="centrer-sur-horizon">
+                    <label for="label">Nom <i class="texte-error">*</i></label>
+                    <div
+                        *ngIf="nouvelEvenementForm.get('label')?.errors?.['required'] && nouvelEvenementForm.get('label')?.touched">
+                        <p class="texte-error">Requis.</p>
+                    </div>
+                </div>
+                <input type="text" id="label" formControlName="label">
+
+                <div class="centrer-sur-horizon">
+                    <label for="date">Année <i class="texte-error">*</i></label>
+
+                    <div
+                        *ngIf="nouvelEvenementForm.get('date')?.errors?.['required'] && nouvelEvenementForm.get('date')?.touched">
+                        <p class="texte-error">Requis.</p>
+                    </div>
+                    <div *ngIf="nouvelEvenementForm.get('date')?.errors?.['invalidYear']">
+                        <p class="texte-error">Année invalide. Entrez un nombre.</p>
+                    </div>
+                </div>
+                <input type="number" id="date" formControlName="date">
+
+                <div class="centrer-en-colonne">
+                    <button type="submit" [disabled]="nouvelEvenementForm.invalid" class="btn-primary">
+                        <i class=" fa-solid fa-plus"></i>
+                        <p>Ajouter un événement</p>
+                    </button>
+                </div>
+            </form>
+
+        </article>
+    </section>
+</app-popup>

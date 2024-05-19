@@ -1,0 +1,17 @@
+<!-- Ici pastille d'une periode en fonction de son identifiant afficher dans le detail d'une collection -->
+
+<ng-container *ngIf="periode">
+    <!-- <p class="tag {{ periode.couleur }} tag-M">{{ periode.label.slice(0, 2) }}</p> -->
+    <ng-container [ngTemplateOutlet]="periodeTaille === 'L' ? periodeL : (periodeTaille === 'S' ? periodeS : periodeS)">
+    </ng-container>
+
+    <ng-template #periodeL>
+        <p class="tag {{ periode.couleur }} tag-L">{{ periode.label }}</p>
+    </ng-template>
+    <!-- <ng-template #periodeM>
+        <p class="tag {{ periode.couleur }} tag-M">{{ periode.label.slice(0, 2) }}</p>
+    </ng-template> -->
+    <ng-template #periodeS>
+        <div class="tag {{ periode.couleur }} tag-S"></div>
+    </ng-template>
+</ng-container>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ElementDetailPageComponent } from './element-detail-page.component'
+import { ElementDetailComponent } from './element-detail.component'
 
-describe('ElementDetailPageComponent', () => {
-  let component: ElementDetailPageComponent
-  let fixture: ComponentFixture<ElementDetailPageComponent>
+describe('ElementDetailComponent', () => {
+  let component: ElementDetailComponent
+  let fixture: ComponentFixture<ElementDetailComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ElementDetailPageComponent]
+      imports: [ElementDetailComponent]
     })
     .compileComponents()
 
-    fixture = TestBed.createComponent(ElementDetailPageComponent)
+    fixture = TestBed.createComponent(ElementDetailComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

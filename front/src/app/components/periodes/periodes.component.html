@@ -12,17 +12,20 @@
         </form>
     </article>
 </section> -->
-<section class="container-general">
+
+
+
+<!-- <section class="container-general">
     <h2>Liste des périodes</h2>
     <article class="marges">
         <ul>
-            <li *ngFor="let periode of periodes" class="indienne centrer-sur-horizon espacement-entre">
+            <li *ngFor="let periode of periodes" class="indienne centrer-sur-horizon espacement-autour">
                 <div class="centrer-en-colonne">
-                    <div class="card-picto {{ periode.couleur }}">
+                    <div class="circle-picto {{ periode.couleur }}">
                         <img src="{{ periode.imageUrl }}" class="picto">
                     </div>
                     <div>
-                        <p class="tag {{ periode.couleur }} tag-periode-L">{{ periode.label }}</p>
+                        <p class="tag {{ periode.couleur }} tag-L">{{ periode.label }}</p>
                         <p>{{ periode.dateDebut }}</p>
                     </div>
 
@@ -31,11 +34,11 @@
         </ul>
     </article>
     <article class="marges">
-        <ul class="espacement-entre">
-            <li *ngFor="let periode of periodes" class="indienne centrer-sur-horizon espacement-entre">
+        <ul class="espacement-autour">
+            <li *ngFor="let periode of periodes" class="indienne centrer-sur-horizon espacement-autour">
                 <div class="centrer-en-colonne">
-                    <p class="tag {{ periode.couleur }} tag-periode-M">{{ periode.label.slice(0, 2) }}</p>
-                    <div class="tag {{ periode.couleur }} tag-periode-S"></div>
+                    <p class="tag {{ periode.couleur }} tag-M">{{ periode.label.slice(0, 2) }}</p>
+                    <div class="tag {{ periode.couleur }} tag-S"></div>
                     <p>{{ periode.dateDebut }}</p>
                 </div>
             </li>
@@ -44,18 +47,18 @@
 </section>
 
 <section>
-    <article class="centrer-sur-horizon espacement-entre">
+    <article class="centrer-sur-horizon espacement-autour">
         <div class=" centrer-en-colonne">
-            <div class="card-picto couleur-theme"></div>
-            <p class=" tag couleur-theme tag-periode-L">Truc</p>
+            <div class="circle-picto couleur-theme"></div>
+            <p class=" tag couleur-theme tag-L">Truc</p>
         </div>
         <div class="centrer-en-colonne">
-            <div class="card-picto couleur-theme"></div>
-            <p class=" tag couleur-theme tag-periode-L">bidule</p>
+            <div class="circle-picto couleur-theme"></div>
+            <p class=" tag couleur-theme tag-L">bidule</p>
         </div>
         <div class="centrer-en-colonne">
-            <div class="card-picto couleur-theme"></div>
-            <p class=" tag couleur-theme tag-periode-L">machine chouette</p>
+            <div class="circle-picto couleur-theme"></div>
+            <p class=" tag couleur-theme tag-L">machine chouette</p>
         </div>
     </article>
-</section>
+</section> -->

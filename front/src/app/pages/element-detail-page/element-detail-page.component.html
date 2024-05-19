@@ -1,19 +1,43 @@
 <!-- Ici page détail d'une element en fonction de son identifiant -->
 <section>
     <article>
-        <div class="image-couverture-page-tempo couleur-element-temp"
-            *ngIf="element.imageUrl === ''||'undefined' else imageCouv">
+        <div class="image-couverture-page-tempo couleur-element-tempo" *ngIf="element.imageUrl === '' else imageCouv">
         </div>
         <ng-template #imageCouv>
-            <img src="{{ element.imageUrl }}" class="image-couverture-card-tempo image-de-fond">
+            <img src="{{ element.imageUrl }}" class="image-couverture-page-tempo image-de-fond">
         </ng-template>
     </article>
 </section>
 <section class="container-general">
-    <article class="marges">
+    <div class="espacement-entre">
+        <article class="container-image">
+            <img src="{{ element.imageUrl }}" class="image-carrousel">
+        </article>
 
-        <h2>L'element : {{element.label}}</h2>
-        <p>Description : {{ element.description }}
-        <p>({{ element._id }})</p>
-    </article>
+
+        <article class="container-texte ">
+            <div class="espacement-vertical-S espacement-entre centrer-sur-horizon">
+                <div>
+                    <h2>{{ element.label }}</h2>
+                </div>
+
+                <!-- AJOUTER UN EVENT : ouvre pop up formulaire -->
+                <div>
+                    <button (click)="openPopup(element._id)" class="btn-primary">
+                        <i class="fa-solid fa-plus"></i>
+                        Ajouter un événement
+                    </button>
+                </div>
+            </div>
+
+            <p class="espacement-vertical-L">Description : {{ element.description }}</p>
+
+            <h3>Événements</h3>
+            <ul>
+                <li *ngFor="let evenement of evenements">
+                    <p>{{ evenement.date }} - {{ evenement.label }}</p>
+                </li>
+            </ul>
+        </article>
+    </div>
 </section>

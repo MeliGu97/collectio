@@ -6,6 +6,7 @@ const collectionSchema = new mongoose.Schema({
   elementsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Element' }],
   periodesId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Periode' }],
   imageUrl: String,
+  picto: String,
 })
 
 module.exports = mongoose.model('Collection', collectionSchema)
