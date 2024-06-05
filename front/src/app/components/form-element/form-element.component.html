@@ -1,50 +1,48 @@
 <!-- FORMULAIRE POUR AJOUTER UN ELEMENT -->
 
-<app-popup>
-  <section>
-    <article class="centrer-sur-horizon">
-      <h3><i class="fa-regular fa-file-lines"></i> Ajouter un élément</h3>
-      <button class="aligner-droite margin-droite-S centrer-milieu btn-primary" (click)="dialogRef.close()">
-        <i class="fa-solid fa-xmark"></i> Fermer</button>
-    </article>
-    <article>
-      <form [formGroup]="nouvelElementForm" (ngSubmit)="ajouterElement()">
-
-        <div class="centrer-sur-horizon">
-          <label for="label">Nom <i class="texte-error">*</i></label>
-          <div *ngIf="nouvelElementForm.get('label')?.errors?.['required'] && nouvelElementForm.get('label')?.touched">
-            <p class="texte-error">Requis.</p>
-          </div>
-        </div>
-        <input type="text" id="label" formControlName="label">
-
-        <div class="centrer-sur-horizon">
-          <label for="label">Description <i class="texte-error">*</i></label>
-          <div
-            *ngIf="nouvelElementForm.get('description')?.errors?.['required'] && nouvelElementForm.get('description')?.touched">
-            <p class="texte-error">Requis.</p>
-          </div>
-        </div>
-        <input type="text" id="description" formControlName="description">
-
-        <div class="centrer-en-colonne">
-          <button type="submit" [disabled]="nouvelElementForm.invalid " class="btn-primary"><i
-              class=" fa-solid fa-plus"></i>
-            <p>Ajouter un élement</p>
-          </button>
-        </div>
-
-      </form>
-
-    </article>
-  </section>
-</app-popup>
-
-
-
 <!-- 
   <label for="imageUrl">Chemin de l'image : </label><br>
   <input type="text" id="imageUrl" [(ngModel)]="nouvelElement.imageUrl" name="imageUrl" required>
 
 <p>MEMO : A l'ajout d'un élément lui donner en parametre l'id de la collection et ajouter l'id de ce nouvel
   element dans la collection</p>  -->
+
+
+<app-popup>
+  <form [formGroup]="nouvelElementForm" (ngSubmit)="ajouterElement()">
+    <section>
+      <article>
+        <div class="image-couverture-page-tempo couleur-element-tempo">
+          <button class="aligner-droite margin-droite-S espacement-vertical-S centrer-milieu btn-primary btn-small"
+            (click)="dialogRef.close()">
+            <i class="fa-solid fa-xmark"></i> Fermer</button>
+        </div>
+      </article>
+    </section>
+    <section class="container-general">
+      <article class="marges">
+        <br>
+        <div class="centrer-sur-horizon">
+          <div *ngIf="nouvelElementForm.get('label')?.errors?.['required'] && nouvelElementForm.get('label')?.touched">
+            <p class="texte-error">Requis.</p>
+          </div>
+        </div>
+        <input type="text" id="label" formControlName="label" placeholder="Sans titre*" class="input-titre">
+
+
+        <textarea rows="4" type="text" id="description" formControlName="description" placeholder="Description"
+          class="input-texte"></textarea>
+
+
+      </article>
+      <article class="centrer-en-colonne">
+        <div class="fixe-bottom">
+          <button type="submit" [disabled]="nouvelElementForm.invalid" class="btn-primary">
+            <i class=" fa-solid fa-plus"></i>
+            <p>Ajouter un élément</p>
+          </button>
+        </div>
+      </article>
+    </section>
+  </form>
+</app-popup>

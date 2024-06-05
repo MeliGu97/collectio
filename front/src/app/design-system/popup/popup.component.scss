@@ -12,10 +12,22 @@
   
   
 .popup {
-  background: whitesmoke;
-    padding: 20px;
-    width: 40%;
+  background: white;
+    // padding: 20px;
+    width: 50%;
     position: relative;
     border-radius: 5px;
 }
 
+// telephone
+@media (min-width: 0px) and (max-width: 768px){
+  .popup {
+      width: 90%;
+    }
+}
+//  tablette
+@media (min-width: 768px) and (max-width: 1024px){
+  .popup {
+    width: 70%;
+  }
+}

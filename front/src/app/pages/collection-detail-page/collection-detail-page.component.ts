@@ -17,17 +17,20 @@ import { PeriodeDetailComponent } from "../../components/periode-detail/periode-
 @Component({
     selector: 'app-collection-detail-page',
     standalone: true,
-    providers: [CollectionService],
+    providers: [CollectionService, ElementService],
     templateUrl: './collection-detail-page.component.html',
     styleUrl: './collection-detail-page.component.scss',
-    imports: [CommonModule, HttpClientModule, DialogModule, FormsModule, RouterLink, ElementDetailPageComponent, ElementDetailComponent, PeriodesComponent, PeriodeDetailComponent]
+    imports: [CommonModule, HttpClientModule, DialogModule, FormsModule, RouterLink, ElementDetailPageComponent, ElementDetailComponent, PeriodesComponent, PeriodeDetailComponent, FormElementComponent]
 })
 export class CollectionDetailPageComponent implements OnInit {
   collection: any = {};
   gradientColors: string[] = [];
+  element: any = {};
+  elements: any[] = [];
 
   constructor(
     private collectionService: CollectionService, 
+    private elementService: ElementService,
     private route: ActivatedRoute, 
     public dialog: Dialog) {}
 
@@ -39,13 +42,29 @@ export class CollectionDetailPageComponent implements OnInit {
       this.collectionService.getCollectionById(collectionId).subscribe((data) => {
         //console.log("data",data)
         this.collection = data
-        
+        this.loadElements(collectionId);
       })
     });
   }
+  
+  loadElements(collectionId: string) {
+    this.elementService.getElementsByCollectionId(collectionId).subscribe((data) => {
+      this.elements = data;
+    });
+  }
+
   setGradientStyle(collectionPeriodes: any): string {
     const colors = collectionPeriodes.map((periode: { couleur: string }) => periode.couleur);
     return `linear-gradient(0.25turn, ${colors.join(', ')})`;
+  }
+
+  updateElementDetail(element: any) {
+    const index = this.collection.elementsId.indexOf(element._id);
+    if (index !== -1) {
+      this.collection.elementsId.splice(index, 1, element._id);
+    } else {
+      this.collection.elementsId.push(element._id);
+    }
   }
 
   openPopup(collectionId: string) {
@@ -53,10 +72,12 @@ export class CollectionDetailPageComponent implements OnInit {
       width: '250px',
       data: {collectionIdFromPage: collectionId},
     });
-
-    // dialogRef.closed.subscribe(result => {
-    //   console.log('The dialog was closed');
-    //   this.animal = result;
-    // });
+  
+    dialogRef.closed.subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.updateElementDetail(result);
+      }
+    });
   }
 }

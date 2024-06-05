@@ -11,6 +11,7 @@ export class CollectionService {
 
   getCollections(): Observable<any[]> {
     return this.http.get<any[]>(`${baseServerUrl}/collections?populate=periodesId`);
+    
   }
 
   getCollectionById(id: string): Observable<any> {

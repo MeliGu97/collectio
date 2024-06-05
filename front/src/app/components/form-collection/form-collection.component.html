@@ -1,42 +1,53 @@
 <!-- FORMULAIRE POUR AJOUTER UNE COLLECTION -->
 
 <app-popup>
-  <section>
-    <article class="centrer-sur-horizon">
-      <h3><i class="fa-regular fa-folder-open"></i> Ajouter une collection</h3>
-      <button class="aligner-droite margin-droite-S centrer-milieu btn-primary" (click)="dialogRef.close()">
-        <i class="fa-solid fa-xmark"></i>
-        <p>Fermer</p>
-      </button>
-    </article>
-    <article>
-      <form [formGroup]="newCollectionForm" (ngSubmit)="ajouterCollection()">
-        <div class="centrer-sur-horizon">
-          <label for="label">Nom <i class="texte-error">*</i></label>
+  <form [formGroup]="newCollectionForm" (ngSubmit)="ajouterCollection()">
+    <section>
+      <article>
+        <div class="image-couverture-page-tempo couleur-element-tempo">
 
+          <button class="aligner-droite margin-droite-S espacement-vertical-M centrer-milieu btn-primary btn-small"
+            (click)="dialogRef.close()">
+            <i class="fa-solid fa-xmark"></i>
+            <p>Fermer</p>
+          </button>
+        </div>
+      </article>
+    </section>
+    <section class="container-general">
+      <article class="marges">
+        <div class="centrer-sur-horizon">
+          <p class="circle-picto circle-picto-M margin-top-S-negatif couleur-element-tempo input-btn">
+            <i class="fa-solid fa-hippo"></i>
+          </p>
+          <div class="espacement-vertical-S">
+            <input type="text" id="categorie" formControlName="categorie" placeholder="Catégorie*"
+              class="tag tag-L input-tag">
+            <input type="text" id="sousCategorie" formControlName="sousCategorie" placeholder="Sous catégorie"
+              class="tag tag-L input-tag">
+          </div>
+          <div class="espacement-vertical-S">
+            <ul>
+              <li class="aligner-droite margin-droite-flexible">
+                <div>
+                  <p class="tag tag-L couleur-element-tempo input-btn">période</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="marges">
+        <div class="centrer-sur-horizon">
           <div *ngIf="newCollectionForm.get('label')?.errors?.['required'] && newCollectionForm.get('label')?.touched">
             <p class="texte-error">Requis.</p>
           </div>
         </div>
-        <input type="text" id="label" formControlName="label">
+        <input type="text" id="label" formControlName="label" placeholder="Non de la collection*" class="input-titre">
 
-        <div class="centrer-sur-horizon">
-          <label for="label">Description <i class="texte-error">*</i></label>
-          <div
-            *ngIf="newCollectionForm.get('description')?.errors?.['required'] && newCollectionForm.get('description')?.touched">
-            <p class="texte-error">Requis.</p>
-          </div>
-        </div>
-        <input type="text" id="description" formControlName="description">
-
-        <label for="label">Image de couverture </label>
-        <input type="text" id="imageUrl" formControlName="imageUrl">
-
-        <label for="label">Picto thème </label>
-        <input type="text" id="picto" formControlName="picto">
+        <textarea rows="4" type="text" id="description" placeholder="Description" class="input-texte"></textarea>
 
 
-        <label for="label">Période(s) <i class="texte-error">*</i></label>
         <div>
           <ul class="centrer-sur-horizon list-cases">
             <li *ngFor="let periode of periodes" class="espace-entre-case">
@@ -51,13 +62,15 @@
         </div>
 
 
-        <div class="centrer-en-colonne">
+      </article>
+      <article class="centrer-en-colonne">
+        <div class="fixe-bottom">
           <button type="submit" [disabled]="newCollectionForm.invalid" class="btn-primary">
             <i class=" fa-solid fa-plus"></i>
             <p>Ajouter une collection</p>
           </button>
         </div>
-      </form>
-    </article>
-  </section>
+      </article>
+    </section>
+  </form>
 </app-popup>

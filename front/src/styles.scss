@@ -30,8 +30,9 @@ $black30:#A9AFB2;
 $black10: #D2D4D5;
 $black5:#DADBDC;
 
-$error: red;
-$succes: green;
+$error: #F76848;
+$succes: #43A960;
+
 
 // .couleur-theme{background-color: $black70;}
 // .couleur-categorie{background-color: $black50;}
@@ -53,75 +54,7 @@ $succes: green;
   border-radius: 10px;
 }
 
-// ---------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------
-// ------------- TAILLE ET ESPACEMENT -----------
-// ------ Different support ----
-// telephone
-@media (min-width: 0px) and (max-width: 768px) {
-  .marges{
-      margin: 0% 2% 0% 2%;
-  }
-  .card{
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 3%;
-  }
-  .large {
-    width: 95%;
-  }
-  .medium {
-    width: 45%;
-  }
-  .miniature {
-    width: 25%;
-  }
-  .margin-droite-flexible{
-    right: 1%;
-  }
-}
-//  tablette
-@media (min-width: 768px) and (max-width: 1024px) { 
-  .marges{
-      margin: 0% 10% 0% 10%;
-  }
-  .card{
-    margin: 10px;
-  }
-  .large {
-    width: 95%;
-  }
-  .medium {
-    width: 45%;
-  }
-  .miniature {
-    width: 25%;
-  }
-  .margin-droite-flexible{
-    right: 10%;
-  }
-}
-//  ordi et plus
-@media (min-width: 1024px) { 
-  .marges{
-      margin: 0% 20% 0% 20%;
-  }
-  .card{
-    margin: 1%;
-  }
-  .large {
-    width: 45%;
-  }
-  .medium {
-    width: 23%;
-  }
-  .miniature {
-    width: 11%;
-  }
-  .margin-droite-flexible{
-    right: 20%;
-  }
-}
+
 
 // A REFAIRE
 // ------------ EMPLACEMENT -------
@@ -145,13 +78,17 @@ $succes: green;
   display: flex;
   position:absolute;
 }
-
+.fixe-bottom{
+  position: absolute;
+  bottom: 10px;
+}
 
 .margin-droite-S{
   right: 20px;
 }
 
-.espacement-entre{
+.espacement-entre,
+.espacement-entre-article{
   display: flex;
   justify-content: space-between;
 }
@@ -168,7 +105,18 @@ $succes: green;
 .espacement-vertical-S{
   margin: 5px 0px;
 }
-
+.saut-de-ligne-L{
+  height: 35px;
+  display: block;
+}
+.saut-de-ligne-M{
+  height: 15px;
+  display: block;
+}
+.saut-de-ligne-S{
+  height: 5px;
+  display: block;
+}
 .margin-top-S-negatif{
   margin-top: -10px;
 }
@@ -245,6 +193,14 @@ a {
   background-size: 16px 16px;
   border-radius: 0px 0px 10px 10px ;
 }
+.text-description{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+          line-clamp: 2; 
+  -webkit-box-orient: vertical;
+}
 .card-paragraphe:hover{
   background-color: whitesmoke;
 }
@@ -311,31 +267,60 @@ li {
 
 
 // -------- formulaire --- 
-form{
-  margin: 10px;
-  margin-right: 15px;
-}
-label{
-  font-family: 'NotoSans-Black';
-  font-weight: 100;
-  font-size: 15px;
-  font-family: 'courier-prime';
-  color: $black90;
-}
 
-input{
-  width: 100%;
-  border: 1px solid $black30;
-  border-radius: 2px ;
-  height: 25px;
+
+input, textarea{
+  width: auto;
+  border: 0px;
+  // border-radius: 2px ;
+  height: auto;
   margin: 0px 0px 15px 0px;
-  background-color: white;
-  // outline: 0;
+  background-color: transparent;
+}
+input:hover, textarea:hover{
+  background-color: whitesmoke;
 }
 
-input:focus {
-  outline: 1px solid blue;
+input:focus, textarea:focus {
+  outline: 0px;
 }
+
+.input-titre{
+  width: 100%;
+  height: 40px;
+  font-size: 35px;
+}
+.input-sous-titre{
+  height: 30px;
+  font-size: 25px;
+}
+.input-texte{
+  width: 100%;
+  font-family: 'courier-prime';
+}
+.input-tag{
+  background-color: white;
+  color: $black;
+  border: solid 0.5px rgba(22, 22, 22, 0.253);
+}
+
+// .input-btn{
+//   cursor: pointer;
+// }
+.input-date-S{
+  width: 40px;
+  height: 30px;
+  background-color: white;
+  margin: 0px 5px;
+}
+.input-date-M{
+  width: 80px;
+  height: 30px;
+  background-color: white;
+  margin: 0px 10px;
+}
+
+
 .checkbox:focus{
   outline: 0px;
 }
@@ -343,10 +328,13 @@ input:focus {
 
 // A REFAIRE = PAS ASSEZ REUTILISABLE
 // --- Bouton ---
+
 button {
   cursor: pointer;
 }
 
+
+// PARTICULIER
 .btn-primary{
   background-color: white;
   border: 1px solid rgba(27, 31, 35, 0.15);
@@ -365,7 +353,7 @@ button {
   vertical-align: middle;
 }
 
-.btn-primary:hover {
+.btn-primary:hover{
   background-color: #F3F4F6;
   text-decoration: none;
   transition-duration: 0.1s;
@@ -394,6 +382,72 @@ button {
   margin-right: 5px;
 }
 
+
+// TAILLE
+
+.btn-small{
+  padding: 5px 10px;
+}
+
+// Bouton Switch 
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  // Taille du contenant
+  width: 3em;
+  height: 1.5em;
+  margin: -4px 8px 0px 8px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 1px 2px 5px 1px rgba(0, 0, 0, 0.329);
+  transition: .4s;
+  border-radius: 30px;
+  // couleur off
+  background-color: #437C90;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  // taille de la bille
+  height: 1em;
+  width: 1em;
+  border-radius: 20px;
+  left: 0.3em;
+  bottom: 0.3em;
+  background-color: rgb(255, 255, 255);
+  transition: .4s;
+}
+
+.switch input:checked + .slider {
+  // couleur on
+  background-color: #27A4D0 ;
+}
+
+.switch input:focus + .slider {
+  box-shadow: inset 3px 2px 4px rgba(22, 22, 22, 0.253);
+}
+
+.switch input:checked + .slider:before {
+  // Deplacement distance
+  transform: translateX(1.5em);
+}
+
+
 // ---------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------
 // -----------temporaire
@@ -403,7 +457,10 @@ button {
 .couleur-collection-tempo{
   background-color: #6A3B15;
 }
-
+.surligner{
+  background-color: #F7C548;
+  font-style: regular;
+}
 
 .valide{
   background-color: $succes;
@@ -443,3 +500,79 @@ button {
   min-height: 500px;
 }
 
+
+
+// ---------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
+// ------------- TAILLE ET ESPACEMENT -----------
+// ------ Different support ----
+// telephone
+@media (min-width: 0px) and (max-width: 768px) {
+  .marges{
+      margin: 0% 2% 0% 2%;
+  }
+  .card{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 3%;
+  }
+  .large {
+    width: 95%;
+  }
+  .medium {
+    width: 45%;
+  }
+  .miniature {
+    width: 25%;
+  }
+  .margin-droite-flexible{
+    right: 1%;
+  }
+  .espacement-entre-article{
+    display: inline-block;
+    justify-content: none;
+
+  }
+}
+//  tablette
+@media (min-width: 768px) and (max-width: 1024px) { 
+  .marges{
+      margin: 0% 10% 0% 10%;
+  }
+  .card{
+    margin: 10px;
+  }
+  .large {
+    width: 95%;
+  }
+  .medium {
+    width: 45%;
+  }
+  .miniature {
+    width: 25%;
+  }
+  .margin-droite-flexible{
+    right: 10%;
+  }
+}
+//  ordi et plus
+@media (min-width: 1024px) { 
+  .marges{
+      margin: 0% 20% 0% 20%;
+  }
+  .card{
+    margin: 1%;
+  }
+  .large {
+    width: 45%;
+  }
+  .medium {
+    width: 23%;
+  }
+  .miniature {
+    width: 11%;
+  }
+  .margin-droite-flexible{
+    right: 20%;
+  }
+}

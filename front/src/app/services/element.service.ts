@@ -7,7 +7,6 @@ import { baseServerUrl } from '../collectio.constant';
   providedIn: 'root'
 })
 export class ElementService {
-  
   constructor(private http: HttpClient) {}
 
   getElements(): Observable<any> {
@@ -15,10 +14,15 @@ export class ElementService {
   }
 
   getElementById(id: string): Observable<any> {
-    console.log(`${baseServerUrl}/elements/${id}`);
+    // console.log(`${baseServerUrl}/elements/${id}`);
     return this.http.get(`${baseServerUrl}/elements/${id}`);
   }
-
+  
+  getElementsByCollectionId(collectionId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${baseServerUrl}/elements?collectionId=${collectionId}`).pipe();
+  }
+  
+  
   addElement(element: any): Observable<any> {
     return this.http.post<any>(`${baseServerUrl}/elements`, element)
   }

@@ -71,22 +71,39 @@
             </div>
 
             <h5><strong>{{ collection.label }}</strong></h5>
-            <p>{{ collection.description }}</p>
+            <p class="text-description">{{ collection.description }}</p>
 
             <!-- Categorie et sous-categorie -->
+
+            <!-- si une seule période -->
             <div *ngIf=" collection.periodesId.length==1">
               <div *ngFor="let periode of collection.periodesId" class="espacement-vertical-S">
-                <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">Categorie</p>
-                <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">Sous-categorie</p>
+                <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">
+                  {{ collection.categorie }}</p>
+
+                <p *ngIf="collection.sousCategorie === '' else tagSousCategorie"></p>
+                <ng-template #tagSousCategorie>
+                  <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">
+                    {{ collection.sousCategorie }}</p>
+                </ng-template>
               </div>
             </div>
+
+            <!-- Si plusieurs période : -->
             <div *ngIf=" collection.periodesId.length>=2">
               <div class="espacement-vertical-S">
-                <p class="tag tag-L" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">Categorie</p>
-                <p class="tag tag-L" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">Sous-categorie
-                </p>
+                <p *ngIf="collection.categorie.length >= 1" class="tag tag-L"
+                  [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">
+                  {{ collection.categorie }}</p>
+
+                <p *ngIf="collection.sousCategorie === '' else tagSousCategorie"></p>
+                <ng-template #tagSousCategorie>
+                  <p class="tag tag-L" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">
+                    {{ collection.sousCategorie }}</p>
+                </ng-template>
               </div>
             </div>
+
             <div class="espacement-vertical-M espacement-entre texte-discret">
               <p>Nombre d'élément</p>
               <p>{{ collection.elementsId.length }}</p>

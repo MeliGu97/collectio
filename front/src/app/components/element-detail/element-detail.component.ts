@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 
@@ -22,9 +22,25 @@ export class ElementDetailComponent implements OnInit {
 
   constructor(private elementService: ElementService, private route: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.elementService.getElementById(this.idElement).subscribe((data) => {
-      this.element = data
-    })   
+//   ngOnInit() {
+//     this.elementService.getElementById(this.idElement).subscribe((data) => {
+//       this.element = data
+//     })   
+//   }
+// }
+ngOnInit() {
+  this.loadElement();
+}
+
+ngOnChanges(changes: SimpleChanges) {
+  if (changes['idElement'] && !changes['idElement'].firstChange) {
+    this.loadElement();
   }
+}
+
+loadElement() {
+  this.elementService.getElementById(this.idElement).subscribe((data) => {
+    this.element = data;
+  });
+}
 }

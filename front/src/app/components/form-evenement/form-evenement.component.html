@@ -1,42 +1,81 @@
 <app-popup>
-    <section>
+    <section class="marges">
         <article class="centrer-sur-horizon">
-            <h3><i class="fa-solid fa-calendar-days"></i> Ajouter un événement</h3>
-            <button class="aligner-droite margin-droite-S centrer-milieu btn-primary" (click)="dialogRef.close()">
-                <i class="fa-solid fa-xmark"></i> Fermer</button>
+            <button class="aligner-droite margin-droite-S espacement-vertical-S centrer-milieu btn-primary btn-small"
+                (click)="dialogRef.close()">
+                <i class="fa-solid fa-xmark"></i>
+                <p>Fermer</p>
+            </button>
         </article>
-        <article>
-            <form [formGroup]="nouvelEvenementForm" (ngSubmit)="ajouterEvenement()">
+    </section>
+    <section class="container-general ">
+
+        <form [formGroup]="nouvelEvenementForm" (ngSubmit)="ajouterEvenement()">
+            <article class="marges">
+                <div class="saut-de-ligne-M"></div>
+                <div class="espacement-vertical-M">
+                    <p>Date</p>
+                    <div class="centrer-sur-horizon centrer-milieu">
+
+                        <p>approximative</p>
+                        <label class="switch"> <input type="checkbox" id="switch"
+                                (change)="toggleDateType($event)"><span class="slider"></span></label>
+                        <p>précise</p>
+                    </div>
+                    <div class="saut-de-ligne-M"></div>
+                    <div class="centrer-sur-horizon centrer-milieu">
+                        <div *ngIf="isPreciseDate">
+                            <input type="number" id="jour" formControlName="jour" placeholder="jj" min="1" max="31"
+                                class="input-date-S"> /
+                            <input type="number" id="mois" formControlName="mois" placeholder="MM" min="1" max="12"
+                                class="input-date-S"> /
+                        </div>
+                        <input type="number" id="annee" formControlName="annee" placeholder="YYYY*"
+                            class="input-date-M">
+                        <div
+                            *ngIf="nouvelEvenementForm.get('annee')?.errors?.['required'] && nouvelEvenementForm.get('annee')?.touched">
+                            <p class="texte-error">Requis.</p>
+                        </div>
+                        <div *ngIf="nouvelEvenementForm.get('annee')?.errors?.['invalidYear']">
+                            <p class="texte-error">Année invalide. Entrez un nombre.</p>
+                        </div>
+                    </div>
+                    <div class="saut-de-ligne-M"></div>
+                    <div class="centrer-sur-horizon">
+                        <div *ngIf="isPreciseDate">
+                            <input type="number" id="heure" formControlName="heure" placeholder="HH" min="00" max="23"
+                                class="input-date-S"> :
+                            <input type="number" id="minute" formControlName="minute" placeholder="min" min="00"
+                                max="59" class="input-date-S">
+                        </div>
+                    </div>
+
+
+                </div>
+
                 <div class="centrer-sur-horizon">
-                    <label for="label">Nom <i class="texte-error">*</i></label>
                     <div
                         *ngIf="nouvelEvenementForm.get('label')?.errors?.['required'] && nouvelEvenementForm.get('label')?.touched">
                         <p class="texte-error">Requis.</p>
                     </div>
                 </div>
-                <input type="text" id="label" formControlName="label">
+                <input type="text" id="label" formControlName="label" placeholder="Sans titre*"
+                    class="input-sous-titre">
 
-                <div class="centrer-sur-horizon">
-                    <label for="date">Année <i class="texte-error">*</i></label>
+                <textarea rows="4" type="text" id="detail" formControlName="detail" placeholder="Description"
+                    class="input-texte"></textarea>
 
-                    <div
-                        *ngIf="nouvelEvenementForm.get('date')?.errors?.['required'] && nouvelEvenementForm.get('date')?.touched">
-                        <p class="texte-error">Requis.</p>
+                <article class="centrer-en-colonne">
+                    <div class="fixe-bottom">
+                        <button type="submit" [disabled]="nouvelEvenementForm.invalid" class="btn-primary">
+                            <i class=" fa-solid fa-plus"></i>
+                            <p>Ajouter un événement</p>
+                        </button>
                     </div>
-                    <div *ngIf="nouvelEvenementForm.get('date')?.errors?.['invalidYear']">
-                        <p class="texte-error">Année invalide. Entrez un nombre.</p>
-                    </div>
-                </div>
-                <input type="number" id="date" formControlName="date">
+                </article>
+            </article>
+        </form>
 
-                <div class="centrer-en-colonne">
-                    <button type="submit" [disabled]="nouvelEvenementForm.invalid" class="btn-primary">
-                        <i class=" fa-solid fa-plus"></i>
-                        <p>Ajouter un événement</p>
-                    </button>
-                </div>
-            </form>
 
-        </article>
     </section>
 </app-popup>

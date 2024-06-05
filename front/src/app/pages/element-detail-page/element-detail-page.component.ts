@@ -45,12 +45,23 @@ export class ElementDetailPageComponent implements OnInit {
       this.evenements = data;
     });
   }
-  
 
+  deleteEvenement(id: string): void {
+    this.evenementService.deleteEvenementById(id).subscribe(() => {
+      this.evenements = this.evenements.filter(evenement => evenement._id !== id);
+    });
+  }
+  
   openPopup(elementId: string) {
     const dialogRef = this.dialog.open<string>(FormEvenementComponent, {
       width: '250px',
       data: {elementIdFromPage: elementId},
+    });
+
+    dialogRef.closed.subscribe(result => {
+      if (result) {
+        this.loadEvenements(elementId);
+      }
     });
   }
 }

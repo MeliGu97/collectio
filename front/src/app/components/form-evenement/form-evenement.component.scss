@@ -1,0 +1,19 @@
+.marges{
+    margin: 2%;
+}
+.container-general{  
+  min-height: 400px;
+}
+
+// Ne pas afficher les fleches des input number
+/* Chrome, Safari, Edge, Opera */
+:host ::ng-deep input[type="number"]::-webkit-outer-spin-button,
+:host ::ng-deep input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+:host ::ng-deep input[type="number"] {
+  -moz-appearance: textfield;
+}

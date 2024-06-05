@@ -1,4 +1,4 @@
-<!-- Ici page détail d'une element en fonction de son identifiant -->
+<!-- Ici page détail d'un element en fonction de son identifiant -->
 <section>
     <article>
         <div class="image-couverture-page-tempo couleur-element-tempo" *ngIf="element.imageUrl === '' else imageCouv">
@@ -9,7 +9,7 @@
     </article>
 </section>
 <section class="container-general">
-    <div class="espacement-entre">
+    <div class="espacement-entre-article">
         <article class="container-image">
             <img src="{{ element.imageUrl }}" class="image-carrousel">
         </article>
@@ -18,26 +18,54 @@
         <article class="container-texte ">
             <div class="espacement-vertical-S espacement-entre centrer-sur-horizon">
                 <div>
-                    <h2>{{ element.label }}</h2>
-                </div>
-
-                <!-- AJOUTER UN EVENT : ouvre pop up formulaire -->
-                <div>
-                    <button (click)="openPopup(element._id)" class="btn-primary">
-                        <i class="fa-solid fa-plus"></i>
-                        Ajouter un événement
-                    </button>
+                    <h1>{{ element.label }}</h1>
                 </div>
             </div>
 
-            <p class="espacement-vertical-L">Description : {{ element.description }}</p>
-
-            <h3>Événements</h3>
-            <ul>
-                <li *ngFor="let evenement of evenements">
-                    <p>{{ evenement.date }} - {{ evenement.label }}</p>
-                </li>
-            </ul>
+            <p class="espacement-vertical-L">{{ element.description }}</p>
         </article>
+    </div>
+</section>
+<section class="design-section">
+    <div *ngIf=" evenements.length >= 1">
+        <div *ngFor="let evenement of evenements">
+            <div class="timeline">
+                <div class="timeline-empty"></div>
+                <div class="timeline-middle">
+                    <div class="timeline-circle"></div>
+                </div>
+                <!-- Carte de chaque evenement -->
+                <div class="timeline-component timeline-content">
+                    <div class="centrer-sur-horizon">
+                        <h3 class="surligner">{{ evenement.label }}</h3>
+                        <button class="centrer-milieu btn-crud" (click)="deleteEvenement(evenement._id)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+
+                    <div>
+                        <div *ngIf=" evenement.jour != null && evenement.mois != null">
+                            <p>{{ evenement.jour }} / {{ evenement.mois }} / {{ evenement.annee }}</p>
+                        </div>
+                        <div *ngIf=" evenement.jour == null && evenement.mois == null">
+                            <p>{{ evenement.annee }}</p>
+                        </div>
+                        <div *ngIf=" evenement.heure != null && evenement.minute != null">
+                            <p>{{ evenement.heure }} : {{ evenement.minute }}</p>
+                        </div>
+                    </div>
+                    <div class="saut-de-ligne-M"></div>
+                    <p>{{ evenement.detail }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- AJOUTER UN EVENT : ouvre pop up formulaire -->
+    <div class="saut-de-ligne-M"></div>
+    <div class="centrer-en-colonne espacement-vertical-L">
+        <button (click)="openPopup(element._id)" class="btn-primary">
+            <i class="fa-solid fa-plus"></i>
+            Ajouter un événement
+        </button>
     </div>
 </section>

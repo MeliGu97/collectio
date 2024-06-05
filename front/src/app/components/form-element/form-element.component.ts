@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms'
 import { ElementService } from '../../services/element.service'
 import { PopupComponent } from '../../design-system/popup/popup.component';
 
-export interface DialogCollectionData {
+export interface DialogElementData  {
   collectionIdFromPage: string;
 }
 
@@ -21,36 +21,39 @@ export interface DialogCollectionData {
   styleUrl: './form-element.component.scss'
 })
 export class FormElementComponent implements OnInit {
-  element: any = []
+  elements: any = []
   nouvelElementForm: FormGroup= new FormGroup({}); 
   nouvelElement: any = {}
 
   constructor(
     private elementService: ElementService, 
-    private formBuilder: FormBuilder, // Injectez le FormBuilder
-    public dialogRef: DialogRef<string>, @Inject(DIALOG_DATA) 
-    public data: DialogCollectionData) {}
+    private formBuilder: FormBuilder, 
+    public dialogRef: DialogRef<string>, 
+    @Inject(DIALOG_DATA) 
+    public data: DialogElementData ) 
+    {}
 
   ngOnInit() {
     this.nouvelElementForm = this.formBuilder.group({
       collectionsId: [this.data.collectionIdFromPage],
       label: ['', Validators.required],
-      description: ['', [Validators.required]],
+      description: [''],
       imageUrl: ['']
     });
 
     this.elementService.getElements().subscribe((data) => {
-      this.element = data;
+      this.elements = data;
     });
   }
 
   ajouterElement(): void {
-    if (this.nouvelElementForm.valid) { // Vérifiez si le formulaire est valide avant de l'envoyer
+    if (this.nouvelElementForm.valid) { // Vérifie si le formulaire est valide avant de l'envoyer
       this.elementService.addElement(this.nouvelElementForm.value).subscribe({
         next: (elementAjoute) => {
           console.log('element ajouté avec succès', elementAjoute);
-          this.element.push(elementAjoute);
-          this.nouvelElementForm.reset(); // Réinitialisez le formulaire après l'ajout
+          this.elements.push(elementAjoute);
+          this.nouvelElementForm.reset(); // Réinitialisation du formulaire après l'ajout
+          this.dialogRef.close(elementAjoute)
         },
         error: (error) => {
           console.log("elementAjoute", this.nouvelElementForm.value)

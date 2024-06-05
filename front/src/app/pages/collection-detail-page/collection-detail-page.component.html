@@ -20,8 +20,8 @@
                     <i class="fa-solid {{ collection.picto }}"></i>
                 </p>
                 <div class="espacement-vertical-S" *ngFor=" let periode of collection.periodesId">
-                    <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">Categorie</p>
-                    <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">Sous-categorie</p>
+                    <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">{{ collection.categorie }}</p>
+                    <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">{{ collection.sousCategorie }}</p>
                 </div>
                 <div class="espacement-vertical-S">
                     <ul>
@@ -42,10 +42,11 @@
                     <i class="fa-solid {{ collection.picto }}"></i>
                 </p>
                 <div class="espacement-vertical-S">
-                    <p class="tag tag-L" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">Categorie
+                    <p class="tag tag-L" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">
+                        {{ collection.categorie }}
                     </p>
                     <p class="tag tag-L" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">
-                        Sous-categorie</p>
+                        {{ collection.sousCategorie }}</p>
                 </div>
                 <div class="espacement-vertical-S">
                     <ul>
@@ -65,7 +66,7 @@
         <br>
         <h1>{{collection.label}}</h1>
         <!-- <p>{{collectionId}}</p> -->
-        <p>Description : {{ collection.description }}</p>
+        <p>{{ collection.description }}</p>
     </article>
 
     <!-- List des éléments de la collection -->

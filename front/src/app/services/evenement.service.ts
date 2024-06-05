@@ -13,7 +13,7 @@ export class EvenementService {
   // Trié par date
   getEvenements(): Observable<any[]> {
     return this.http.get<any[]>(`${baseServerUrl}/evenements`).pipe(
-      map((evenements: any[]) => evenements.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()))
+      map((evenements: any[]) => evenements.sort((a, b) => new Date(a.annee).getTime() - new Date(b.annee).getTime()))
     );
   }
 
@@ -23,7 +23,7 @@ export class EvenementService {
 
   getEvenementsByElementId(elementId: string): Observable<any[]> {
     return this.http.get<any[]>(`${baseServerUrl}/evenements?elementId=${elementId}`).pipe(
-      map((evenements: any[]) => evenements.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()))
+      map((evenements: any[]) => evenements.sort((a, b) => new Date(a.annee).getTime() - new Date(b.annee).getTime()))
     );
   }
 

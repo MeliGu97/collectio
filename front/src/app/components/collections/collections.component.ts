@@ -15,6 +15,7 @@ import { FormCollectionComponent } from '../form-collection/form-collection.comp
     providers: [CollectionService],
     templateUrl: './collections.component.html',
     styleUrl: './collections.component.scss',
+
     imports: [CommonModule, HttpClientModule, DialogModule, FormsModule, RouterLink, PeriodeDetailComponent]
 })
 export class CollectionsComponent implements OnInit {
@@ -30,7 +31,13 @@ export class CollectionsComponent implements OnInit {
       this.collections = data
     });
   }
-
+  
+  getCollections() {
+    this.collectionService.getCollections().subscribe((data) => {
+      this.collections = data;
+    });
+  }
+  
   setGradientStyle(collectionPeriodes: any): string {
     const colors = collectionPeriodes.map((periode: { couleur: string }) => periode.couleur);
     return `linear-gradient(0.25turn, ${colors.join(', ')})`;
@@ -40,6 +47,12 @@ export class CollectionsComponent implements OnInit {
     const dialogRef = this.dialog.open<string>(FormCollectionComponent, {
       width: '250px',
       data: {},
+    });
+    
+    dialogRef.closed.subscribe(result => {
+      if (result) {
+        this.getCollections();
+      }
     });
   }
 }

@@ -17,8 +17,12 @@ export class PeriodeService {
   }
 
   getPeriodeById(id: string): Observable<any> {
-    return this.http.get(`${baseServerUrl}/periodes/${id}`);
+    // return this.http.get(`${baseServerUrl}/periodes/${id}`);
+    return this.http.get<any[]>(`${baseServerUrl}/periodes/=${id}`).pipe(
+      map((periodes: any[]) => periodes.sort((a, b) => new Date(a.dateDebut).getTime() - new Date(b.dateDebut).getTime()))
+    );
   }
+  
   
 
   addPeriode(periode: any): Observable<any> {
