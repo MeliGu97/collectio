@@ -12,6 +12,7 @@ import { ElementService } from './services/element.service'
 
 import { PeriodeService } from './services/periode.service'
 import { EvenementService } from './services/evenement.service'
+import { UtilisateurService } from './services/utilisateur.service'
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { EvenementService } from './services/evenement.service'
   providers: [
     CollectionService, ElementService, 
     PeriodeService, EvenementService,
+    UtilisateurService,
   ]
 })
 export class AppModule {}

@@ -1,11 +1,9 @@
 
-import { Component, Inject, OnInit, Output } from '@angular/core'
+import { Component, Inject, OnInit } from '@angular/core'
 import { DialogRef, DIALOG_DATA, DialogModule } from '@angular/cdk/dialog';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule, FormArray, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
-import { FormsModule } from '@angular/forms'
-import { FormArray, FormControl } from '@angular/forms';
 
 import { CollectionService } from '../../services/collection.service'
 import { PopupComponent } from '../../design-system/popup/popup.component';
@@ -88,5 +86,6 @@ import { PeriodeService } from '../../services/periode.service'
       });
     }
   }
+  
   
 }

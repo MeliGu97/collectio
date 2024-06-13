@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core'
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, AbstractControl, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
-import { FormsModule } from '@angular/forms'
+
 
 import { ElementService } from '../../services/element.service'
 import { PopupComponent } from '../../design-system/popup/popup.component';

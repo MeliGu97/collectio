@@ -1,4 +1,4 @@
-<!-- Ici page utilisateur avec liste des collections -->
+<!-- Ici collections.component.html générale par utilisateur avec liste de ses collections -->
 <section>
   <article class="container-image-couverture-page couleur-home-utili-tempo">
     <br>
@@ -12,7 +12,7 @@
       <h2>Mes collections</h2>
       <!-- AJOUTER UNE COLLECTION : ouvre pop up formulaire -->
       <div class="aligner-droite margin-droite-flexible">
-        <button (click)="openPopup()" class="btn-primary">
+        <button (click)="openPopup()" class="btn-primary btn-flottant">
           <i class="fa-solid fa-plus"></i>
           <p>Ajouter une collection</p>
         </button>
@@ -111,6 +111,8 @@
 
           </div>
         </a>
+        <button (click)="deleteCollection(collection._id)">Supprimer</button>
+
       </li>
     </ul>
   </article>

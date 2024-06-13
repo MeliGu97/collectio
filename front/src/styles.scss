@@ -1,8 +1,17 @@
 // ----------- TYPOGRAPHIE ----------
+// corps du texte et petit titre
 @font-face {
   font-family: 'courier-prime';
   src: url(../src/font/Courier_Prime/CourierPrime-Regular.ttf);
 }
+
+// Grand titre 
+@font-face {
+  font-family: 'Euphorigenic';
+  src: url(../src/font/Euphorigenic/Euphorigenic.otf);
+}
+
+// Police basique (pas utilisé)
 @font-face {
   font-family: 'NotoSans-Black';
   src: url(../src/font/Noto_Sans/static/NotoSans_Condensed-Regular.ttf);
@@ -71,6 +80,12 @@ $succes: #43A960;
   justify-content: center;
   align-items: center;
 }
+.centro-centrer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 .indienne{
   display: inline-block;
 }
@@ -130,22 +145,22 @@ $succes: #43A960;
 // ---------------------------------------------------------------------------------------------------------
 // -------------- TEXTE ----------------
 h1{
-  font-family: 'NotoSans-Black';
-  font-size: 35px;
+  font-family: 'Euphorigenic';
+  font-size: 50px;
   margin-bottom: 0px;
   margin-top: 10px;
 }
 
 h2{
-  font-family: 'NotoSans-Black';
-  font-size: 25px;
+  font-family: 'Euphorigenick';
+  font-size: 30px;
   margin-bottom: 0px;
 }
 h3{
   margin-top: 0px;
 }
 h5 {
-  font-family: 'NotoSans-Black';
+  font-family: 'courier-prime';
   font-size: 15px;
   margin: 0px;
 }
@@ -221,8 +236,8 @@ a {
   color: white;
 }
 .circle-picto-M{
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 .circle-picto-S{
   width: 30px;
@@ -232,6 +247,10 @@ a {
 // Picto
 .picto{
   height: 30px;
+}
+// ----------- IMAGE ----------
+.miniature {
+  width: 200px;
 }
 
 //  ------------- tag ----
@@ -381,7 +400,12 @@ button {
 .btn-primary > i {
   margin-right: 5px;
 }
-
+.btn-flottant{
+  position: fixed;
+  bottom: 1%;
+  right: 1%;
+  z-index: 9999;
+}
 
 // TAILLE
 
@@ -522,16 +546,15 @@ button {
   .medium {
     width: 45%;
   }
-  .miniature {
-    width: 25%;
-  }
   .margin-droite-flexible{
     right: 1%;
   }
   .espacement-entre-article{
     display: inline-block;
     justify-content: none;
-
+  }
+  .btn-flottant{
+    right: 10%;
   }
 }
 //  tablette
@@ -547,9 +570,6 @@ button {
   }
   .medium {
     width: 45%;
-  }
-  .miniature {
-    width: 25%;
   }
   .margin-droite-flexible{
     right: 10%;
@@ -568,9 +588,6 @@ button {
   }
   .medium {
     width: 23%;
-  }
-  .miniature {
-    width: 11%;
   }
   .margin-droite-flexible{
     right: 20%;

@@ -1,0 +1,47 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>190</x><y>320</y><w>210</w><h>130</h></coordinates><panel_attributes>Utilisateur
+--
+-id: Long {composite}
+- nom: String
+- prenom : String
+- nomUtilisateur : String {unique}
+- motDePasse : 
+- role : String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>490</y><w>160</w><h>150</h></coordinates><panel_attributes>Période
+--
+-id: Long {composite}
+- label : String
+- dateDebut : Integer
+- dateFin : Integer
+- imageUrl : String
+- couleur : String
+
+- collectionsId : Array Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>640</x><y>490</y><w>150</w><h>180</h></coordinates><panel_attributes>Evenement
+--
+-id: Long {composite}
+- label : String
+- jour: Integer
+- mois: Integer
+- annee: Integer
+- heure: Integer
+- minute: Integer
+- detail: String
+
+- elementId: Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>450</x><y>150</y><w>160</w><h>200</h></coordinates><panel_attributes>Collection
+--
+-id: Long {composite}
+- label : String
+- description: String
+- imageUrl : String
+- picto : String
+- categorie : String
+- sousCategorie: String
+
+- utilisateurId : id
+- periodesId: Array Id
+- elementsId : Array Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>630</x><y>150</y><w>160</w><h>130</h></coordinates><panel_attributes>Element
+--
+-id: Long {composite}
+- label : String
+- description: String
+- imageUrl : String
+
+- collectionsId: Array Id</panel_attributes><additional_attributes></additional_attributes></element></diagram>

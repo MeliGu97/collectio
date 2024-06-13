@@ -1,10 +1,12 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const https = require('https');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
 const app = express();
+const Utilisateur = require('./Utilisateur');
 
 const Collection = require('./Collection');
 const Element = require('./Element');
@@ -90,23 +92,6 @@ app.get('/collections/:id', async (req, res) => {
   }
 });
 
-// Route pour récupérer 1 collection d'une autre table par son id
-// app.get('/collections/:id/periodes/couleurs', async (req, res) => {
-//   try {
-//     const collectionId = req.params.id;
-//     // Recherche de la collection par son ID avec les périodes associées
-//     const collection = await Collection.findById(collectionId).populate('periodesId');
-//     if (!collection) {
-//       return res.status(404).json({ message: 'Collection non trouvée' });
-//     }
-//     // Extraction des couleurs des périodes
-//     const couleurs = collection.periodesId.map(periode => periode.couleur);
-//     res.json({ couleurs });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// });
-
 // Pour ajouter 
 app.post('/collections', async (req, res) => {
   console.log("req : ", req)
@@ -114,6 +99,7 @@ app.post('/collections', async (req, res) => {
     //console.log('Requête POST reçue pour ajouter une collection', req.body);
     //console.log('Requête POST reçue pour ajouter un élément');
     const newCollection = new Collection({
+      // utilisateurId: req.body.utilisateurId,
       label: req.body.label,
       description: req.body.description,
       imageUrl: req.body.imageUrl,
@@ -135,25 +121,36 @@ app.post('/collections', async (req, res) => {
 app.delete('/collections/:id', async (req, res) => {
   try {
     const objectId = req.params.id;
-    const elementASupprimer = await Element.findById(objectId);
-    if (!elementASupprimer) {
-      return res.status(404).json({ message: 'Collection non trouvé' });
+    const collectionASupprimer = await Collection.findById(objectId);
+
+    if (!collectionASupprimer) {
+      return res.status(404).json({ message: 'Collection non trouvée' });
     }
 
-    // Supprimer l'element des collections correspondantes ?
-    await Collection.updateMany(
-      { collections: objectId },
-      { $pull: { collections: objectId } }
-    );
+    // Supprimer les éléments associés à la collection
+    for (const elementId of collectionASupprimer.elementsId) {
+      // Récupérer les événements associés à l'élément
+      const evenementsAssocies = await Evenement.find({ elementId: elementId });
 
-    // Supprimer Collection de la base de données
-    await Element.deleteOne({ _id: objectId });
-    
-    res.json({ message: 'Collection supprimé avec succès' });
+      // Supprimer les événements associés à l'élément un par un
+      for (const evenement of evenementsAssocies) {
+        await Evenement.deleteOne({ _id: evenement._id });
+      }
+
+      // Supprimer l'élément de la base de données
+      await Element.deleteOne({ _id: elementId });
+    }
+
+    // Supprimer la collection de la base de données
+    await Collection.deleteOne({ _id: objectId });
+
+    res.json({ message: 'Collection et éléments associés supprimés avec succès' });
   } catch (error) {
+    console.error('Erreur lors de la suppression de la collection:', error);
     res.status(500).json({ message: error.message });
   }
 });
+
 
 
 
@@ -218,21 +215,31 @@ app.delete('/elements/:id', async (req, res) => {
   try {
     const objectId = req.params.id;
     const elementASupprimer = await Element.findById(objectId);
+
     if (!elementASupprimer) {
       return res.status(404).json({ message: 'Élément non trouvé' });
     }
 
-    // Supprimer l'élément des collections correspondantes
+    // Récupérer les événements associés à l'élément
+    const evenementsAssocies = await Evenement.find({ elementId: objectId });
+
+    // Supprimer les événements associés à l'élément un par un
+    for (const evenement of evenementsAssocies) {
+      await Evenement.deleteOne({ _id: evenement._id });
+    }
+
+    // Supprimer l'ID de l'élément de la collection
     await Collection.updateMany(
-      { elements: objectId },
-      { $pull: { elements: objectId } }
+      { elementsId: objectId },
+      { $pull: { elementsId: objectId } }
     );
 
     // Supprimer l'élément de la base de données
     await Element.deleteOne({ _id: objectId });
-    
-    res.json({ message: 'Élément supprimé avec succès' });
+
+    res.json({ message: 'Élément et événements associés supprimés avec succès' });
   } catch (error) {
+    console.error('Erreur lors de la suppression de l\'élément:', error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -303,15 +310,13 @@ app.post('/evenements', async (req, res) => {
 // Route pour supprimer un événement par son ID
 app.delete('/evenements/:id', async (req, res) => {
   try {
-    const objectId = mongoose.Types.ObjectId(req.params.id);
-    const evenementASupprimer = await evenement.findById(objectId);
-    if (!evenementASupprimer) {
+    const objectId = req.params.id;
+    const result = await Evenement.deleteOne({ _id: objectId });
+
+    if (result.deletedCount === 0) {
       return res.status(404).json({ message: 'Événement non trouvé' });
     }
 
-    // Supprimer l'événement de la base de données
-    await evenement.deleteOne({ _id: objectId });
-    
     res.json({ message: 'Événement supprimé avec succès' });
   } catch (error) {
     console.error('Erreur lors de la suppression de l\'événement:', error);
@@ -363,6 +368,41 @@ try {
 } catch (error) {
     res.status(500).json({ message: error.message });
 }
+});
+
+
+//  ------------------------------
+//  ------------------------------ UTILISATEUR
+// ---------------------------------
+app.post('/utilisateurs', async (req, res) => {
+  try {
+    const { prenom, nom, nomUtilisateur, motDePasse, role } = req.body;
+
+    // On verifie que le nom d'utilisateur n'existe pas déjà 
+    const existingUser = await Utilisateur.findOne({ nomUtilisateur });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Ce nom de collectionneur existe déjà' });
+    }
+
+    // Hache le mot de passe
+    const hashedPassword = await bcrypt.hash(motDePasse, 10);
+
+    // Crée un utili
+    const newUser = new Utilisateur({
+      prenom,
+      nom,
+      nomUtilisateur,
+      motDePasse: hashedPassword,
+      role,
+    });
+
+    // Sauvegarde dans bdd
+    await newUser.save();
+
+    res.status(201).json({ message: 'Utilisateur créer avec succès' });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la création', error });
+  }
 });
 
 

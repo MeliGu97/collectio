@@ -19,7 +19,7 @@ import { FormCollectionComponent } from '../form-collection/form-collection.comp
     imports: [CommonModule, HttpClientModule, DialogModule, FormsModule, RouterLink, PeriodeDetailComponent]
 })
 export class CollectionsComponent implements OnInit {
-  collections: any = []
+  collections: any[] = []
   gradientColors: string[] = [];
 
   constructor(
@@ -54,5 +54,17 @@ export class CollectionsComponent implements OnInit {
         this.getCollections();
       }
     });
+  }
+
+  deleteCollection(id: string): void {
+    this.collectionService.deleteCollectionById(id).subscribe(
+      () => {
+        // supp en cascade
+        this.collections = this.collections.filter(collection => collection._id !== id);
+      },
+      error => {
+        console.error('Error deleting collection:', error);
+      }
+    );
   }
 }

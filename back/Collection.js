@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const collectionSchema = new mongoose.Schema({
+  utilisateurId: { type: mongoose.Schema.Types.ObjectId, ref: 'Utilisateur' },
   label: String,
   description: String,
   elementsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Element' }],

@@ -77,13 +77,14 @@
                 <a [routerLink]="['/elements', element]">
                     <app-element-detail [idElement]="element"></app-element-detail>
                 </a>
+                <button (click)="deleteElement(element)">Supprimer</button>
             </li>
         </ul>
     </article>
 
     <!-- appel de la pop up formulaire pour ajouter un element  -->
     <article class="centrer-en-colonne espacement-vertical-L">
-        <button (click)="openPopup(collection._id)" class="btn-primary">
+        <button (click)="openPopup(collection._id)" class="btn-primary btn-flottant">
             <i class="fa-solid fa-plus"></i>
             <p>Ajouter un élément</p>
         </button>

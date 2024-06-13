@@ -10,8 +10,8 @@ import { ElementService } from '../../services/element.service';
 import { ElementDetailPageComponent } from "../element-detail-page/element-detail-page.component";
 import { ElementDetailComponent } from "../../components/element-detail/element-detail.component";
 import { FormElementComponent } from "../../components/form-element/form-element.component";
-import { PeriodesComponent } from "../../components/periodes/periodes.component";
-import { PeriodeDetailComponent } from "../../components/periode-detail/periode-detail.component";
+// import { PeriodesComponent } from "../../components/periodes/periodes.component";
+// import { PeriodeDetailComponent } from "../../components/periode-detail/periode-detail.component";
 
 
 @Component({
@@ -20,7 +20,7 @@ import { PeriodeDetailComponent } from "../../components/periode-detail/periode-
     providers: [CollectionService, ElementService],
     templateUrl: './collection-detail-page.component.html',
     styleUrl: './collection-detail-page.component.scss',
-    imports: [CommonModule, HttpClientModule, DialogModule, FormsModule, RouterLink, ElementDetailPageComponent, ElementDetailComponent, PeriodesComponent, PeriodeDetailComponent, FormElementComponent]
+    imports: [CommonModule, HttpClientModule, DialogModule, FormsModule, RouterLink, ElementDetailPageComponent, ElementDetailComponent, FormElementComponent]
 })
 export class CollectionDetailPageComponent implements OnInit {
   collection: any = {};
@@ -80,4 +80,20 @@ export class CollectionDetailPageComponent implements OnInit {
       }
     });
   }
+
+  deleteElement(id: string): void {
+    console.log('ID de element supp est :', id);
+    this.elementService.deleteElementById(id).subscribe({
+      next: () => {
+        // Element et tout ses events supp en cascade
+        this.elements = this.elements.filter(element => element._id !== id);
+    },
+    error: (error) => {
+      console.error('Error deleting element:', error);
+    }
+  });
+
+}
+  
+  
 }

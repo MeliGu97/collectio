@@ -1,0 +1,31 @@
+<section *ngIf="!inscription" class="centro-centrer">
+    <article class="centrer-sur-horizon centrer-en-colonne">
+        <!-- <img src="assets/logo/Fichier 2.svg" class="miniature espacement-vertical-M"> -->
+        <h1>Collectio</h1>
+        <button class="btn-primary btn-small espacement-vertical-S">Se connecter</button>
+        <button class="btn-primary btn-small espacement-vertical-S" (click)="inscription = true">S'inscrire</button>
+        <a [routerLink]="['/collections']">Continuer en tant que visiteur</a>
+    </article>
+</section>
+<section *ngIf="inscription" class="centro-centrer">
+    <article class="centrer-en-colonne">
+        <h1>Devenez collectionneur</h1>
+        <div class="saut-de-ligne-M"></div>
+        <form [formGroup]="newUtilisateurForm" (ngSubmit)="ajouterUtilisateur()">
+            <input type="text" id="nom" formControlName="nom" placeholder="Nom">
+            <input type="text" id="prenom" formControlName="prenom" placeholder="Prénom">
+            <div class="espacement-vertical-S"></div>
+            <input type="text" id="nomUtilisateur" formControlName="nomUtilisateur" placeholder="Nom d'utilisateur">
+            <!-- <input type="text" id="role" formControlName="role" placeholder="Role"> -->
+            <div class="espacement-vertical-S"></div>
+            <input type="password" id="motDePasse" formControlName="motDePasse" placeholder="Mot de passe">
+
+            <div class="centrer-en-colonne">
+                <button type="submit" [disabled]="newUtilisateurForm.invalid" class="btn-primary y btn-small">
+                    <p>S'inscrire</p>
+                </button>
+            </div>
+
+        </form>
+    </article>
+</section>
