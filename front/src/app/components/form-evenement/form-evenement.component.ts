@@ -12,6 +12,8 @@ import { PopupComponent } from '../../design-system/popup/popup.component';
 
 export interface DialogEvenementData {
   elementIdFromPage: string;
+  evenement?: any;
+  isUpdate?: boolean;
 }
 
 
@@ -24,7 +26,7 @@ export interface DialogEvenementData {
   styleUrl: './form-evenement.component.scss'
 })
 export class FormEvenementComponent implements OnInit {
-  evenements: any = [];
+  evenements: any[] = [];
   nouvelEvenementForm: FormGroup= new FormGroup({}); 
   nouvelEvenement: any = {};
   isPreciseDate: boolean = false;
@@ -32,7 +34,7 @@ export class FormEvenementComponent implements OnInit {
   constructor(
     private evenementService: EvenementService,
     private formBuilder: FormBuilder, // Injectez le FormBuilder
-    public dialogRef: DialogRef<string>, 
+    public dialogRef: DialogRef<any>, 
     @Inject(DIALOG_DATA) 
     public data: DialogEvenementData
   ) {}
@@ -48,8 +50,11 @@ export class FormEvenementComponent implements OnInit {
       minute: [''],
 
       detail : [''],
-
     });
+
+    if (this.data.evenement && this.data.isUpdate) {
+      this.nouvelEvenementForm.patchValue(this.data.evenement);
+    }
 
     this.evenementService.getEvenements().subscribe((data) => {
       this.evenements = data;
@@ -70,8 +75,23 @@ export class FormEvenementComponent implements OnInit {
   }
 
 
-ajouterEvenement(): void {
-  if (this.nouvelEvenementForm.valid) { // Vérifiez si le formulaire est valide avant de l'envoyer
+  createOrUpdateEvenement(): void {
+    if (this.nouvelEvenementForm.valid) {
+      if (this.data.isUpdate && this.data.evenement) {
+        const updatedEvenement = {
+          ...this.data.evenement,
+          ...this.nouvelEvenementForm.value
+        };
+        this.evenementService.updateEvenement(updatedEvenement).subscribe({
+          next: (updatedEvenement) => {
+            console.log('Evenement updated successfully', updatedEvenement);
+            this.dialogRef.close(updatedEvenement);
+          },
+          error: (error) => {
+            console.error("Error updating evenement", error);
+          }
+        });
+      } else {
     this.evenementService.addEvenement(this.nouvelEvenementForm.value).subscribe({
       next: (evenementAjoute) => {
         console.log('evenement ajoutée avec succès', evenementAjoute);
@@ -87,4 +107,4 @@ ajouterEvenement(): void {
   }
 }
 
-}
+}}

@@ -12,6 +12,7 @@
 
 <section class="container-general">
     <!-- Info sur la collection -->
+    <!-- HEADER -->
     <article class="marges">
         <br>
         <div *ngIf=" collection.periodesId.length==1">
@@ -62,14 +63,24 @@
 
 
     </article>
+
     <article class="marges">
         <br>
+        <!-- MODIFIER -->
+        <button (click)="openPopupUpdateColl(collection._id)"
+            class="centrer-milieu btn-primary btn-small aligner-droite margin-droite-flexible">
+            <i class="fa-solid fa-pencil"></i>
+            <p> Modifier</p>
+        </button>
+
         <h1>{{collection.label}}</h1>
         <!-- <p>{{collectionId}}</p> -->
         <p>{{ collection.description }}</p>
+
     </article>
 
     <!-- List des éléments de la collection -->
+    <!-- BODY -->
     <article class="marges">
         <ul>
             <li *ngIf="collection.elementsId.length === 0">Aucun élément</li>
@@ -84,7 +95,7 @@
 
     <!-- appel de la pop up formulaire pour ajouter un element  -->
     <article class="centrer-en-colonne espacement-vertical-L">
-        <button (click)="openPopup(collection._id)" class="btn-primary btn-flottant">
+        <button (click)="openPopupAddElem(collection._id)" class="btn-primary btn-flottant">
             <i class="fa-solid fa-plus"></i>
             <p>Ajouter un élément</p>
         </button>

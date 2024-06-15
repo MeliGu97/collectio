@@ -26,6 +26,12 @@ export class CollectionService {
     return this.http.post<any>(`${baseServerUrl}/collections`, collection);
   }
 
+  updateCollection(collection: any): Observable<any> {
+    console.log('ID de la collection :', collection._id);
+    return this.http.put(`${baseServerUrl}/collections/${collection._id}`, collection);
+  }
+  
+
   deleteCollectionById(id: string): Observable<any> {
     return this.http.delete(`${baseServerUrl}/collections/${id}`);
   }

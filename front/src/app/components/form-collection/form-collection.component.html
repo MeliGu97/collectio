@@ -1,7 +1,7 @@
-<!-- FORMULAIRE POUR AJOUTER UNE COLLECTION -->
+<!-- form-collection.component.html = FORMULAIRE POUR AJOUTER UNE COLLECTION -->
 
 <app-popup>
-  <form [formGroup]="newCollectionForm" (ngSubmit)="ajouterCollection()">
+  <form [formGroup]="newCollectionForm" (ngSubmit)="createOrUpdateCollection()">
     <section>
       <article>
         <div class="image-couverture-page-tempo couleur-element-tempo">
@@ -43,10 +43,10 @@
             <p class="texte-error">Requis.</p>
           </div>
         </div>
-        <input type="text" id="label" formControlName="label" placeholder="Non de la collection*" class="input-titre">
+        <input type="text" id="label" formControlName="label" placeholder="Titre de la collection*" class="input-titre">
 
-        <textarea rows="4" type="text" id="description" placeholder="Description" class="input-texte"></textarea>
-
+        <textarea rows="4" type="text" id="description" formControlName="description" placeholder="Description"
+          class="input-texte"></textarea>
 
         <div>
           <ul class="centrer-sur-horizon list-cases">
@@ -66,8 +66,8 @@
       <article class="centrer-en-colonne">
         <div class="fixe-bottom">
           <button type="submit" [disabled]="newCollectionForm.invalid" class="btn-primary">
-            <i class=" fa-solid fa-plus"></i>
-            <p>Ajouter une collection</p>
+            <!-- <i class=" fa-solid fa-plus"></i> -->
+            <p>Valider</p>
           </button>
         </div>
       </article>

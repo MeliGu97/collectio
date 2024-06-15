@@ -8,6 +8,7 @@ import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { ElementService } from '../../services/element.service'
 import { FormEvenementComponent } from '../../components/form-evenement/form-evenement.component';
 import { EvenementService } from '../../services/evenement.service';
+import { FormElementComponent } from '../../components/form-element/form-element.component';
 
 @Component({
   selector: 'app-element-detail-page',
@@ -19,6 +20,7 @@ import { EvenementService } from '../../services/evenement.service';
 })
 export class ElementDetailPageComponent implements OnInit {
   element: any = {};
+  evenement: any = {};
   evenements: any[] = [];
 
   constructor(
@@ -40,6 +42,22 @@ export class ElementDetailPageComponent implements OnInit {
     });
   }
 
+  openPopupUpdateElem(elemntId: string) {
+    const dialogRef = this.dialog.open<string>(FormElementComponent, {
+      width: '250px',
+      data: {element: this.element, isUpdate: true},
+    });
+  
+    dialogRef.closed.subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log("result: ", result)
+        this.element = result; 
+      }
+    });
+  }  
+
+
   loadEvenements(elementId: string) {
     this.evenementService.getEvenementsByElementId(elementId).subscribe((data) => {
       this.evenements = data;
@@ -52,7 +70,7 @@ export class ElementDetailPageComponent implements OnInit {
     });
   }
   
-  openPopup(elementId: string) {
+  openPopupAddEvent(elementId: string) {
     const dialogRef = this.dialog.open<string>(FormEvenementComponent, {
       width: '250px',
       data: {elementIdFromPage: elementId},
@@ -61,6 +79,22 @@ export class ElementDetailPageComponent implements OnInit {
     dialogRef.closed.subscribe(result => {
       if (result) {
         this.loadEvenements(elementId);
+      }
+    });
+  }
+
+  openPopupUpdateEvent(evenementId: string) {
+    const dialogRef = this.dialog.open<any>(FormEvenementComponent, {
+      width: '250px',
+      data: { evenement: this.evenements.find(e => e._id === evenementId), isUpdate: true, evenementId: evenementId },
+    });
+
+    dialogRef.closed.subscribe(result => {
+      if (result) {
+        const index = this.evenements.findIndex(e => e._id === evenementId);
+        if (index !== -1) {
+          this.evenements[index] = result; // Mettre à jour les données de l'événement local
+        }
       }
     });
   }

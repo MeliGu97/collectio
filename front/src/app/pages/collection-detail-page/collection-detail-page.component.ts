@@ -10,8 +10,8 @@ import { ElementService } from '../../services/element.service';
 import { ElementDetailPageComponent } from "../element-detail-page/element-detail-page.component";
 import { ElementDetailComponent } from "../../components/element-detail/element-detail.component";
 import { FormElementComponent } from "../../components/form-element/form-element.component";
-// import { PeriodesComponent } from "../../components/periodes/periodes.component";
-// import { PeriodeDetailComponent } from "../../components/periode-detail/periode-detail.component";
+import { FormCollectionComponent } from '../../components/form-collection/form-collection.component';
+
 
 
 @Component({
@@ -28,11 +28,13 @@ export class CollectionDetailPageComponent implements OnInit {
   element: any = {};
   elements: any[] = [];
 
+
   constructor(
     private collectionService: CollectionService, 
     private elementService: ElementService,
     private route: ActivatedRoute, 
-    public dialog: Dialog) {}
+    public dialog: Dialog
+  ) {}
 
   ngOnInit() {
     // Récupérer l'ID de la collection à partir de la route active
@@ -58,6 +60,22 @@ export class CollectionDetailPageComponent implements OnInit {
     return `linear-gradient(0.25turn, ${colors.join(', ')})`;
   }
 
+  openPopupUpdateColl(collectionId: string) {
+    const dialogRef = this.dialog.open<string>(FormCollectionComponent, {
+      width: '250px',
+      data: {collection: this.collection, isUpdate: true},
+    });
+  
+    dialogRef.closed.subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log("result: ", result)
+        this.collection = result;
+      }
+    });
+  }  
+
+  // Si la liste des elements change 
   updateElementDetail(element: any) {
     const index = this.collection.elementsId.indexOf(element._id);
     if (index !== -1) {
@@ -67,7 +85,7 @@ export class CollectionDetailPageComponent implements OnInit {
     }
   }
 
-  openPopup(collectionId: string) {
+  openPopupAddElem(collectionId: string) {
     const dialogRef = this.dialog.open<string>(FormElementComponent, {
       width: '250px',
       data: {collectionIdFromPage: collectionId},

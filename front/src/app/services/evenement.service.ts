@@ -31,6 +31,10 @@ export class EvenementService {
     return this.http.post<any>(`${baseServerUrl}/evenements`, evenement);
   }
 
+  updateEvenement(evenement: any): Observable<any> {
+    return this.http.put<any>(`${baseServerUrl}/evenements/${evenement._id}`, evenement);
+  }
+
   deleteEvenementById(id: string): Observable<any> {
     return this.http.delete(`${baseServerUrl}/evenements/${id}`);
   }

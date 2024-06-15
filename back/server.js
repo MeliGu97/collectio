@@ -4,13 +4,11 @@ const fs = require('fs');
 const https = require('https');
 const cors = require('cors');
 const mongoose = require('mongoose');
-
 const app = express();
-const Utilisateur = require('./Utilisateur');
 
+const Utilisateur = require('./Utilisateur');
 const Collection = require('./Collection');
 const Element = require('./Element');
-
 const Evenement = require('./Evenement');
 const Periode = require('./Periode');
 
@@ -56,7 +54,7 @@ mongoose.connect(urlBDD, options)
 
 
 // ------------------------- 
-// ------------------------- COLLECTION 
+// #region COLLECTION 
 // ------------------------- 
 
 // Route pour tout récupérer  
@@ -116,8 +114,21 @@ app.post('/collections', async (req, res) => {
       res.status(500).json({ message: error.message });
   }
   });
+
+// Pour modifier
+app.put('/collections/:id', async (req, res) => {
+  try {
+    const collection = await Collection.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!collection) {
+      return res.status(404).json({ message: 'Collection non trouvée' });
+    }
+    res.json(collection);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
   
-// Route pour supprimer une collection par son ID
+// Route pour supprimer en cascade une collection 
 app.delete('/collections/:id', async (req, res) => {
   try {
     const objectId = req.params.id;
@@ -155,7 +166,7 @@ app.delete('/collections/:id', async (req, res) => {
 
 
 // ------------------------- 
-// ------------------------- ELEMENT
+// #region ELEMENT
 // ------------------------- 
 // Route pour tout récupérer 
 app.get('/elements', async (req, res) => {
@@ -209,6 +220,16 @@ app.post('/elements', async (req, res) => {
   }
   });
 
+    // modifier 
+    app.put('/elements/:id', async (req, res) => {
+      try {
+        const updatedElement = await Element.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedElement);
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+    });
+  
 
 // Route pour supprimer un élément par son ID
 app.delete('/elements/:id', async (req, res) => {
@@ -246,7 +267,7 @@ app.delete('/elements/:id', async (req, res) => {
 
 
 // ------------------------- 
-// ------------------------- EVENEMENT
+// #region EVENEMENT
 // ------------------------- 
 // Route pour tout récupérer  
 
@@ -307,6 +328,17 @@ app.post('/evenements', async (req, res) => {
   }
   });
 
+  // Modidier un evenement 
+app.put('/evenements/:id', async (req, res) => {
+  try {
+    const updatedEvenement = await Evenement.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updatedEvenement);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
 // Route pour supprimer un événement par son ID
 app.delete('/evenements/:id', async (req, res) => {
   try {
@@ -326,7 +358,7 @@ app.delete('/evenements/:id', async (req, res) => {
 
 
 // ------------------------- 
-// ------------------------- PERIODE
+// #region PERIODE
 // ------------------------- 
 
 // Route pour tout récupérer  
@@ -372,7 +404,7 @@ try {
 
 
 //  ------------------------------
-//  ------------------------------ UTILISATEUR
+//  #region UTILISATEUR
 // ---------------------------------
 app.post('/utilisateurs', async (req, res) => {
   try {

@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms'
 import { RouterLink } from '@angular/router';
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
 
-import { PeriodeDetailComponent } from "../periode-detail/periode-detail.component";
 import { CollectionService } from '../../services/collection.service';
 import { FormCollectionComponent } from '../form-collection/form-collection.component';
 
@@ -16,7 +15,7 @@ import { FormCollectionComponent } from '../form-collection/form-collection.comp
     templateUrl: './collections.component.html',
     styleUrl: './collections.component.scss',
 
-    imports: [CommonModule, HttpClientModule, DialogModule, FormsModule, RouterLink, PeriodeDetailComponent]
+    imports: [CommonModule, HttpClientModule, DialogModule, FormsModule, RouterLink]
 })
 export class CollectionsComponent implements OnInit {
   collections: any[] = []

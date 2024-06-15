@@ -16,6 +16,12 @@
 
 
         <article class="container-texte ">
+            <!-- MODIFIER -->
+            <button (click)="openPopupUpdateElem(element._id)"
+                class="centrer-milieu btn-primary btn-small aligner-droite margin-droite-flexible">
+                <i class="fa-solid fa-pencil"></i>
+                <p> Modifier</p>
+            </button>
             <div class="espacement-vertical-S espacement-entre centrer-sur-horizon">
                 <div>
                     <h1>{{ element.label }}</h1>
@@ -41,6 +47,12 @@
                         <button class="centrer-milieu btn-crud" (click)="deleteEvenement(evenement._id)">
                             <i class="fa-solid fa-trash"></i>
                         </button>
+                        <!-- MODIFIER -->
+                        <button (click)="openPopupUpdateEvent(evenement._id)"
+                            class="centrer-milieu btn-primary btn-small aligner-droite margin-droite-flexible">
+                            <i class="fa-solid fa-pencil"></i>
+                            <p> Modifier</p>
+                        </button>
                     </div>
 
                     <div>
@@ -61,7 +73,7 @@
         </div>
     </div>
     <!-- AJOUTER UN EVENT : ouvre pop up formulaire -->
-    <button (click)="openPopup(element._id)" class="btn-primary btn-flottant">
+    <button (click)="openPopupAddEvent(element._id)" class="btn-primary btn-flottant">
         <i class="fa-solid fa-plus"></i>
         Ajouter un événement
     </button>

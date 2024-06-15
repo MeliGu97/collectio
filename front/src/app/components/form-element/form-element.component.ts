@@ -10,6 +10,8 @@ import { PopupComponent } from '../../design-system/popup/popup.component';
 
 export interface DialogElementData  {
   collectionIdFromPage: string;
+  element?: Element;
+  isUpdate?: boolean;
 }
 
 @Component({
@@ -20,15 +22,17 @@ export interface DialogElementData  {
   templateUrl: './form-element.component.html',
   styleUrl: './form-element.component.scss'
 })
+
 export class FormElementComponent implements OnInit {
-  elements: any = []
+  elements: Element[] = [];
   nouvelElementForm: FormGroup= new FormGroup({}); 
-  nouvelElement: any = {}
+  nouvelElement: any = {};
+  isUpdate = false;
 
   constructor(
     private elementService: ElementService, 
     private formBuilder: FormBuilder, 
-    public dialogRef: DialogRef<string>, 
+    public dialogRef: DialogRef<Element>, 
     @Inject(DIALOG_DATA) 
     public data: DialogElementData ) 
     {}
@@ -41,13 +45,33 @@ export class FormElementComponent implements OnInit {
       imageUrl: ['']
     });
 
+    if (this.data.element && this.data.isUpdate) {
+      this.isUpdate = true;
+      this.nouvelElementForm.patchValue(this.data.element);
+    }
+
     this.elementService.getElements().subscribe((data) => {
       this.elements = data;
     });
   }
 
-  ajouterElement(): void {
-    if (this.nouvelElementForm.valid) { // Vérifie si le formulaire est valide avant de l'envoyer
+  createOrUpdateElement(): void {
+    if (this.nouvelElementForm.valid) {
+      if (this.isUpdate) {
+        const updatedElement = {
+          ...this.data.element,
+          ...this.nouvelElementForm.value
+        };
+        this.elementService.updateElement(updatedElement).subscribe({
+          next: (updatedElement) => {
+            console.log('Element updated successfully', updatedElement);
+            this.dialogRef.close(updatedElement);
+          },
+          error: (error) => {
+            console.error("Error updating element", error);
+          }
+        });
+      } else {
       this.elementService.addElement(this.nouvelElementForm.value).subscribe({
         next: (elementAjoute) => {
           console.log('element ajouté avec succès', elementAjoute);
@@ -62,4 +86,4 @@ export class FormElementComponent implements OnInit {
       });
     }
   }
-}
+}}

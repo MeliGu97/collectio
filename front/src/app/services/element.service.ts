@@ -27,6 +27,10 @@ export class ElementService {
     return this.http.post<any>(`${baseServerUrl}/elements`, element)
   }
 
+  updateElement(element: any): Observable<Element> {
+    return this.http.put<Element>(`${baseServerUrl}/elements/${element._id}`, element);
+  }
+
   deleteElementById(id: string): Observable<any> {
     return this.http.delete(`${baseServerUrl}/elements/${id}`);
   }

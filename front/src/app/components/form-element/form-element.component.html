@@ -9,7 +9,7 @@
 
 
 <app-popup>
-  <form [formGroup]="nouvelElementForm" (ngSubmit)="ajouterElement()">
+  <form [formGroup]="nouvelElementForm" (ngSubmit)="createOrUpdateElement()">
     <section>
       <article>
         <div class="image-couverture-page-tempo couleur-element-tempo">
@@ -27,7 +27,7 @@
             <p class="texte-error">Requis.</p>
           </div>
         </div>
-        <input type="text" id="label" formControlName="label" placeholder="Sans titre*" class="input-titre">
+        <input type="text" id="label" formControlName="label" placeholder="Titre de l'élément*" class="input-titre">
 
 
         <textarea rows="4" type="text" id="description" formControlName="description" placeholder="Description"
@@ -39,7 +39,7 @@
         <div class="fixe-bottom">
           <button type="submit" [disabled]="nouvelElementForm.invalid" class="btn-primary">
             <i class=" fa-solid fa-plus"></i>
-            <p>Ajouter un élément</p>
+            <p>Valider</p>
           </button>
         </div>
       </article>
