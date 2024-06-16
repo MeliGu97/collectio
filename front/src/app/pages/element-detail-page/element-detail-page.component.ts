@@ -8,7 +8,6 @@ import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { ElementService } from '../../services/element.service'
 import { FormEvenementComponent } from '../../components/form-evenement/form-evenement.component';
 import { EvenementService } from '../../services/evenement.service';
-import { FormElementComponent } from '../../components/form-element/form-element.component';
 
 @Component({
   selector: 'app-element-detail-page',
@@ -36,27 +35,12 @@ export class ElementDetailPageComponent implements OnInit {
       const elementId = params['id'];
       console.log("elementId", elementId);
       this.elementService.getElementById(elementId).subscribe((data) => {
+        // au clic affiche les données de l'élément
         this.element = data;
         this.loadEvenements(elementId);
       });
     });
   }
-
-  openPopupUpdateElem(elemntId: string) {
-    const dialogRef = this.dialog.open<string>(FormElementComponent, {
-      width: '250px',
-      data: {element: this.element, isUpdate: true},
-    });
-  
-    dialogRef.closed.subscribe(result => {
-      console.log('The dialog was closed');
-      if (result) {
-        console.log("result: ", result)
-        this.element = result; 
-      }
-    });
-  }  
-
 
   loadEvenements(elementId: string) {
     this.evenementService.getEvenementsByElementId(elementId).subscribe((data) => {
@@ -64,12 +48,7 @@ export class ElementDetailPageComponent implements OnInit {
     });
   }
 
-  deleteEvenement(id: string): void {
-    this.evenementService.deleteEvenementById(id).subscribe(() => {
-      this.evenements = this.evenements.filter(evenement => evenement._id !== id);
-    });
-  }
-  
+ 
   openPopupAddEvent(elementId: string) {
     const dialogRef = this.dialog.open<string>(FormEvenementComponent, {
       width: '250px',
@@ -96,6 +75,12 @@ export class ElementDetailPageComponent implements OnInit {
           this.evenements[index] = result; // Mettre à jour les données de l'événement local
         }
       }
+    });
+  }
+
+  deleteEvenement(id: string): void {
+    this.evenementService.deleteEvenementById(id).subscribe(() => {
+      this.evenements = this.evenements.filter(evenement => evenement._id !== id);
     });
   }
 }

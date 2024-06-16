@@ -10,13 +10,6 @@
   <article class="marges">
     <div class="espacement-vertical-L">
       <h2>Mes collections</h2>
-      <!-- AJOUTER UNE COLLECTION : ouvre pop up formulaire -->
-      <div class="aligner-droite margin-droite-flexible">
-        <button (click)="openPopup()" class="btn-primary btn-flottant">
-          <i class="fa-solid fa-plus"></i>
-          <p>Ajouter une collection</p>
-        </button>
-      </div>
     </div>
   </article>
 
@@ -25,6 +18,20 @@
     <ul>
       <p *ngIf=" collections.length==0"> Aucune collection </p>
       <li *ngFor="let collection of collections" class="card around medium espacement-entre">
+        <!-- CRUD -->
+        <div class="centrer-milieu crud-en-haut-a-droite">
+          <!-- MODIFIER -->
+          <button (click)="openPopupUpdateColl(collection._id)" class="btn-crud tooltip">
+            <i class="fa-solid fa-pencil"></i>
+            <span class="tooltiptext tolltiptexte-small-top">Modifier</span>
+          </button>
+          <!-- SUPPRIMER -->
+          <button class="btn-crud tooltip" (click)="deleteCollection(collection._id)">
+            <i class="fa-solid fa-trash"></i>
+            <span class="tooltiptext tolltiptexte-small-top">Supprimer</span>
+          </button>
+        </div>
+
         <!-- Au clic sur une collection redirige vers le détail de la collection en question -->
         <a [routerLink]="['/collections', collection._id]">
 
@@ -111,9 +118,16 @@
 
           </div>
         </a>
-        <button (click)="deleteCollection(collection._id)">Supprimer</button>
-
       </li>
     </ul>
+  </article>
+  <article>
+    <!-- AJOUTER UNE COLLECTION : ouvre pop up formulaire -->
+    <div class="aligner-droite margin-droite-flexible">
+      <button (click)="openPopup()" class="btn-primary btn-flottant">
+        <i class="fa-solid fa-plus"></i>
+        <p>Ajouter une collection</p>
+      </button>
+    </div>
   </article>
 </section>

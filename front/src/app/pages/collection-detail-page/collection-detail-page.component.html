@@ -66,13 +66,6 @@
 
     <article class="marges">
         <br>
-        <!-- MODIFIER -->
-        <button (click)="openPopupUpdateColl(collection._id)"
-            class="centrer-milieu btn-primary btn-small aligner-droite margin-droite-flexible">
-            <i class="fa-solid fa-pencil"></i>
-            <p> Modifier</p>
-        </button>
-
         <h1>{{collection.label}}</h1>
         <!-- <p>{{collectionId}}</p> -->
         <p>{{ collection.description }}</p>
@@ -84,18 +77,43 @@
     <article class="marges">
         <ul>
             <li *ngIf="collection.elementsId.length === 0">Aucun élément</li>
-            <li *ngFor="let element of collection.elementsId" class="card medium espacement-entre">
-                <a [routerLink]="['/elements', element]">
-                    <app-element-detail [idElement]="element"></app-element-detail>
+            <li *ngFor="let element of elements" class="card medium espacement-entre">
+                <a [routerLink]="['/elements', element._id]">
+                    <!-- <app-element-detail [idElement]="element"></app-element-detail> -->
+                    <div class="image-couverture-card-element-tempo couleur-element-tempo"
+                        *ngIf="element.imageUrl === '' else imageCouv">
+                    </div>
+                    <ng-template #imageCouv>
+                        <img src="{{ element.imageUrl }}" class="image-couverture-card-element-tempo image-de-fond">
+                    </ng-template>
+                    <div class="card-paragraphe">
+                        <!-- <p>({{ element._id }})</p> -->
+                        <h5><strong>{{ element.label }}</strong></h5>
+                        <p class="text-description">{{ element.description }}</p>
+                        <p>{{ element.collectionId }}</p>
+                    </div>
                 </a>
-                <button (click)="deleteElement(element)">Supprimer</button>
+                <div class="centrer-milieu crud-en-haut-a-droite">
+                    <!-- MODIFIER -->
+                    <!-- VERIFIER POURQUOI NE FONCTIONNE PAS COMME LES AUTRES. A BESOIN DE "ELEMENT" MAIS PAS DE "ELEMENT._ID" -->
+                    <button (click)="openPopupUpdateElem(element._id)" class="btn-crud tooltip">
+                        <i class="fa-solid fa-pencil"></i>
+                        <span class="tooltiptext tolltiptexte-small-top">Modifier</span>
+                    </button>
+                    <!-- SUPPRIMER -->
+                    <button class="btn-crud tooltip" (click)="deleteElement(element._id)">
+                        <i class="fa-solid fa-trash"></i>
+                        <span class="tooltiptext tolltiptexte-small-top">Supprimer</span>
+                    </button>
+                </div>
             </li>
         </ul>
     </article>
 
     <!-- appel de la pop up formulaire pour ajouter un element  -->
-    <article class="centrer-en-colonne espacement-vertical-L">
-        <button (click)="openPopupAddElem(collection._id)" class="btn-primary btn-flottant">
+    <article class="btn-flottant">
+        <!-- AJOUTER -->
+        <button (click)="openPopupAddElem(collection._id)" class="btn-primary tooltip">
             <i class="fa-solid fa-plus"></i>
             <p>Ajouter un élément</p>
         </button>

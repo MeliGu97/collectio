@@ -10,7 +10,7 @@ import { PopupComponent } from '../../design-system/popup/popup.component';
 
 export interface DialogElementData  {
   collectionIdFromPage: string;
-  element?: Element;
+  element?: any;
   isUpdate?: boolean;
 }
 
@@ -24,20 +24,22 @@ export interface DialogElementData  {
 })
 
 export class FormElementComponent implements OnInit {
-  elements: Element[] = [];
+  elements: any[] = [];
+  element: any = {};
   nouvelElementForm: FormGroup= new FormGroup({}); 
   nouvelElement: any = {};
-  isUpdate = false;
+  // isUpdate = false;
 
   constructor(
     private elementService: ElementService, 
     private formBuilder: FormBuilder, 
-    public dialogRef: DialogRef<Element>, 
+    public dialogRef: DialogRef<any>, 
     @Inject(DIALOG_DATA) 
-    public data: DialogElementData ) 
-    {}
+    public data: DialogElementData 
+  ) {}
 
   ngOnInit() {
+    console.log('Data received:', this.data);
     this.nouvelElementForm = this.formBuilder.group({
       collectionsId: [this.data.collectionIdFromPage],
       label: ['', Validators.required],
@@ -46,7 +48,6 @@ export class FormElementComponent implements OnInit {
     });
 
     if (this.data.element && this.data.isUpdate) {
-      this.isUpdate = true;
       this.nouvelElementForm.patchValue(this.data.element);
     }
 
@@ -57,7 +58,7 @@ export class FormElementComponent implements OnInit {
 
   createOrUpdateElement(): void {
     if (this.nouvelElementForm.valid) {
-      if (this.isUpdate) {
+      if (this.data.isUpdate && this.data.element) {
         const updatedElement = {
           ...this.data.element,
           ...this.nouvelElementForm.value

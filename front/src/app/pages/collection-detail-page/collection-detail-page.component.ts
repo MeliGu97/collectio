@@ -10,8 +10,6 @@ import { ElementService } from '../../services/element.service';
 import { ElementDetailPageComponent } from "../element-detail-page/element-detail-page.component";
 import { ElementDetailComponent } from "../../components/element-detail/element-detail.component";
 import { FormElementComponent } from "../../components/form-element/form-element.component";
-import { FormCollectionComponent } from '../../components/form-collection/form-collection.component';
-
 
 
 @Component({
@@ -25,9 +23,9 @@ import { FormCollectionComponent } from '../../components/form-collection/form-c
 export class CollectionDetailPageComponent implements OnInit {
   collection: any = {};
   gradientColors: string[] = [];
-  element: any = {};
+  // element: any = {};
   elements: any[] = [];
-
+  
 
   constructor(
     private collectionService: CollectionService, 
@@ -36,44 +34,32 @@ export class CollectionDetailPageComponent implements OnInit {
     public dialog: Dialog
   ) {}
 
-  ngOnInit() {
-    // Récupérer l'ID de la collection à partir de la route active
-    this.route.params.subscribe(params => {
-      const collectionId = params['id'];
-      //console.log("collectionId :",collectionId)
-      this.collectionService.getCollectionById(collectionId).subscribe((data) => {
-        //console.log("data",data)
-        this.collection = data
-        this.loadElements(collectionId);
-      })
+  ngOnInit(): void {
+    const collectionId = this.route.snapshot.paramMap.get('id');
+    if (collectionId) {
+      this.collectionService.getCollectionById(collectionId)
+        .subscribe(collection => {
+          this.collection = collection;
+          this.loadElements();
+        });
+    }
+  }
+  
+  loadElements(): void {
+    this.collection.elementsId.forEach((elementId: string) => {
+      this.elementService.getElementById(elementId)
+        .subscribe(element => {
+          this.elements.push(element);
+        });
     });
   }
   
-  loadElements(collectionId: string) {
-    this.elementService.getElementsByCollectionId(collectionId).subscribe((data) => {
-      this.elements = data;
-    });
-  }
 
   setGradientStyle(collectionPeriodes: any): string {
     const colors = collectionPeriodes.map((periode: { couleur: string }) => periode.couleur);
     return `linear-gradient(0.25turn, ${colors.join(', ')})`;
   }
 
-  openPopupUpdateColl(collectionId: string) {
-    const dialogRef = this.dialog.open<string>(FormCollectionComponent, {
-      width: '250px',
-      data: {collection: this.collection, isUpdate: true},
-    });
-  
-    dialogRef.closed.subscribe(result => {
-      console.log('The dialog was closed');
-      if (result) {
-        console.log("result: ", result)
-        this.collection = result;
-      }
-    });
-  }  
 
   // Si la liste des elements change 
   updateElementDetail(element: any) {
@@ -98,6 +84,23 @@ export class CollectionDetailPageComponent implements OnInit {
       }
     });
   }
+
+
+  openPopupUpdateElem(elementId: string) {
+    const dialogRef = this.dialog.open<any>(FormElementComponent, {
+      width: '250px',
+      data: { element: this.elements.find(e => e._id === elementId), isUpdate: true, elementId: elementId },
+    });
+  
+    dialogRef.closed.subscribe(result => {
+      if (result) {
+        const index = this.elements.findIndex(e => e._id === elementId);
+        if (index !== -1) {
+          this.elements[index] = result; // Mettre à jour les données de l'élément local
+        }
+      }
+    });
+  } 
 
   deleteElement(id: string): void {
     console.log('ID de element supp est :', id);

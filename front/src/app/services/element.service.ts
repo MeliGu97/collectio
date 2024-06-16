@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { Observable } from 'rxjs'
+import { Observable, map } from 'rxjs'
 import { baseServerUrl } from '../collectio.constant';
 
 @Injectable({
@@ -27,8 +27,9 @@ export class ElementService {
     return this.http.post<any>(`${baseServerUrl}/elements`, element)
   }
 
-  updateElement(element: any): Observable<Element> {
-    return this.http.put<Element>(`${baseServerUrl}/elements/${element._id}`, element);
+  updateElement(element: any): Observable<any> {
+    console.log('ID de la element :', element._id);
+    return this.http.put<any>(`${baseServerUrl}/elements/${element._id}`, element);
   }
 
   deleteElementById(id: string): Observable<any> {

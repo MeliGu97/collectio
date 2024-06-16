@@ -11,7 +11,7 @@
   src: url(../src/font/Euphorigenic/Euphorigenic.otf);
 }
 
-// Police basique (pas utilisé)
+// Police basique pour commentaire, tooltip, aide
 @font-face {
   font-family: 'NotoSans-Black';
   src: url(../src/font/Noto_Sans/static/NotoSans_Condensed-Regular.ttf);
@@ -203,7 +203,12 @@ a {
   word-wrap: break-word;
   vertical-align: top;
   @include shadow;
+  position: relative; 
 }
+.card:hover .btn-crud {
+  opacity: 1; /* Apparaît au survol */
+}
+
 .card-paragraphe {
   background-color: $light;
   padding: 10px;
@@ -359,7 +364,7 @@ button {
 }
 
 
-// PARTICULIER
+
 .btn-primary{
   background-color: white;
   border: 1px solid rgba(27, 31, 35, 0.15);
@@ -406,6 +411,7 @@ button {
 .btn-primary > i {
   margin-right: 5px;
 }
+// PARTICULIER
 .btn-flottant{
   position: fixed;
   bottom: 1%;
@@ -413,6 +419,28 @@ button {
   z-index: 9999;
 }
 
+.crud-en-haut-a-droite{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.btn-crud {
+  background-color: white;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  color: rgba(27, 31, 35, 0.15);
+  height: 25px;
+  width: 32px;
+  border-radius: 6px;
+  margin: 1px;
+  position: relative;
+  display: inline-block;
+  opacity: 0; /* Initialement caché */
+  transition: opacity 0.2s ease;
+}
+.btn-crud:hover {
+  color: #1A2F37;
+}
 // TAILLE
 
 .btn-small{
@@ -477,6 +505,63 @@ button {
   transform: translateX(1.5em);
 }
 
+
+// tooltip
+// .tooltip {
+//   position: relative;
+//   display: inline-block;
+//   border-bottom: 1px dotted black;
+// }
+
+.tooltip .tooltiptext {
+  font-family: 'NotoSans-Black';
+  letter-spacing: 1px;
+  visibility: hidden;
+  background-color: #2E4249;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  margin-left: -60px;
+  opacity: 0;
+  // transition-delay: 0.2s;
+  transition-property: opacity 0.3s;
+}
+.tolltiptexte-small-top{
+  width: 120px;
+  bottom: 125%;
+  left: 50%;
+}
+.tolltiptexte-left{
+  width: 250px;
+  right: 120%;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+}
+.tolltiptexte-small-top:after{
+  top: 100%;
+  left: 50%;
+  // pour faire le petit triangle
+  border-color: #2E4249 transparent transparent transparent;
+}
+.tolltiptexte-left:after{
+  top: 35%;
+  left: 102%;
+  border-color:  transparent transparent transparent #2E4249 ;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
 
 // ---------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------

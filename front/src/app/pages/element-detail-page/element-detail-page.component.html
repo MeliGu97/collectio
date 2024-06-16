@@ -16,12 +16,6 @@
 
 
         <article class="container-texte ">
-            <!-- MODIFIER -->
-            <button (click)="openPopupUpdateElem(element._id)"
-                class="centrer-milieu btn-primary btn-small aligner-droite margin-droite-flexible">
-                <i class="fa-solid fa-pencil"></i>
-                <p> Modifier</p>
-            </button>
             <div class="espacement-vertical-S espacement-entre centrer-sur-horizon">
                 <div>
                     <h1>{{ element.label }}</h1>
@@ -33,49 +27,57 @@
     </div>
 </section>
 <section class="design-section">
-    <div *ngIf=" evenements.length >= 1">
-        <div *ngFor="let evenement of evenements">
-            <div class="timeline">
-                <div class="timeline-empty"></div>
-                <div class="timeline-middle">
-                    <div class="timeline-circle"></div>
-                </div>
-                <!-- Carte de chaque evenement -->
-                <div class="timeline-component timeline-content">
-                    <div class="centrer-sur-horizon">
-                        <h3 class="surligner">{{ evenement.label }}</h3>
-                        <button class="centrer-milieu btn-crud" (click)="deleteEvenement(evenement._id)">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                        <!-- MODIFIER -->
-                        <button (click)="openPopupUpdateEvent(evenement._id)"
-                            class="centrer-milieu btn-primary btn-small aligner-droite margin-droite-flexible">
-                            <i class="fa-solid fa-pencil"></i>
-                            <p> Modifier</p>
-                        </button>
+    <article>
+        <div *ngIf=" evenements.length >= 1">
+            <div *ngFor="let evenement of evenements">
+                <div class="timeline">
+                    <div class="timeline-empty"></div>
+                    <div class="timeline-middle">
+                        <div class="timeline-circle"></div>
                     </div>
+                    <!-- Carte de chaque evenement -->
+                    <div class="timeline-component timeline-content">
+                        <div class="centrer-sur-horizon">
+                            <h3 class="surligner">{{ evenement.label }}</h3>
+                            <div class="centrer-milieu crud-en-haut-a-droite">
+                                <!-- MODIFIER -->
+                                <button class="btn-crud tooltip" (click)="openPopupUpdateEvent(evenement._id)">
+                                    <i class="fa-solid fa-pencil"></i>
+                                    <span class="tooltiptext tolltiptexte-small-top">Modifier</span>
+                                </button>
+                                <!-- SUPPRIMER -->
+                                <button class="btn-crud tooltip" (click)="deleteEvenement(evenement._id)">
+                                    <i class="fa-solid fa-trash"></i>
+                                    <span class="tooltiptext tolltiptexte-small-top">Supprimer</span>
+                                </button>
+                            </div>
 
-                    <div>
-                        <div *ngIf=" evenement.jour != null && evenement.mois != null">
-                            <p>{{ evenement.jour }} / {{ evenement.mois }} / {{ evenement.annee }}</p>
+
                         </div>
-                        <div *ngIf=" evenement.jour == null && evenement.mois == null">
-                            <p>{{ evenement.annee }}</p>
+
+                        <div>
+                            <div *ngIf=" evenement.jour != null && evenement.mois != null">
+                                <p>{{ evenement.jour }} / {{ evenement.mois }} / {{ evenement.annee }}</p>
+                            </div>
+                            <div *ngIf=" evenement.jour == null && evenement.mois == null">
+                                <p>{{ evenement.annee }}</p>
+                            </div>
+                            <div *ngIf=" evenement.heure != null && evenement.minute != null">
+                                <p>{{ evenement.heure }} : {{ evenement.minute }}</p>
+                            </div>
                         </div>
-                        <div *ngIf=" evenement.heure != null && evenement.minute != null">
-                            <p>{{ evenement.heure }} : {{ evenement.minute }}</p>
-                        </div>
+                        <div class="saut-de-ligne-M"></div>
+                        <p>{{ evenement.detail }}</p>
                     </div>
-                    <div class="saut-de-ligne-M"></div>
-                    <p>{{ evenement.detail }}</p>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- AJOUTER UN EVENT : ouvre pop up formulaire -->
-    <button (click)="openPopupAddEvent(element._id)" class="btn-primary btn-flottant">
-        <i class="fa-solid fa-plus"></i>
-        Ajouter un événement
-    </button>
-
+    </article>
+    <article class="btn-flottant">
+        <!-- AJOUTER UN EVENT : ouvre pop up formulaire -->
+        <button (click)="openPopupAddEvent(element._id)" class="btn-primary tooltip">
+            <i class="fa-solid fa-plus"></i>
+            <p>Ajouter un événement</p>
+        </button>
+    </article>
 </section>

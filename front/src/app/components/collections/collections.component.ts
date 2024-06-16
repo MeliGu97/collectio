@@ -18,6 +18,7 @@ import { FormCollectionComponent } from '../form-collection/form-collection.comp
     imports: [CommonModule, HttpClientModule, DialogModule, FormsModule, RouterLink]
 })
 export class CollectionsComponent implements OnInit {
+  collection: any = {};
   collections: any[] = []
   gradientColors: string[] = [];
 
@@ -54,6 +55,22 @@ export class CollectionsComponent implements OnInit {
       }
     });
   }
+  
+  openPopupUpdateColl(collectionId: string) {
+      const dialogRef = this.dialog.open<any>(FormCollectionComponent, {
+        width: '250px',
+        data: { collection: this.collections.find(e => e._id === collectionId), isUpdate: true, collectionId: collectionId },
+      });
+  
+      dialogRef.closed.subscribe(result => {
+        if (result) {
+          const index = this.collections.findIndex(e => e._id === collectionId);
+          if (index !== -1) {
+            this.collections[index] = result; // Mettre à jour les données de l'événement local
+          }
+        }
+      });
+  }  
 
   deleteCollection(id: string): void {
     this.collectionService.deleteCollectionById(id).subscribe(

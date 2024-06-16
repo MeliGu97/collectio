@@ -90,27 +90,11 @@ h2, h3{
     margin: 0px 20px 20px 20px;
   }
 
-  .btn-crud {
-    background-color: white;
-    border: 1px solid rgba(27, 31, 35, 0.15);
-    color: rgba(27, 31, 35, 0.15);
-    height: 28px;
-    width: 35px;
-    border-radius: 6px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    opacity: 0; /* Initialement caché */
-    transition: opacity 0.2s ease;
-  }
-  
   .timeline-content:hover .btn-crud {
     opacity: 1; /* Apparaît au survol */
   }
   
-  .btn-crud:hover {
-    color: #1A2F37;
-  }
+  
 
   
   @media screen and (min-width: 768px) {

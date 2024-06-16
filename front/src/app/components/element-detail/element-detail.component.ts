@@ -20,7 +20,8 @@ export class ElementDetailComponent implements OnInit {
   @Input() idElement: string = "";
   element: any = {};
 
-  constructor(private elementService: ElementService, private route: ActivatedRoute) {}
+  constructor(private elementService: ElementService, 
+    private route: ActivatedRoute) {}
 
 //   ngOnInit() {
 //     this.elementService.getElementById(this.idElement).subscribe((data) => {

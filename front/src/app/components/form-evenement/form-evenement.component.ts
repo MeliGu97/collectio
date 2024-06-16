@@ -5,7 +5,6 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, AbstractContro
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 
 import { EvenementService } from '../../services/evenement.service';
 import { PopupComponent } from '../../design-system/popup/popup.component';
@@ -20,7 +19,7 @@ export interface DialogEvenementData {
 @Component({
   selector: 'app-evenements',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FormsModule, RouterLink, ReactiveFormsModule, PopupComponent],
+  imports: [CommonModule, HttpClientModule, FormsModule, ReactiveFormsModule, PopupComponent],
   providers: [EvenementService],
   templateUrl: './form-evenement.component.html',
   styleUrl: './form-evenement.component.scss'
@@ -33,7 +32,7 @@ export class FormEvenementComponent implements OnInit {
 
   constructor(
     private evenementService: EvenementService,
-    private formBuilder: FormBuilder, // Injectez le FormBuilder
+    private formBuilder: FormBuilder,
     public dialogRef: DialogRef<any>, 
     @Inject(DIALOG_DATA) 
     public data: DialogEvenementData
