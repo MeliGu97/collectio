@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>190</x><y>320</y><w>210</w><h>130</h></coordinates><panel_attributes>Utilisateur
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>190</x><y>280</y><w>210</w><h>130</h></coordinates><panel_attributes>Utilisateur
 --
 -id: Long {composite}
 - nom: String
