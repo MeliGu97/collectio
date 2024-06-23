@@ -21,6 +21,7 @@ export class ElementDetailPageComponent implements OnInit {
   element: any = {};
   evenement: any = {};
   evenements: any[] = [];
+  isDisabled = false;
 
   constructor(
     private elementService: ElementService, 
@@ -35,7 +36,6 @@ export class ElementDetailPageComponent implements OnInit {
       const elementId = params['id'];
       console.log("elementId", elementId);
       this.elementService.getElementById(elementId).subscribe((data) => {
-        // au clic affiche les données de l'élément
         this.element = data;
         this.loadEvenements(elementId);
       });
@@ -50,6 +50,7 @@ export class ElementDetailPageComponent implements OnInit {
 
  
   openPopupAddEvent(elementId: string) {
+    this.isDisabled = true;
     const dialogRef = this.dialog.open<string>(FormEvenementComponent, {
       width: '250px',
       data: {elementIdFromPage: elementId},
@@ -59,10 +60,12 @@ export class ElementDetailPageComponent implements OnInit {
       if (result) {
         this.loadEvenements(elementId);
       }
+      this.isDisabled = false;
     });
   }
 
   openPopupUpdateEvent(evenementId: string) {
+    this.isDisabled = true;
     const dialogRef = this.dialog.open<any>(FormEvenementComponent, {
       width: '250px',
       data: { evenement: this.evenements.find(e => e._id === evenementId), isUpdate: true, evenementId: evenementId },
@@ -75,6 +78,7 @@ export class ElementDetailPageComponent implements OnInit {
           this.evenements[index] = result; // Mettre à jour les données de l'événement local
         }
       }
+      this.isDisabled = false;
     });
   }
 

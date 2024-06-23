@@ -40,28 +40,35 @@ export class FormCollectionComponent implements OnInit {
       picto: [''],
       periodesId: this.formBuilder.array([])
     });
-
+  
     this.collectionService.getCollections().subscribe((data) => {
       this.collection = data;
     });
-
+  
     this.periodeService.getPeriodes().subscribe((data) => {
       this.periodes = data;
-    });
-
-     if (this.data.isUpdate) {
-    this.newCollectionForm.patchValue(this.data.collection);
-    const periodesArray: FormArray = this.newCollectionForm.get('periodesId') as FormArray;
-    this.data.collection.periodesId.forEach((periodeId: string) => {
-      periodesArray.push(new FormControl(periodeId));
-      const index = this.periodes.findIndex((periode: any) => periode._id === periodeId);
-      if (index !== -1) {
-        this.periodes[index].checked = true;
+      const periodesArray: FormArray = this.newCollectionForm.get('periodesId') as FormArray;
+  
+      if (this.data.isUpdate) {
+        this.newCollectionForm.patchValue(this.data.collection);
+  
+        // 'periodesId' basé sur la liste de case a coché 'periodes' vérifie quelle case est cochée
+        this.periodes.forEach((periode: any) => {
+          const isChecked = this.data.collection.periodesId.some((period: any) => period._id === periode._id);
+          periodesArray.push(new FormControl(isChecked ? periode._id : false));
+        });
+      } else {
+        this.periodes.forEach(() => {
+          periodesArray.push(new FormControl(false));
+        });
       }
+  
+      // console.log('this.newCollectionForm', this.newCollectionForm);
+      // console.log('this.collection', this.collection);
+      // console.log('periodes', this.periodes);
     });
-    }
   }
-
+  
   onCheckboxChange(e: any) {
     const periodesArray: FormArray = this.newCollectionForm.get('periodesId') as FormArray;
 
@@ -75,22 +82,25 @@ export class FormCollectionComponent implements OnInit {
 
   createOrUpdateCollection(): void {
     if (this.newCollectionForm.valid) {
+      const periodesIds = this.newCollectionForm.value.periodesId.filter((id: any) => typeof id === 'string');
+      const collectionData = { ...this.newCollectionForm.value, periodesId: periodesIds };
+      // MODIFIER
       if (this.data.isUpdate) {
-        const updatedCollection = {
-          ...this.data.collection,
-          ...this.newCollectionForm.value
-        };
+        const updatedCollection = { ...this.data.collection, ...collectionData };
         this.collectionService.updateCollection(updatedCollection).subscribe({
           next: (updatedCollection) => {
             console.log('collection mise à jour avec succès', updatedCollection);
+            
             this.dialogRef.close(updatedCollection);
           },
           error: (error) => {
+            console.log("updatedCollection", updatedCollection)
             console.error("Erreur lors de la mise à jour d'une collection", error);
           }
         });
       } else {
-        this.collectionService.addCollection(this.newCollectionForm.value).subscribe({
+        // AJOUTER
+        this.collectionService.addCollection(collectionData).subscribe({
           next: (collectionAjoute) => {
             console.log('collection ajoutée avec succès', collectionAjoute);
             this.collection.push(collectionAjoute);
@@ -99,10 +109,12 @@ export class FormCollectionComponent implements OnInit {
             this.dialogRef.close(collectionAjoute);
           },
           error: (error) => {
+            console.log("ValueCollAjoute", collectionData)
             console.error("Erreur lors de l'ajout d'une collection", error);
           }
         });
       }
     }
   }
+  
 }

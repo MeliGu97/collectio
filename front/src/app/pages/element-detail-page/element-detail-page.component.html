@@ -1,4 +1,4 @@
-<!-- Ici page détail d'un element en fonction de son identifiant -->
+<!-- Ici page détail d'un ELEMENT en fonction de son identifiant -->
 <section>
     <article>
         <div class="image-couverture-page-tempo couleur-element-tempo" *ngIf="element.imageUrl === '' else imageCouv">
@@ -8,23 +8,14 @@
         </ng-template>
     </article>
 </section>
-<section class="container-general">
-    <div class="espacement-entre-article">
-        <article class="container-image">
-            <img src="{{ element.imageUrl }}" class="image-carrousel">
-        </article>
 
-
-        <article class="container-texte ">
-            <div class="espacement-vertical-S espacement-entre centrer-sur-horizon">
-                <div>
-                    <h1>{{ element.label }}</h1>
-                </div>
-            </div>
-
-            <p class="espacement-vertical-L">{{ element.description }}</p>
-        </article>
-    </div>
+<section class="marges">
+    <article>
+        <div>
+            <h1>{{ element.label }}</h1>
+        </div>
+        <p class="espacement-vertical-L">{{ element.description }}</p>
+    </article>
 </section>
 <section class="design-section">
     <article>
@@ -35,7 +26,7 @@
                     <div class="timeline-middle">
                         <div class="timeline-circle"></div>
                     </div>
-                    <!-- Carte de chaque evenement -->
+                    <!-- Carte de chaque EVENEMENT -->
                     <div class="timeline-component timeline-content">
                         <div class="centrer-sur-horizon">
                             <h3 class="surligner">{{ evenement.label }}</h3>
@@ -75,7 +66,7 @@
     </article>
     <article class="btn-flottant">
         <!-- AJOUTER UN EVENT : ouvre pop up formulaire -->
-        <button (click)="openPopupAddEvent(element._id)" class="btn-primary tooltip">
+        <button (click)="openPopupAddEvent(element._id)" [disabled]="isDisabled" class="btn-primary">
             <i class="fa-solid fa-plus"></i>
             <p>Ajouter un événement</p>
         </button>

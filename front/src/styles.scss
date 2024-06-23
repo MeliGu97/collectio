@@ -179,8 +179,11 @@ a {
   color: $black;
 }
 
+.contient-texte-discret:hover .texte-discret{
+  opacity: 1;
+}
 .texte-discret{
-  color: $black30;
+  opacity: 0.5;
 }
 .texte-discret :hover{
   color: $black90;
@@ -265,6 +268,7 @@ a {
 
 //  ------------- tag ----
 .tag {
+  font-family: 'courier-prime';
   color: white;
   border: solid 2px white;
   border-radius: 20px;
@@ -283,6 +287,24 @@ a {
 .tag-S{
   width: 15px;
   height: 15px;
+}
+.tag-with-pastille{
+  padding: 3px 12px;
+  background-color: white;
+  color: $black;
+  border: solid 1.5px $black50;
+  display:inline-flex;
+  align-items: center;
+}
+.tag-XS{
+  border-radius: 20px;
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+}
+.tag-L p {
+  margin: 0;
+  
 }
 
 // ------------- liste ----
@@ -507,11 +529,11 @@ button {
 
 
 // tooltip
-// .tooltip {
-//   position: relative;
-//   display: inline-block;
-//   border-bottom: 1px dotted black;
-// }
+.tooltip {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black;
+}
 
 .tooltip .tooltiptext {
   font-family: 'NotoSans-Black';

@@ -11,6 +11,7 @@
             <i class="fa-solid fa-xmark"></i>
             <p>Fermer</p>
           </button>
+
         </div>
       </article>
     </section>
@@ -50,12 +51,15 @@
 
         <div>
           <ul class="centrer-sur-horizon list-cases">
-            <li *ngFor="let periode of periodes" class="espace-entre-case">
+            <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId" class="espace-entre-case">
               <div class="centrer-en-colonne">
-                <input type="checkbox" class="checkbox" [value]="periode._id" (change)="onCheckboxChange($event)" />
-                <p class="tag tag-M periode" [ngStyle]="{'background': periode.couleur}">
-                  {{ periode.label.slice(0, 2) }}</p>
-                <p class="periode" style="margin-left: -40px;">{{ periode.dateDebut }}</p>
+                <input type="checkbox" class="checkbox" id="periodesId" [formControlName]="i" [value]="periode._id"
+                  (change)="onCheckboxChange($event)" />
+                <p class="tag tag-M periode tooltip" [ngStyle]="{'background': periode.couleur}">
+                  {{ periode.label.slice(0, 2) }}
+                  <span class="tooltiptext tolltiptexte-small-top">{{ periode.label }} : de {{ periode.dateDebut }} à {{
+                    periode.dateFin }}</span>
+                </p>
               </div>
             </li>
           </ul>

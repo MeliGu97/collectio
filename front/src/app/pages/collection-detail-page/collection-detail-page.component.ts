@@ -23,9 +23,8 @@ import { FormElementComponent } from "../../components/form-element/form-element
 export class CollectionDetailPageComponent implements OnInit {
   collection: any = {};
   gradientColors: string[] = [];
-  // element: any = {};
   elements: any[] = [];
-  
+  isDisabled = false;
 
   constructor(
     private collectionService: CollectionService, 
@@ -34,25 +33,25 @@ export class CollectionDetailPageComponent implements OnInit {
     public dialog: Dialog
   ) {}
 
-  ngOnInit(): void {
-    const collectionId = this.route.snapshot.paramMap.get('id');
-    if (collectionId) {
-      this.collectionService.getCollectionById(collectionId)
-        .subscribe(collection => {
-          this.collection = collection;
-          this.loadElements();
-        });
-    }
-  }
-  
-  loadElements(): void {
-    this.collection.elementsId.forEach((elementId: string) => {
-      this.elementService.getElementById(elementId)
-        .subscribe(element => {
-          this.elements.push(element);
-        });
+  ngOnInit(){
+    this.route.params.subscribe(params => {
+      const collectionId = params['id'];
+      console.log("collectionId", collectionId);
+      this.collectionService.getCollectionById(collectionId).subscribe((data) => {
+        this.collection = data;
+        this.loadElements(collectionId);
+      });
     });
   }
+
+  
+  loadElements(collectionId: string) {
+    this.elementService.getElementsByCollectionId(collectionId).subscribe((data) => {
+      console.log("data",data)
+      this.elements = data;
+    });
+  }
+
   
 
   setGradientStyle(collectionPeriodes: any): string {
@@ -61,17 +60,8 @@ export class CollectionDetailPageComponent implements OnInit {
   }
 
 
-  // Si la liste des elements change 
-  updateElementDetail(element: any) {
-    const index = this.collection.elementsId.indexOf(element._id);
-    if (index !== -1) {
-      this.collection.elementsId.splice(index, 1, element._id);
-    } else {
-      this.collection.elementsId.push(element._id);
-    }
-  }
-
   openPopupAddElem(collectionId: string) {
+    this.isDisabled = true;
     const dialogRef = this.dialog.open<string>(FormElementComponent, {
       width: '250px',
       data: {collectionIdFromPage: collectionId},
@@ -80,13 +70,15 @@ export class CollectionDetailPageComponent implements OnInit {
     dialogRef.closed.subscribe(result => {
       console.log('The dialog was closed');
       if (result) {
-        this.updateElementDetail(result);
+        this.loadElements(collectionId)
       }
+      this.isDisabled = false;
     });
   }
 
 
   openPopupUpdateElem(elementId: string) {
+    this.isDisabled = true;
     const dialogRef = this.dialog.open<any>(FormElementComponent, {
       width: '250px',
       data: { element: this.elements.find(e => e._id === elementId), isUpdate: true, elementId: elementId },
@@ -99,6 +91,7 @@ export class CollectionDetailPageComponent implements OnInit {
           this.elements[index] = result; // Mettre à jour les données de l'élément local
         }
       }
+      this.isDisabled = false;
     });
   } 
 

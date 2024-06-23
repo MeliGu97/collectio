@@ -19,7 +19,9 @@ export class ElementService {
   }
   
   getElementsByCollectionId(collectionId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${baseServerUrl}/elements?collectionId=${collectionId}`).pipe();
+    return this.http.get<any[]>(`${baseServerUrl}/elements`).pipe(
+      map(elements => elements.filter(element => element.collectionsId.includes(collectionId)))
+    );
   }
   
   

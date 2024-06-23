@@ -69,7 +69,7 @@ export class FormElementComponent implements OnInit {
             this.dialogRef.close(updatedElement);
           },
           error: (error) => {
-            console.error("Error updating element", error);
+            console.error("Error lors de la mise à jour d'un élement", error);
           }
         });
       } else {

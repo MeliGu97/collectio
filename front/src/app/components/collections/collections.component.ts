@@ -21,6 +21,7 @@ export class CollectionsComponent implements OnInit {
   collection: any = {};
   collections: any[] = []
   gradientColors: string[] = [];
+  isDisabled = false;
 
   constructor(
     private collectionService: CollectionService,
@@ -44,6 +45,7 @@ export class CollectionsComponent implements OnInit {
   }
   
   openPopup() {
+    this.isDisabled = true;
     const dialogRef = this.dialog.open<string>(FormCollectionComponent, {
       width: '250px',
       data: {},
@@ -53,22 +55,25 @@ export class CollectionsComponent implements OnInit {
       if (result) {
         this.getCollections();
       }
+      this.isDisabled = false;
     });
   }
   
   openPopupUpdateColl(collectionId: string) {
+      this.isDisabled = true; 
       const dialogRef = this.dialog.open<any>(FormCollectionComponent, {
         width: '250px',
         data: { collection: this.collections.find(e => e._id === collectionId), isUpdate: true, collectionId: collectionId },
       });
-  
       dialogRef.closed.subscribe(result => {
         if (result) {
           const index = this.collections.findIndex(e => e._id === collectionId);
           if (index !== -1) {
-            this.collections[index] = result; // Mettre à jour les données de l'événement local
+            this.collections[index] = result;
+            this.getCollections();
           }
         }
+        this.isDisabled = false;
       });
   }  
 
