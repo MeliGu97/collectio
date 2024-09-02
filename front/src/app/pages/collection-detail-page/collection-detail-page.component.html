@@ -1,11 +1,11 @@
 <!-- Ici page détail d'une collection en fonction de son identifiant -->
 <section>
     <article>
-        <div class="image-couverture-page-tempo couleur-element-tempo"
+        <div class="container-image-couverture-page couleur-element-tempo"
             *ngIf="collection.imageUrl === '' else imageCouv">
         </div>
         <ng-template #imageCouv>
-            <img src="{{ collection.imageUrl }}" class="image-couverture-page-tempo image-de-fond">
+            <img src="{{ collection.imageUrl }}" class="container-image-couverture-page image-de-fond">
         </ng-template>
     </article>
 </section>
@@ -30,7 +30,7 @@
                 <div class="espacement-vertical-S">
                     <ul>
                         <li class="aligner-droite margin-droite-flexible">
-                            <div *ngFor=" let periode of collection.periodesId" class="indienne">
+                            <div *ngFor="let periode of collection.periodesId" class="indienne">
                                 <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">{{ periode.label }}</p>
                             </div>
                         </li>
@@ -57,7 +57,7 @@
                 <div class="espacement-vertical-S">
                     <ul>
                         <li class="aligner-droite margin-droite-flexible">
-                            <div *ngFor=" let periode of collection.periodesId" class="indienne">
+                            <div *ngFor="let periode of collection.periodesId" class="indienne">
                                 <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">{{ periode.label }}</p>
                             </div>
                         </li>
@@ -70,19 +70,23 @@
     </article>
 
     <article class="marges">
-        <br>
         <h1>{{collection.label}}</h1>
-        <!-- <p>{{collectionId}}</p> -->
-        <p>{{ collection.description }}</p>
-
+        <div class="espacement-vertical-S"></div>
+        <div *ngIf=" collection.description.length <= 1"></div>
+        <div *ngIf=" collection.description.length >= 1">
+            <p class="espacement-vertical-L conserve-espace-origine"><span class="souligner">Description</span>
+                : {{
+                collection.description }}</p>
+        </div>
+        <div class="espacement-vertical-M"></div>
     </article>
 
     <!-- List des éléments de la collection -->
     <!-- BODY -->
     <article class="marges">
-        <ul>
+        <ul class="espacement-autour">
             <li *ngIf="collection.elementsId.length === 0">Aucun élément</li>
-            <li *ngFor="let element of elements" class="card medium espacement-entre">
+            <li *ngFor="let element of elements" class="card medium">
                 <a [routerLink]="['/elements', element._id]">
                     <!-- <app-element-detail [idElement]="element"></app-element-detail> -->
                     <div class="image-couverture-card-element-tempo couleur-element-tempo"
@@ -94,28 +98,33 @@
                     <div class="card-paragraphe">
                         <!-- <p>({{ element._id }})</p> -->
                         <h5><strong>{{ element.label }}</strong></h5>
-                        <p class="text-description">{{ element.description }}</p>
+                        <p class="text-description conserve-espace-origine">{{ element.description }}</p>
                     </div>
                 </a>
-                <div class="centrer-milieu crud-en-haut-a-droite">
+                <div class="centrer-milieu crud-haut-droite">
                     <!-- MODIFIER -->
-                    <!-- VERIFIER POURQUOI NE FONCTIONNE PAS COMME LES AUTRES. A BESOIN DE "ELEMENT" MAIS PAS DE "ELEMENT._ID" -->
                     <button (click)="openPopupUpdateElem(element._id)" class="btn-crud tooltip">
                         <i class="fa-solid fa-pencil"></i>
                         <span class="tooltiptext tolltiptexte-small-top">Modifier</span>
                     </button>
+                    <!-- Plus d'options -->
+                    <button (click)="openPopupMoreOptioneElem(element._id)" class="btn-crud tooltip">
+                        <i class="fa-solid fa-ellipsis"></i>
+                        <span class="tooltiptext tolltiptexte-small-top">Plus d'options</span>
+                    </button>
                     <!-- SUPPRIMER -->
-                    <button class="btn-crud tooltip" (click)="deleteElement(element._id)">
+                    <!-- <button class="btn-crud tooltip" (click)="deleteElement(element._id)">
                         <i class="fa-solid fa-trash"></i>
                         <span class="tooltiptext tolltiptexte-small-top">Supprimer</span>
-                    </button>
+                    </button> -->
                 </div>
             </li>
         </ul>
+        <div class="espacement-vertical-XL"></div>
     </article>
 
     <!-- appel de la pop up formulaire pour ajouter un element  -->
-    <article class="btn-flottant">
+    <article class="btn-flottant-bas-droite">
         <!-- AJOUTER -->
         <button (click)="openPopupAddElem(collection._id)" [disabled]="isDisabled" class="btn-primary">
             <i class="fa-solid fa-plus"></i>

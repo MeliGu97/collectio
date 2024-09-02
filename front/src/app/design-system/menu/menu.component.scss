@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Overlay semi-transparent */
+    background-color: rgba(0, 0, 0, 0.215); /* Overlay semi-transparent */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,23 +12,24 @@
   }
   
   
-.popup {
+.menu {
   background: white;
-    // padding: 20px;
-    width: 50%;
-    position: relative;
-    border-radius: 5px;
+    padding: 10px;
+    width: 20%;
+    position: absolute;
+    left: 0;
+    height: 100%;
 }
 
 // telephone
 @media (min-width: 0px) and (max-width: 768px){
-  .popup {
-      width: 90%;
+  .menu {
+      width: 60%;
     }
 }
 //  tablette
 @media (min-width: 768px) and (max-width: 1024px){
-  .popup {
-    width: 70%;
+  .menu {
+    width: 40%;
   }
 }

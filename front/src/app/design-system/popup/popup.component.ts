@@ -9,10 +9,7 @@ import { CommonModule } from '@angular/common'
   styleUrl: './popup.component.scss'
 })
 export class PopupComponent implements OnInit {
-  
   constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

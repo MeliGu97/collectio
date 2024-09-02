@@ -4,6 +4,10 @@
   font-family: 'courier-prime';
   src: url(../src/font/Courier_Prime/CourierPrime-Regular.ttf);
 }
+@font-face {
+  font-family: 'Typewriter';
+  src: url(../src/font/Typewriter/JMH\ Typewriter-Thin.ttf);
+}
 
 // Grand titre 
 @font-face {
@@ -43,6 +47,10 @@ $error: #F76848;
 $succes: #43A960;
 
 
+.fond-couleur{
+  background-color: #437C90;
+}
+
 // .couleur-theme{background-color: $black70;}
 // .couleur-categorie{background-color: $black50;}
 // .couleur-sous-categorie{background-color: $black30;}
@@ -57,12 +65,8 @@ $succes: #43A960;
 
 // ------------- ombrage ------------
 @mixin shadow {
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  box-shadow: #00000026 1.95px 1.95px 2.6px;
 }
-@mixin around {
-  border-radius: 10px;
-}
-
 
 
 // A REFAIRE
@@ -109,7 +113,18 @@ $succes: #43A960;
 }
 
 .espacement-autour{
+  display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
+}
+.padding-M{
+  padding: 20%;
+}
+.padding-S{
+  padding: 5%;
+}
+.espacement-vertical-XL{
+  margin: 50px 0px;
 }
 .espacement-vertical-L{
   margin: 35px 0px;
@@ -144,6 +159,12 @@ $succes: #43A960;
 // ---------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------
 // -------------- TEXTE ----------------
+.titre-site{
+  position: relative; 
+  top: 50px; 
+  text-align: center;
+  font-size: 150px;
+}
 h1{
   font-family: 'Euphorigenic';
   font-size: 50px;
@@ -152,7 +173,7 @@ h1{
 }
 
 h2{
-  font-family: 'Euphorigenick';
+  font-family: 'Euphorigenic';
   font-size: 30px;
   margin-bottom: 0px;
 }
@@ -179,6 +200,9 @@ a {
   color: $black;
 }
 
+.text-centrer{
+  text-align: center;
+}
 .contient-texte-discret:hover .texte-discret{
   opacity: 1;
 }
@@ -192,13 +216,40 @@ a {
 .texte-error{
   color: $error;
 }
+.texte-blanc{
+  color: white;
+}
+.conserve-espace-origine{
+  white-space: pre-line;
+}
+
+.surligner{
+  background-color: #F7C548;
+  font-style: regular;
+}
+.souligner{
+  text-decoration: underline 1.5px;
+}
+
+
 
 // ---------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------
 // ------------ PATERNE ---------------
-
+.nav-barre{
+  position: fixed;
+  top: 0;
+  z-index: 20;
+  height: 40px;
+  width: 100%;
+  background-color: white;
+  opacity: 0.2;
+}
+.nav-barre:hover{
+  opacity: 1;
+}
 .around{
-  @include around;
+  border-radius: 10px;
 }
 // ------------- card ----------------
 .card {
@@ -207,19 +258,23 @@ a {
   vertical-align: top;
   @include shadow;
   position: relative; 
-}
+} 
+// Apparaît au survol
 .card:hover .btn-crud {
-  opacity: 1; /* Apparaît au survol */
+  opacity: 1; 
 }
 
 .card-paragraphe {
-  background-color: $light;
   padding: 10px;
   font-size: 12px;
-  // effet de pointillé
-  background-image: radial-gradient(circle, $black10 10%, transparent 10%), radial-gradient(circle, $black10 10%, transparent 10%);
-  background-size: 16px 16px;
   border-radius: 0px 0px 10px 10px ;
+}
+.card,
+.card-paragraphe {
+    // effet de pointillé
+    background-color: $light;
+    background-image: radial-gradient(circle, $black10 10%, transparent 10%), radial-gradient(circle, $black10 10%, transparent 10%);
+    background-size: 16px 16px;
 }
 .text-description{
   overflow: hidden;
@@ -229,15 +284,30 @@ a {
           line-clamp: 2; 
   -webkit-box-orient: vertical;
 }
-.card-paragraphe:hover{
+.card:hover {
   background-color: whitesmoke;
 }
+.card:hover .card-paragraphe {
+  background-color: whitesmoke;
+}
+
+
 .card-paragraphe > .tag{
   font-size: 10px;
 }
 .card-paragraphe > .texte-discret{
   font-size: 10px;
 }
+
+
+.fiche-description{
+  // background-color: #f4eee5;
+  background-color: white;
+  padding: 5px 20px 10px 20px;
+  margin-top: 20px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
 // ------------- circle ----------------
 
 .circle-picto{
@@ -292,7 +362,7 @@ a {
   padding: 3px 12px;
   background-color: white;
   color: $black;
-  border: solid 1.5px $black50;
+  border: 1px solid #1b1f2326;
   display:inline-flex;
   align-items: center;
 }
@@ -315,11 +385,79 @@ li {
   margin: 0;
 }
 
+// ----------- Tab -----------
+.container {
+  input {
+    display: none;
+    &:checked + label {
+      // background: #D2D4D5;
+      font-weight: bold;
+    }
+    @for $i from 1 through 2 {
+      &#tab#{$i}:checked {
+        ~ .line {
+          left: #{($i - 1) * 50%};
+        }
+        ~ .content-container #c#{$i} {
+          display: block;
+        }
+      }
+    }
+  }
+  label {
+    display: inline-block;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    line-height: 36px;
+    width: 50%;
+    text-align: center;
+    position: relative;
+    transition: 0.25s ease;
+    cursor: pointer;
+
+    // au survol
+    &:hover{
+      background: $black5;
+    }
+    &::after {
+      content: "";
+      // height: 2px;
+      // width: 100%;
+      position: relative;
+      // display: block;
+      // background: #27A4D0;
+      opacity: 0;
+      transition: 0.25s ease;
+
+    }
+    &:hover::after {
+      opacity: 1;
+      
+    }
+  }
+  .line {
+    position:relative;
+    height: 3px;
+    background: #437C90;
+    width: 50%;
+    left: 0;
+    transition: 0.25s ease;
+  }
+
+  .content-container {
+    position: relative;
+    .content {
+      position: absolute;
+      width: 100%;
+      top: 10px;
+      display: none;
+      transition: 0.25s ease;
+    }
+  }
+}
 
 
 // -------- formulaire --- 
-
-
 input, textarea{
   width: auto;
   border: 0px;
@@ -350,10 +488,15 @@ input:focus, textarea:focus {
   width: 100%;
   font-family: 'courier-prime';
 }
+.input-basic{
+  height: 30px;
+  margin: 5px;
+  padding-left: 5px;
+}
 .input-tag{
   background-color: white;
   color: $black;
-  border: solid 0.5px rgba(22, 22, 22, 0.253);
+  border: 1px solid #1b1f2326;
 }
 
 // .input-btn{
@@ -378,20 +521,89 @@ input:focus, textarea:focus {
 }
 
 
+.input-recherche{
+  background-color: white;
+  height: 30px;
+  width: 300px;
+  border: 1px solid #1b1f2326;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+
 // A REFAIRE = PAS ASSEZ REUTILISABLE
 // --- Bouton ---
 
 button {
   cursor: pointer;
 }
+// nav
+.btn-discret{
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+}
+.btn-discret:hover{
+  background-color: #F3F4F6;
+}
+
+// gestion 
+.btn-crud-modal{
+  background-color: white;
+  color: #24292E;
+  transition: background-color 0.1s cubic-bezier(0.3, 0, 0.5, 1);
+
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  white-space: nowrap;
+  width: 100%;
+  word-wrap: break-word;
+  display: flex;
+  // justify-content: space-between;
+  // vertical-align: middle;
+}
+
+.btn-crud-modal:hover{
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+.btn-crud-modal > i {
+  margin-right: 10px;
+}
+
+// 
+.crud-haut-droite{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.btn-crud {
+  background-color: white;
+  border: 1px solid #1b1f2326;
+  color: rgba(27, 31, 35, 0.15);
+  height: 25px;
+  width: 32px;
+  border-radius: 6px;
+  margin: 1px;
+  position: relative;
+  display: inline-block;
+  opacity: 0; /* Initialement caché */
+  transition: opacity 0.2s ease;
+}
+.btn-crud:hover {
+  color: #1A2F37;
+}
 
 
 
 .btn-primary{
-  background-color: white;
-  border: 1px solid rgba(27, 31, 35, 0.15);
+  background-color: #F3F4F6;
+  border: 1px solid #1b1f2326;
   border-radius: 6px;
-  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-shadow: #1b1f230a 0 1px 0, #ffffff40 0 1px 0 inset;
   box-sizing: border-box;
   color: #24292E;
   padding: 10px 20px;
@@ -406,7 +618,7 @@ button {
 }
 
 .btn-primary:hover{
-  background-color: #F3F4F6;
+  background-color: white;
   text-decoration: none;
   transition-duration: 0.1s;
 }
@@ -434,37 +646,36 @@ button {
   margin-right: 5px;
 }
 // PARTICULIER
-.btn-flottant{
+.btn-flottant-bas-droite{
   position: fixed;
   bottom: 1%;
   right: 1%;
-  z-index: 9999;
+  z-index: 10;
+}
+.btn-flottant-bas-gauche{
+  position: fixed;
+  bottom: 1%;
+  left: 1%;
+  z-index: 10;
+}
+.btn-flottant-haut-droite{
+  position: fixed;
+  top: 1%;
+  right: 1%;
+  z-index: 10;
+}
+.btn-flottant-haut-gauche{
+  position: fixed;
+  top: 1%;
+  left: 1%;
+  z-index: 10;
 }
 
-.crud-en-haut-a-droite{
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
 
-.btn-crud {
-  background-color: white;
-  border: 1px solid rgba(27, 31, 35, 0.15);
-  color: rgba(27, 31, 35, 0.15);
-  height: 25px;
-  width: 32px;
-  border-radius: 6px;
-  margin: 1px;
-  position: relative;
-  display: inline-block;
-  opacity: 0; /* Initialement caché */
-  transition: opacity 0.2s ease;
-}
-.btn-crud:hover {
-  color: #1A2F37;
-}
 // TAILLE
-
+.btn-medium{
+  height: 30px;
+}
 .btn-small{
   padding: 5px 10px;
 }
@@ -591,20 +802,8 @@ button {
 .couleur-home-utili-tempo{
   background-color: $black70;
 }
-.couleur-collection-tempo{
-  background-color: #6A3B15;
-}
-.surligner{
-  background-color: #F7C548;
-  font-style: regular;
-}
 
-.valide{
-  background-color: $succes;
-}
-.error{
-  background-color: $error;
-}
+
 .image-couverture-card-tempo {
   height: 100px;
   border-radius: 10px 10px 0px 0px;
@@ -618,9 +817,6 @@ button {
   background-color: #D2D4D5;
 }
 
-.image-couverture-page-tempo{
-  height: 250px;
-}
 
 .image-de-fond{
   width: 100%;
@@ -629,10 +825,21 @@ button {
 }
 .container-image-couverture-page{
   height: 250px;
-  // padding: 10px;
+}
+.container-image-couverture-homePage{
+  min-height: 350px;
+  background-image: url("../src/assets/images/accueil/archiveVideZoom.jpg");
+  background-size: cover;
+  background-position-y: center;
 }
 
 
+.valide{
+  background-color: $succes;
+}
+.error{
+  background-color: $error;
+} 
 .container-general{  
   min-height: 500px;
 }
@@ -645,13 +852,28 @@ button {
 // ------ Different support ----
 // telephone
 @media (min-width: 0px) and (max-width: 768px) {
+  .titre-site{
+    font-size: 100px;
+  }
+  .container-image-couverture-homePage{
+    height: 300px;
+  }
+  .btn-flottant-haut-droite{
+    right: 5%;
+  }
+  .nav-barre{
+    opacity: 1;
+  }
   .marges{
-      margin: 0% 2% 0% 2%;
+      margin: 0% 4% 0% 4%;
   }
   .card{
     margin-top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     margin-left: 3%;
+  }
+  .btn-crud {
+    opacity: 1; 
   }
   .large {
     width: 95%;
@@ -666,7 +888,7 @@ button {
     display: inline-block;
     justify-content: none;
   }
-  .btn-flottant{
+  .btn-flottant-bas-droite{
     right: 10%;
   }
 }
@@ -675,8 +897,14 @@ button {
   .marges{
       margin: 0% 10% 0% 10%;
   }
+  .nav-barre{
+    opacity: 1;
+  }
   .card{
     margin: 10px;
+  }
+  .btn-crud {
+    opacity: 1; 
   }
   .large {
     width: 95%;
@@ -706,3 +934,4 @@ button {
     right: 20%;
   }
 }
+

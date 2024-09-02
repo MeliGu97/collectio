@@ -19,5 +19,4 @@ describe('FormCollectionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy()
   })
-  
 })

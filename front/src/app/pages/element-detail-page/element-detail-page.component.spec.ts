@@ -9,8 +9,7 @@ describe('ElementDetailPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ElementDetailPageComponent]
-    })
-    .compileComponents()
+    }).compileComponents()
 
     fixture = TestBed.createComponent(ElementDetailPageComponent)
     component = fixture.componentInstance

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 import { FormsModule } from '@angular/forms'
-import { RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router'
 
 import { PeriodeService } from '../../services/periode.service'
 
@@ -38,6 +38,4 @@ export class PeriodesComponent implements OnInit {
       }
     })
   }
-
-  
 }

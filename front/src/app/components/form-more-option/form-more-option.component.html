@@ -1,0 +1,47 @@
+<app-modal>
+    <section class="marges">
+        <article class="centrer-sur-horizon">
+            <button class="crud-haut-droite btn-discret btn-small" (click)="dialogRef.close()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </article>
+    </section>
+    <section>
+        <article *ngIf="isCollection">
+            <h4>{{ collection.label }}</h4>
+            <div class="espacement-vertical-M"></div>
+            <button class="btn-crud-modal" (click)="deleteCollection(collection._id)">
+                <i class="fa-solid fa-trash"></i>
+                <p>Supprimer</p>
+            </button>
+
+            <button class="btn-crud-modal" *ngIf=" collection.public === true else private"
+                (click)="makePublicOrPrivate(collection._id, false)">
+                <i class="fa-solid fa-lock"></i>
+                <p>Rendre privée</p>
+            </button>
+
+            <ng-template #private>
+                <button class="btn-crud-modal" (click)="makePublicOrPrivate(collection._id, true)">
+                    <i class="fa-solid fa-lock-open"></i>
+                    <p>Rendre publique</p>
+                </button>
+            </ng-template>
+            <!-- <button class="btn-crud-modal">
+                <i class="fa-solid fa-heart"></i>
+                <p>Ajouter aux favoris</p>
+            </button> -->
+        </article>
+
+        <article *ngIf="!isCollection">
+            <h4>{{ element.label }}</h4>
+            <div class="espacement-vertical-M"></div>
+            <button class="btn-crud-modal" (click)="deleteElement(element._id)">
+                <i class="fa-solid fa-trash"></i>
+                <p>Supprimer</p>
+            </button>
+
+
+        </article>
+    </section>
+</app-modal>

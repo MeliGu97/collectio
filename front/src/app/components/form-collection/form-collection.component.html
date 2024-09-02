@@ -4,30 +4,31 @@
   <form [formGroup]="newCollectionForm" (ngSubmit)="createOrUpdateCollection()">
     <section>
       <article>
-        <div class="image-couverture-page-tempo couleur-element-tempo">
-
+        <div class="container-image-couverture-page couleur-element-tempo">
           <button class="aligner-droite margin-droite-S espacement-vertical-M centrer-milieu btn-primary btn-small"
             (click)="dialogRef.close()">
             <i class="fa-solid fa-xmark"></i>
             <p>Fermer</p>
           </button>
-
+          <input type="file" id="imageUrl" formControlName="imageUrl" accept="image/png, image/jpg, image/jpeg" />
         </div>
       </article>
     </section>
     <section class="container-general">
       <article class="marges">
+        <!-- PICTO -->
         <div class="centrer-sur-horizon">
           <p class="circle-picto circle-picto-M margin-top-S-negatif couleur-element-tempo input-btn">
             <i class="fa-solid fa-hippo"></i>
           </p>
+          <!-- CATEGORIES -->
           <div class="espacement-vertical-S">
             <input type="text" id="categorie" formControlName="categorie" placeholder="Catégorie*"
               class="tag tag-L input-tag">
             <input type="text" id="sousCategorie" formControlName="sousCategorie" placeholder="Sous catégorie"
               class="tag tag-L input-tag">
           </div>
-          <div class="espacement-vertical-S">
+          <!-- <div class="espacement-vertical-S">
             <ul>
               <li class="aligner-droite margin-droite-flexible">
                 <div>
@@ -35,21 +36,25 @@
                 </div>
               </li>
             </ul>
-          </div>
+          </div> -->
         </div>
       </article>
       <article class="marges">
+        <!-- TITRE COLLECTION -->
         <div class="centrer-sur-horizon">
           <div *ngIf="newCollectionForm.get('label')?.errors?.['required'] && newCollectionForm.get('label')?.touched">
             <p class="texte-error">Requis.</p>
           </div>
         </div>
         <input type="text" id="label" formControlName="label" placeholder="Titre de la collection*" class="input-titre">
-
+        <!-- DESCRIPTION -->
         <textarea rows="4" type="text" id="description" formControlName="description" placeholder="Description"
           class="input-texte"></textarea>
 
+        <!-- PERIODE -->
         <div>
+          <p>Période : </p>
+          <div class="espacement-vertical-M"></div>
           <ul class="centrer-sur-horizon list-cases">
             <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId" class="espace-entre-case">
               <div class="centrer-en-colonne">

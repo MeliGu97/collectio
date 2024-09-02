@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 
 import { FormsModule } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router'
 
 import { PeriodeService } from '../../services/periode.service'
-
 
 @Component({
   selector: 'app-periode-detail',
@@ -17,15 +16,18 @@ import { PeriodeService } from '../../services/periode.service'
   styleUrl: './periode-detail.component.scss'
 })
 export class PeriodeDetailComponent implements OnInit {
-  @Input() idPeriode: string = "";
-  periode: any = {};
-  @Input() periodeTaille: string = "";
+  @Input() idPeriode: string = ''
+  periode: any = {}
+  @Input() periodeTaille: string = ''
 
-  constructor(private periodeService: PeriodeService, private route: ActivatedRoute) {}
+  constructor(
+    private periodeService: PeriodeService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.periodeService.getPeriodeById(this.idPeriode).subscribe((data) => {
       this.periode = data
-    })   
+    })
   }
 }

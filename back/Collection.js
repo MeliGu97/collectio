@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const collectionSchema = new mongoose.Schema({
-  utilisateurId: { type: mongoose.Schema.Types.ObjectId, ref: 'Utilisateur' },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Utilisateur' },
   label: String,
   description: String,
   elementsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Element' }],
@@ -10,6 +10,7 @@ const collectionSchema = new mongoose.Schema({
   picto: String,
   categorie: String,
   sousCategorie: String,
+  public: Boolean,
 })
 
 module.exports = mongoose.model('Collection', collectionSchema)
