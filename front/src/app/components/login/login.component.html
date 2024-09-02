@@ -1,0 +1,49 @@
+<app-popup>
+    <section>
+        <article>
+            <button class="aligner-droite margin-droite-S espacement-vertical-M centrer-milieu btn-small"
+                (click)="dialogRef.close()">
+                <i class="fa-solid fa-xmark"></i>
+                <p> Fermer</p>
+            </button>
+        </article>
+        <article class="padding-S" *ngIf="Isinscription === true">
+            <h3>Devenez collectionneur</h3>
+            <div class="saut-de-ligne-M"></div>
+            <div class="centrer-en-colonne">
+                <form [formGroup]="newUtilisateurForm" (ngSubmit)="ajouterUtilisateur()">
+                    <input class="input-basic" type="text" id="nom" formControlName="nom" placeholder="Nom">
+                    <input class="input-basic" type="text" id="prenom" formControlName="prenom" placeholder="Prénom">
+                    <div class="espacement-vertical-S"></div>
+                    <input class="input-basic" type="text" id="nomUtilisateur" formControlName="nomUtilisateur"
+                        placeholder="Nom d'utilisateur">
+                    <!-- <input class="input-basic" type="text" id="role" formControlName="role" placeholder="Role"> -->
+                    <div class="espacement-vertical-S"></div>
+                    <input class="input-basic" type="password" id="motDePasse" formControlName="motDePasse"
+                        placeholder="Mot de passe">
+
+                    <div class="centrer-en-colonne">
+                        <button type="submit" [disabled]="newUtilisateurForm.invalid" class="btn-primary btn-small">
+                            <p>S'inscrire</p>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </article>
+        <article class="padding-S" *ngIf="Isinscription === false">
+            <h3>Connectez vous</h3>
+            <form [formGroup]="newConnectUtilisateurForm" (ngSubmit)="connectUtilisateur()">
+                <input class="input-basic" type="text" id="nomUtilisateur" formControlName="nomUtilisateur"
+                    placeholder="Nom d'utilisateur">
+                <input class="input-basic" type="password" id="motDePasse" formControlName="motDePasse"
+                    placeholder="Mot de passe">
+
+                <div class="centrer-en-colonne">
+                    <button type="submit" [disabled]="newConnectUtilisateurForm.invalid" class="btn-primary btn-small">
+                        <p>Se connecter</p>
+                    </button>
+                </div>
+            </form>
+        </article>
+    </section>
+</app-popup>

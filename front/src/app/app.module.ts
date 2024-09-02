@@ -1,7 +1,7 @@
 // logiquement ne sert à rien car app.component.ts est en standlone:true => plus besoin de module
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClient, HttpClientModule } from '@angular/common/http'
 import { BrowserModule } from '@angular/platform-browser'
 import { AppRoutingModule } from './app-routing.module'
 import { RouterModule } from '@angular/router'
@@ -14,7 +14,6 @@ import { PeriodeService } from './services/periode.service'
 import { EvenementService } from './services/evenement.service'
 import { UtilisateurService } from './services/utilisateur.service'
 
-
 @NgModule({
   declarations: [],
   imports: [
@@ -23,12 +22,14 @@ import { UtilisateurService } from './services/utilisateur.service'
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    RouterModule,
+    RouterModule
   ],
   providers: [
-    CollectionService, ElementService, 
-    PeriodeService, EvenementService,
-    UtilisateurService,
+    CollectionService,
+    ElementService,
+    PeriodeService,
+    EvenementService,
+    UtilisateurService
   ]
 })
 export class AppModule {}

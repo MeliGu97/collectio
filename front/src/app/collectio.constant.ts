@@ -1,1 +1,1 @@
-export const baseServerUrl = "https://localhost:443"
+export const baseServerUrl = 'https://localhost:443'

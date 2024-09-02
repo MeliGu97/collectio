@@ -1,1 +1,35 @@
 <!-- Ici page générale avec liste de toutes les collections -->
+
+
+<section class="container-image-couverture-homePage">
+    <article>
+        <div class="centrer-sur-horizon centrer-en-colonne">
+            <!-- <img src="assets/logo/Fichier 2.svg" class="miniature espacement-vertical-M"> -->
+            <h1 class="titre-site texte-blanc">Collectio</h1>
+            <div class="espacement-vertical-M"></div>
+
+            <button class="btn-primary btn-small espacement-vertical-S" (click)="openPopupLog(false)">Se
+                connecter</button>
+            <button class="btn-primary btn-small espacement-vertical-S" (click)="openPopupLog(true)">S'inscrire</button>
+            <!-- <a [routerLink]="['/homePage']">Continuer en tant que visiteur</a> -->
+        </div>
+    </article>
+</section>
+
+<section class="container-general">
+    <article class="marges centrer-en-colonne">
+        <div class="centrer-sur-horizon espacement-vertical-M">
+            <input class=" input-recherche" type="search" id="find" name="find"
+                placeholder="Rechercher une collection..." />
+
+            <button class="btn-primary btn-medium centrer-milieu"><i class=" fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </article>
+
+    <article class="marges">
+        <h2>Collections du moment</h2>
+        <li *ngFor="let une of unes" class="card around large">
+            <app-collections [collectionId]="une.collectionId"></app-collections>
+        </li>
+    </article>
+</section>

@@ -1,1 +1,65 @@
-<p>utilisateur works!</p>
+<!-- Ici utilisateur-detail-component page générale par utilisateur avec liste de ses collections -->
+<section>
+    <article class="container-image-couverture-page couleur-home-utili-tempo">
+    </article>
+</section>
+
+<section class="container-general">
+    <article class="marges">
+        <div class="espacement-vertical-L">
+            <h2>Mes collections</h2>
+            <div class="espacement-vertical-M espacement-entre contient-texte-discret">
+                <p class="texte-discret">Nombre de collection</p>
+                <p class="texte-discret">{{ collections.length }}</p>
+            </div>
+        </div>
+    </article>
+
+    <article class="marges">
+        <div class="container">
+            <input type="radio" id="tab1" name="tab" checked>
+            <label for="tab1">Publiques</label>
+
+            <input type="radio" id="tab2" name="tab">
+            <label for="tab2">Privées</label>
+            <div class="line"></div>
+
+            <div class="content-container">
+                <!-- onglet 1 -->
+                <div class="content" id="c1">
+                    <ul class="espacement-autour">
+                        <p *ngIf=" publicCollections.length==0"> Aucune collection </p>
+                        <li *ngFor="let collection of publicCollections" class="card around large">
+                            <app-collections [collectionId]="collection"
+                                (collectionsUpdated)="getCollectionsByUtilisateurIdUpdate(getUserId())"></app-collections>
+                        </li>
+                    </ul>
+                    <div class="espacement-vertical-XL"></div>
+                </div>
+
+                <!-- Onglet 2 -->
+                <div class="content" id="c2">
+                    <!-- POUR CHAQUE COLLECTION  -->
+                    <ul class="espacement-autour">
+                        <p *ngIf=" privateCollections.length==0"> Aucune collection </p>
+                        <li *ngFor="let collection of privateCollections" class="card around large">
+                            <app-collections [collectionId]="collection"
+                                (collectionsUpdated)="getCollectionsByUtilisateurIdUpdate(getUserId())"></app-collections>
+                        </li>
+                    </ul>
+                    <div class="espacement-vertical-XL"></div>
+                </div>
+            </div>
+        </div>
+
+    </article>
+    <article>
+        <!-- AJOUTER UNE COLLECTION : ouvre pop up formulaire -->
+        <div class="aligner-droite margin-droite-flexible">
+            <button (click)="openPopupCreateColl()" [disabled]="isDisabled" class="btn-primary btn-flottant-bas-droite">
+                <i class="fa-solid fa-plus"></i>
+                <p>Ajouter une collection</p>
+            </button>
+        </div>
+    </article>
+</section>

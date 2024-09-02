@@ -1,3 +1,88 @@
-<!-- <p>menu</p> -->
+<!-- menu -->
+<header class="espacement-entre nav-barre">
+    <button class="btn-discret btn-small btn-flottant-haut-gauche centrer-milieu" (click)="IsOpen = true">
+        <i class="fa-solid fa-bars"></i></button>
+    <div *ngIf="utilisateur">
+        <button class="btn-discret btn-small btn-flottant-haut-droite centrer-milieu"
+            (click)="navigateUserPage(utilisateur?._id)">
+            <p>{{ utilisateur?.nomUtilisateur }}</p>
+            <i class="fa-solid fa-user"></i>
+        </button>
+    </div>
+</header>
+<aside *ngIf="IsOpen === true">
+    <app-menu>
+        <section>
+            <article>
+                <button class="btn-discret btn-small btn-flottant-haut-gauche centrer-milieu" (click)="IsOpen = false">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </article>
+            <article>
+                <br><br>
+                <button class="btn-crud-modal" (click)="navigateHomePage()">
+                    <i class="fa-solid fa-house"></i>
+                    <p>Accueil</p>
+                </button>
+
+                <button class="btn-crud-modal" (click)="navigateUserPage(utilisateur?._id)">
+                    <i class="fa-solid fa-user"></i>
+                    <p>Mes collections</p>
+                </button>
+            </article>
+            <!-- <article class="espacement-vertical-L">
+                <p>Rechercher par période</p>
+                <div class="espacement-vertical-S"></div>
+                <button class="btn-crud-modal">
+                    <i class="fa-solid fa-bone"></i>
+                    <p>Préhistorique</p>
+                </button>
+                <button class="btn-crud-modal">
+                    <i class="fa-solid fa-landmark"></i>
+                    <p>Antique</p>
+                </button>
+                <button class="btn-crud-modal">
+                    <i class="fa-solid fa-chess-rook"></i>
+                    <p>Médievale</p>
+                </button>
+                <button class="btn-crud-modal">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                    <p>Moderne</p>
+                </button>
+                <button class="btn-crud-modal">
+                    <i class="fa-solid fa-tower-cell"></i>
+                    <p>Contemporaine</p>
+                </button>
+                <button class="btn-crud-modal">
+                    <i class="fa-solid fa-mobile-retro"></i>
+                    <p>Ultra-contemporaine</p>
+                </button>
+            </article> -->
+        </section>
+        <section>
+            <article class="btn-flottant-bas-gauche">
+                <div *ngIf="utilisateur" Else="connect">
+                    <button class="btn-crud-modal" (click)="logout()">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <p>Se déconnecter</p>
+                    </button>
+                </div>
+                <div #connect>
+                    <!-- <button class="btn-crud-modal" (click)="openConnectPopUp()">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <p>Se connecter</p>
+                    </button> -->
+                </div>
+
+            </article>
+        </section>
+
+    </app-menu>
+</aside>
+<aside *ngIf="IsOpen === false">
+
+</aside>
+
 <router-outlet></router-outlet>
+
 <!-- <footer>FOOTER</footer> -->

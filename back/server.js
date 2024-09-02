@@ -11,6 +11,7 @@ const Collection = require('./Collection');
 const Element = require('./Element');
 const Evenement = require('./Evenement');
 const Periode = require('./Periode');
+const Une = require('./Une');
 
 const { ObjectId } = require('mongodb');
 
@@ -90,14 +91,24 @@ app.get('/collections/:id', async (req, res) => {
   }
 });
 
+// Route pour récupérer les collections d'un utilisateur par son id
+app.get('/collections/user/:userId', async (req, res) => {
+  try {
+    const collections = await Collection.find({ userId: req.params.userId }).populate({
+      path: 'periodesId',
+      options: { sort: { dateDebut: 1 } } // Tri par dateDebut croissant
+    });
+    res.json(collections);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Pour ajouter 
 app.post('/collections', async (req, res) => {
   console.log("req : ", req)
   try {
-    //console.log('Requête POST reçue pour ajouter une collection', req.body);
-    //console.log('Requête POST reçue pour ajouter un élément');
     const newCollection = new Collection({
-      // utilisateurId: req.body.utilisateurId,
       label: req.body.label,
       description: req.body.description,
       imageUrl: req.body.imageUrl,
@@ -106,8 +117,9 @@ app.post('/collections', async (req, res) => {
       sousCategorie: req.body.sousCategorie,
       elementsId: req.body.elementsId,
       periodesId: req.body.periodesId,
+      public: req.body.public,
+      userId: req.body.userId,
     });
-      // console.log("new collection :",newCollection);
       const collectionEnregistre = await newCollection.save();
       res.status(201).json(collectionEnregistre);
   } catch (error) {
@@ -406,6 +418,22 @@ try {
 //  ------------------------------
 //  #region UTILISATEUR
 // ---------------------------------
+
+// Route pour récupérer 1 utilisateur par son id
+app.get('/utilisateurs/:id', async (req, res) => {
+  try {
+    const objectId = req.params.id; // L'ID est déjà dans le format attendu
+    const utilisateurCible = await Utilisateur.findById(objectId);
+    if (!utilisateurCible) {
+      return res.status(404).json({ message: 'Élément non trouvé' });
+    }
+    //console.log("utilisateurCibleeeeeeee : ", utilisateurCible)
+    res.json(utilisateurCible);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+  });
+
 app.post('/utilisateurs', async (req, res) => {
   try {
     const { prenom, nom, nomUtilisateur, motDePasse, role } = req.body;
@@ -437,8 +465,71 @@ app.post('/utilisateurs', async (req, res) => {
   }
 });
 
+app.post('/login', async (req, res) => {
+  try {
+      const { nomUtilisateur, motDePasse } = req.body;
+
+      // Verifie si l'utilisateur existe
+      const user = await Utilisateur.findOne({ nomUtilisateur });
+      if (!user) {
+          return res.status(400).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect' });
+      }
+
+      // puis si le mdp est correcte
+      const isPasswordValid = await bcrypt.compare(motDePasse, user.motDePasse);
+      if (!isPasswordValid) {
+          return res.status(400).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect' });
+      }
+
+      // si les deux sont bons alors ok sinon erreur
+      res.status(200).json(user);
+  } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la connexion', error });
+  }
+});
 
 
+
+// ------------------------- 
+// #region UNE
+// ------------------------- 
+// Route pour tout récupérer  
+app.get('/unes', async (req, res) => {
+  try {
+    const unes = await Une.find().populate({
+      path: 'collectionId',
+      populate: {
+        path: 'periodesId'
+      }
+    });
+    res.json(unes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+
+// Pour ajouter 
+app.post('/unes', async (req, res) => {
+  try {
+    const nouvelUne = new Une({
+      order: req.body.order,
+      collectionId: req.body.collectionsId,
+    });
+      const uneEnregistre = await nouvelUne.save();
+      res.status(201).json(uneEnregistre);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+  });
+  
+
+
+
+  // 
   })
   .catch((error) => {
     console.error('Erreur de connexion à la base de données MongoDB :', error);
