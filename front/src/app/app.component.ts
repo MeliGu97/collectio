@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private utilisateurService: UtilisateurService // Inject the UtilisateurService
+    private utilisateurService: UtilisateurService
   ) {}
 
   ngOnInit(): void {

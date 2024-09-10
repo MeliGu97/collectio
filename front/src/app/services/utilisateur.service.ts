@@ -15,7 +15,7 @@ export class UtilisateurService {
 
   getCurrentUtilisateur(): any {
     const user = localStorage.getItem('storage_user_id')
-    console.log('storage_user_id:', user)
+    // console.log('storage_user_id:', user)
     return user ? { _id: user } : {}
   }
 
@@ -33,10 +33,6 @@ export class UtilisateurService {
   }
 
   connectUtilisateur(utilisateur: any): Observable<any> {
-    return this.http.post<any>(`${baseServerUrl}/login`, utilisateur).pipe(
-      tap((user) => {
-        localStorage.setItem('storage_user_id', JSON.stringify(user)) // Or sessionStorage.setItem('currentUser', JSON.stringify(user))
-      })
-    )
+    return this.http.post<any>(`${baseServerUrl}/login`, utilisateur).pipe()
   }
 }

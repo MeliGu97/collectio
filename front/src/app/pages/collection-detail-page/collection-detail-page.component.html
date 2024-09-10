@@ -74,19 +74,37 @@
         <div class="espacement-vertical-S"></div>
         <div *ngIf=" collection.description.length <= 1"></div>
         <div *ngIf=" collection.description.length >= 1">
-            <p class="espacement-vertical-L conserve-espace-origine"><span class="souligner">Description</span>
-                : {{
-                collection.description }}</p>
+            <p class="conserve-espace-origine">
+                <span class="souligner">Description</span>
+                : {{ collection.description }}
+            </p>
+            <!-- 
+            <p class="conserve-espace-origine abrege" [ngClass]="{'show-all': showAll}">
+                <span class="souligner">Description</span>
+                : {{ collection.description }}
+            </p>
+            <div *ngIf="collection.description.split('\n').length >= 10">
+                <button class="espacement-vertical-S btn-primary btn-small " *ngIf="!showAll" (click)="showMore()">Voir
+                    plus</button>
+            </div> -->
+
         </div>
         <div class="espacement-vertical-M"></div>
     </article>
+    <article class="marges centrer-en-colonne">
+        <div class="centrer-sur-horizon espacement-vertical-M">
+            <input class="input-recherche" type="search" [(ngModel)]="searchTerm"
+                placeholder="Rechercher un élément..." />
 
+            <button class="btn-primary btn-medium centrer-milieu"><i class=" fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </article>
     <!-- List des éléments de la collection -->
     <!-- BODY -->
     <article class="marges">
         <ul class="espacement-autour">
             <li *ngIf="collection.elementsId.length === 0">Aucun élément</li>
-            <li *ngFor="let element of elements" class="card medium">
+            <li *ngFor="let element of elements  | filter: searchTerm" class="card medium">
                 <a [routerLink]="['/elements', element._id]">
                     <!-- <app-element-detail [idElement]="element"></app-element-detail> -->
                     <div class="image-couverture-card-element-tempo couleur-element-tempo"
@@ -95,7 +113,7 @@
                     <ng-template #imageCouv>
                         <img src="{{ element.imageUrl }}" class="image-couverture-card-element-tempo image-de-fond">
                     </ng-template>
-                    <div class="card-paragraphe">
+                    <div class="card-paragraphe card-paragraphe-elem">
                         <!-- <p>({{ element._id }})</p> -->
                         <h5><strong>{{ element.label }}</strong></h5>
                         <p class="text-description conserve-espace-origine">{{ element.description }}</p>
@@ -119,6 +137,7 @@
                     </button> -->
                 </div>
             </li>
+
         </ul>
         <div class="espacement-vertical-XL"></div>
     </article>

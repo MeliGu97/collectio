@@ -11,11 +11,12 @@ import { ElementDetailPageComponent } from '../element-detail-page/element-detai
 import { ElementDetailComponent } from '../../components/element-detail/element-detail.component'
 import { FormElementComponent } from '../../components/form-element/form-element.component'
 import { FormMoreOptionComponent } from '../../components/form-more-option/form-more-option.component'
+import { FilterPipe } from '../../services/filterByText.pipe'
 
 @Component({
   selector: 'app-collection-detail-page',
   standalone: true,
-  providers: [CollectionService, ElementService],
+  providers: [CollectionService, ElementService, FilterPipe],
   templateUrl: './collection-detail-page.component.html',
   styleUrl: './collection-detail-page.component.scss',
   imports: [
@@ -26,16 +27,21 @@ import { FormMoreOptionComponent } from '../../components/form-more-option/form-
     RouterLink,
     ElementDetailPageComponent,
     ElementDetailComponent,
-    FormElementComponent
+    FormElementComponent,
+    FilterPipe
   ]
 })
 export class CollectionDetailPageComponent implements OnInit {
   collection: any = {}
+  collectionDetail: any[] = []
   gradientColors: string[] = []
   elements: any[] = []
   element: any = {}
   isDisabled = false
   isCollection = false
+  searchTerm: string = ''
+
+  showAll = false
 
   constructor(
     private collectionService: CollectionService,
@@ -55,6 +61,11 @@ export class CollectionDetailPageComponent implements OnInit {
           this.loadElements(collectionId)
         })
     })
+    console.log('collection')
+  }
+
+  showMore() {
+    this.showAll = true
   }
 
   loadElements(collectionId: string) {

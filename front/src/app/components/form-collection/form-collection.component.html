@@ -56,13 +56,15 @@
           <p>Période : </p>
           <div class="espacement-vertical-M"></div>
           <ul class="centrer-sur-horizon list-cases">
-            <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId" class="espace-entre-case">
+            <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId"
+              class="espace-entre-case mobile-list-item">
               <div class="centrer-en-colonne">
                 <input type="checkbox" class="checkbox" id="periodesId" [formControlName]="i" [value]="periode._id"
                   (change)="onCheckboxChange($event)" />
                 <p class="tag tag-M periode tooltip" [ngStyle]="{'background': periode.couleur}">
                   {{ periode.label.slice(0, 2) }}
-                  <span class="tooltiptext tolltiptexte-small-top">{{ periode.label }} : de {{ periode.dateDebut }} à {{
+                  <span class="tooltiptext tolltiptexte-small-bottom">{{ periode.label }} : de {{
+                    periode.dateDebut }} à {{
                     periode.dateFin }}</span>
                 </p>
               </div>

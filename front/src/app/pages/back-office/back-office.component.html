@@ -1,1 +1,42 @@
-<p>back-office works!</p>
+<section class="container-general">
+    <div class="espacement-vertical-L"></div>
+    <h1 class="marges">Gestionnaire Collectio</h1>
+    <article class="marges espacement-autour">
+        <div class="carte complete around">
+            <p>Nombre de collections publiques : </p>
+            <p class="mega-chiffre"> {{publicCollections.length}} </p>
+        </div>
+        <li *ngFor="let periode of periodes" class="carte around small" [ngStyle]="{'background': periode.couleur}">
+            <div>
+                <p>{{ periode.label }}</p>
+                <!-- chiffres faux -->
+                <p class="mega-chiffre">{{ periode.collectionsId.length }}</p>
+            </div>
+        </li>
+    </article>
+    <div class="espacement-vertical-L"></div>
+
+    <article class="marges">
+        <h2>Les collections publiques</h2>
+        <div class=" centrer-en-colonne">
+            <div class="centrer-sur-horizon espacement-vertical-M">
+                <input class="input-recherche" type="search" [(ngModel)]="searchTerm"
+                    placeholder="Rechercher une collection..." />
+                <button class="btn-primary btn-medium centrer-milieu"><i
+                        class=" fa-solid fa-magnifying-glass"></i></button>
+            </div>
+            <div>
+                <ul class="espacement-autour">
+                    <li *ngFor="let collection of publicCollections | filter: searchTerm" class="card around small">
+                        <app-collections [collectionId]=" collection"></app-collections>
+                        <!-- <button class="btn-crud-office espacement-entre">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <p>Signaler</p>
+                    </button> -->
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </article>
+</section>

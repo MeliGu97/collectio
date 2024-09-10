@@ -1,65 +1,112 @@
 <!-- Ici utilisateur-detail-component page générale par utilisateur avec liste de ses collections -->
-<section>
+<!-- <section>
     <article class="container-image-couverture-page couleur-home-utili-tempo">
     </article>
-</section>
+</section> -->
 
 <section class="container-general">
     <article class="marges">
-        <div class="espacement-vertical-L">
-            <h2>Mes collections</h2>
-            <div class="espacement-vertical-M espacement-entre contient-texte-discret">
+        <div class="espacement-vertical-XL"></div>
+        <div>
+            <ng-container *ngIf="isCurrentUser; else notMine">
+                <h2>Mes collections</h2>
+            </ng-container>
+            <ng-template #notMine>
+                <h2>Collections de {{ utilisateur?.nomUtilisateur }}</h2>
+            </ng-template>
+
+            <!-- <div class="espacement-vertical-M espacement-entre contient-texte-discret">
                 <p class="texte-discret">Nombre de collection</p>
                 <p class="texte-discret">{{ collections.length }}</p>
-            </div>
+            </div> -->
         </div>
     </article>
 
+    <article class="marges centrer-en-colonne">
+        <div class="centrer-sur-horizon espacement-vertical-M">
+            <input class="input-recherche" type="search" [(ngModel)]="searchTerm"
+                placeholder="Rechercher une collection..." />
+
+            <button class="btn-primary btn-medium centrer-milieu"><i class=" fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div>
+            <ul class="centrer-sur-horizon list-cases">
+                <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId"
+                    class="espace-entre-case mobile-list-item">
+                    <div class="centrer-en-colonne">
+                        <input type="checkbox" class="checkbox" id="periodesId"
+                            (change)="onCheckboxChange($event, utilisateur._id)" [value]="periode._id" />
+
+                        <p class="tag tag-M periode tooltip" [ngStyle]="{'background': periode.couleur}">
+                            {{ periode.label.slice(0, 2) }}
+                            <span class="tooltiptext tolltiptexte-small-bottom">{{ periode.label }} : <br> de {{
+                                periode.dateDebut }} à {{
+                                periode.dateFin }}</span>
+                        </p>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="espacement-vertical-L"></div>
+        </div>
+    </article>
     <article class="marges">
         <div class="container">
             <input type="radio" id="tab1" name="tab" checked>
             <label for="tab1">Publiques</label>
 
-            <input type="radio" id="tab2" name="tab">
-            <label for="tab2">Privées</label>
+            <ng-container *ngIf="isCurrentUser; else sansPrivee">
+                <input type="radio" id="tab2" name="tab">
+                <label for="tab2">Privées</label>
+            </ng-container>
             <div class="line"></div>
 
             <div class="content-container">
                 <!-- onglet 1 -->
                 <div class="content" id="c1">
                     <ul class="espacement-autour">
-                        <p *ngIf=" publicCollections.length==0"> Aucune collection </p>
-                        <li *ngFor="let collection of publicCollections" class="card around large">
+                        <p *ngIf=" collectionsPublic.length==0"> Aucune collection </p>
+                        <li *ngFor="let collection of collectionsPublic | filter: searchTerm | filterByPeriodes: selectedPeriodes"
+                            class="card around large">
                             <app-collections [collectionId]="collection"
-                                (collectionsUpdated)="getCollectionsByUtilisateurIdUpdate(getUserId())"></app-collections>
+                                (collectionsUpdated)="getCollectionsPublicByUtilisateurId(getUserId())"></app-collections>
                         </li>
                     </ul>
                     <div class="espacement-vertical-XL"></div>
                 </div>
 
                 <!-- Onglet 2 -->
-                <div class="content" id="c2">
-                    <!-- POUR CHAQUE COLLECTION  -->
-                    <ul class="espacement-autour">
-                        <p *ngIf=" privateCollections.length==0"> Aucune collection </p>
-                        <li *ngFor="let collection of privateCollections" class="card around large">
-                            <app-collections [collectionId]="collection"
-                                (collectionsUpdated)="getCollectionsByUtilisateurIdUpdate(getUserId())"></app-collections>
-                        </li>
-                    </ul>
-                    <div class="espacement-vertical-XL"></div>
-                </div>
+                <ng-container *ngIf="isCurrentUser; else sansPrivee">
+                    <div class="content" id="c2">
+                        <!-- POUR CHAQUE COLLECTION  -->
+                        <ul class="espacement-autour">
+                            <p *ngIf=" collectionsPrivate.length==0"> Aucune collection </p>
+                            <li *ngFor="let collection of collectionsPrivate | filter: searchTerm | filterByPeriodes: selectedPeriodes"
+                                class="card around large">
+                                <app-collections [collectionId]="collection"
+                                    (collectionsUpdated)="getCollectionsPrivateByUtilisateurId(getUserId())"></app-collections>
+                            </li>
+                        </ul>
+                        <div class="espacement-vertical-XL"></div>
+                    </div>
+                </ng-container>
+                <ng-template #sansPrivee></ng-template>
+
             </div>
         </div>
 
     </article>
-    <article>
-        <!-- AJOUTER UNE COLLECTION : ouvre pop up formulaire -->
-        <div class="aligner-droite margin-droite-flexible">
-            <button (click)="openPopupCreateColl()" [disabled]="isDisabled" class="btn-primary btn-flottant-bas-droite">
-                <i class="fa-solid fa-plus"></i>
-                <p>Ajouter une collection</p>
-            </button>
-        </div>
-    </article>
+    <ng-container *ngIf="isCurrentUser; else cantadd">
+        <article>
+            <!-- AJOUTER UNE COLLECTION : ouvre pop up formulaire -->
+            <div class="aligner-droite margin-droite-flexible">
+                <button (click)="openPopupCreateColl()" [disabled]="isDisabled"
+                    class="btn-primary btn-flottant-bas-droite">
+                    <i class="fa-solid fa-plus"></i>
+                    <p>Ajouter une collection</p>
+                </button>
+            </div>
+        </article>
+    </ng-container>
+    <ng-template #cantadd></ng-template>
 </section>

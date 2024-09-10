@@ -9,11 +9,20 @@ import { CollectionService } from '../../services/collection.service'
 import { CollectionsComponent } from '../../components/collection-detail/collections.component'
 import { FormCollectionComponent } from '../../components/form-collection/form-collection.component'
 import { UtilisateurService } from '../../services/utilisateur.service'
+import { FilterPipe } from '../../services/filterByText.pipe'
+import { PeriodeService } from '../../services/periode.service'
+import { FilterByPeriodesPipe } from '../../services/filterByPeriodes.pipe'
 
 @Component({
   selector: 'app-utilisateur-detail-page',
   standalone: true,
-  providers: [CollectionService, UtilisateurService],
+  providers: [
+    CollectionService,
+    PeriodeService,
+    UtilisateurService,
+    FilterPipe,
+    FilterByPeriodesPipe
+  ],
   templateUrl: './utilisateur-detail-page.component.html',
   styleUrl: './utilisateur-detail-page.component.scss',
   imports: [
@@ -22,20 +31,35 @@ import { UtilisateurService } from '../../services/utilisateur.service'
     DialogModule,
     FormsModule,
     RouterLink,
-    CollectionsComponent
+    CollectionsComponent,
+    FilterPipe,
+    FilterByPeriodesPipe
   ]
 })
 export class UtilisateurDetailPageComponent implements OnInit {
   collection: any = {}
   collections: any[] = []
-  isDisabled = false
-  privateCollections: any[] = []
-  publicCollections: any[] = []
-  getCollectionsByUtilisateurId: any
   collectionId: any
+
+  // privateCollections: any[] = []
+  // publicCollections: any[] = []
+  collectionsPublic: any[] = []
+  collectionsPrivate: any[] = []
+
+  periodes: any
+  selectedPeriodes: string[] = []
+  getCollectionsByPeriodeId: any[] = []
+
+  utilisateur: any
+  isCurrentUser: boolean = false
+
+  isDisabled = false
+  searchTerm: string = ''
 
   constructor(
     private collectionService: CollectionService,
+    private periodeService: PeriodeService,
+    private utilisateurService: UtilisateurService,
     public dialog: Dialog,
     private route: ActivatedRoute
   ) {}
@@ -43,51 +67,93 @@ export class UtilisateurDetailPageComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       const utilisateurId = params['id']
-      this.getCollectionsByStatus(false, utilisateurId)
-      this.getCollectionsByStatus(true, utilisateurId)
+      this.utilisateurService
+        .getUtilisateurById(utilisateurId)
+        .subscribe((data) => {
+          this.utilisateur = data
+          this.isCurrentUser =
+            this.utilisateurService.getCurrentUtilisateur()._id ===
+            utilisateurId
+        })
+
+      this.getCollectionsPublicByUtilisateurId(utilisateurId)
+      this.getCollectionsPrivateByUtilisateurId(utilisateurId)
 
       // décompte nombre de coll
-      this.loadCollection(utilisateurId)
+      // this.loadCollection(utilisateurId)
+    })
+    this.periodeService.getPeriodes().subscribe((data) => {
+      this.periodes = data
     })
   }
 
-  loadCollection(userId: string) {
-    this.collectionService
-      .getCollectionsByUtilisateurId(userId)
-      .subscribe((data) => {
-        // console.log('data', data)
-        this.collections = data
-      })
-  }
+  // loadCollection(userId: string) {
+  //   this.collectionService
+  //     .getCollectionsPublicByUtilisateurId(userId)
+  //     .subscribe((data) => {
+  //       // console.log('data', data)
+  //       this.collections = data
+  //     })
+  // }
 
   getUserId(): string {
     return this.route.snapshot.params['id']
   }
 
-  getCollectionsByStatus(isPublic: boolean, userId?: string) {
+  // getCollectionsByStatus(userId?: string) {
+  //   this.collectionService
+  //     .getCollectionsUtiliByPublicStatus(userId)
+  //     .subscribe((data) => {
+  //       if (isPublic) {
+  //         this.publicCollections = data
+  //       } else {
+  //         this.privateCollections = data
+  //       }
+  //     })
+  // }
+
+  getCollectionsPublicByUtilisateurId(userId: string) {
     this.collectionService
-      .getCollectionsByPublicStatus(isPublic, userId)
-      .subscribe((data) => {
-        if (isPublic) {
-          this.publicCollections = data
-        } else {
-          this.privateCollections = data
-        }
-      })
-  }
-  getCollectionsByUtilisateurIdUpdate(userId: string) {
-    this.collectionService
-      .getCollectionsByUtilisateurId(userId)
+      .getCollectionsPublicByUtilisateurId(userId)
       .subscribe((data) => {
         this.collections = data
-        // Mettre à jour les collections publiques et privées
-        this.publicCollections = this.collections.filter(
+        this.collectionsPublic = data
+        // Mettre à jour les collections publiques
+        this.collectionsPublic = this.collections.filter(
           (collection) => collection.public
         )
-        this.privateCollections = this.collections.filter(
+      })
+    console.log('public coll', this.collectionsPublic)
+  }
+
+  getCollectionsPrivateByUtilisateurId(userId: string) {
+    this.collectionService
+      .getCollectionsPrivateByUtilisateurId(userId)
+      .subscribe((data) => {
+        this.collections = data
+        this.collectionsPrivate = data
+        // Mettre à jour les collections privées
+        this.collectionsPrivate = this.collections.filter(
           (collection) => !collection.public
         )
       })
+  }
+  onCheckboxChange(periodeEvent: any, userId: string) {
+    if (periodeEvent.target.checked) {
+      this.collectionsPublic = this.collectionsPublic.filter((collection) =>
+        collection.periodesId.some(
+          (periode: { _id: any }) => periode._id === periodeEvent.target.value
+        )
+      )
+      this.collectionsPrivate = this.collectionsPrivate.filter((collection) =>
+        collection.periodesId.some(
+          (periode: { _id: any }) => periode._id === periodeEvent.target.value
+        )
+      )
+    } else {
+      this.getCollectionsPublicByUtilisateurId(userId)
+      this.getCollectionsPrivateByUtilisateurId(userId)
+    }
   }
 
   openPopupCreateColl() {
@@ -98,8 +164,12 @@ export class UtilisateurDetailPageComponent implements OnInit {
 
     dialogRef.closed.subscribe((result) => {
       if (result) {
-        this.getCollectionsByStatus(false, this.route.snapshot.params['id'])
-        this.getCollectionsByStatus(true, this.route.snapshot.params['id'])
+        this.getCollectionsPublicByUtilisateurId(
+          this.route.snapshot.params['id']
+        )
+        this.getCollectionsPrivateByUtilisateurId(
+          this.route.snapshot.params['id']
+        )
       }
       this.isDisabled = false
     })

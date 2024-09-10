@@ -92,17 +92,49 @@ app.get('/collections/:id', async (req, res) => {
 });
 
 // Route pour récupérer les collections d'un utilisateur par son id
-app.get('/collections/user/:userId', async (req, res) => {
+app.get('/collectionsPublicByUtili/user/:userId', async (req, res) => {
   try {
-    const collections = await Collection.find({ userId: req.params.userId }).populate({
+    const collections = await Collection.find({ userId: req.params.userId,  public: true}).populate({
       path: 'periodesId',
       options: { sort: { dateDebut: 1 } } // Tri par dateDebut croissant
     });
     res.json(collections);
   } catch (error) {
+    console.error('Erreur :', error);
     res.status(500).json({ message: error.message });
   }
 });
+
+// Route pour récup les coll utilisateur privées uniquement 
+app.get('/collectionsPrivateByUtili/user/:userId', async (req, res) => {
+  try {
+    const collections = await Collection.find({ userId: req.params.userId, public: false}).populate({
+      path: 'periodesId',
+      options: { sort: { dateDebut: 1 } } // Tri par dateDebut croissant
+    });
+    res.json(collections);
+  } catch (error) {
+    console.error('Erreur :', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Route pour récup les coll publiques uniquement 
+// attention doit etre en un mot car si on ajoute un / alors cherche un second id
+app.get('/collectionsPublic', async (req, res) => {
+  try {
+    const query = { public: true };
+    const collections = await Collection.find(query).populate({
+      path: 'periodesId',
+      options: { sort: { dateDebut: 1 } } // Tri par dateDebut croissant
+    });
+    res.json(collections);
+  } catch (error) {
+    console.error('Erreur :', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 // Pour ajouter 
 app.post('/collections', async (req, res) => {

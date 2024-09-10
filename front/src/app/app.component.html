@@ -5,8 +5,8 @@
     <div *ngIf="utilisateur">
         <button class="btn-discret btn-small btn-flottant-haut-droite centrer-milieu"
             (click)="navigateUserPage(utilisateur?._id)">
-            <p>{{ utilisateur?.nomUtilisateur }}</p>
-            <i class="fa-solid fa-user"></i>
+            <p><i class="fa-solid fa-user"></i> {{ utilisateur?.nomUtilisateur }}</p>
+
         </button>
     </div>
 </header>
@@ -26,7 +26,7 @@
                 </button>
 
                 <button class="btn-crud-modal" (click)="navigateUserPage(utilisateur?._id)">
-                    <i class="fa-solid fa-user"></i>
+                    <i class="fa-solid fa-folder"></i>
                     <p>Mes collections</p>
                 </button>
             </article>

@@ -97,12 +97,14 @@
         </ng-template>
       </div>
     </div>
-
-    <div class="espacement-vertical-M espacement-entre contient-texte-discret">
+    <div class="espacement-vertical-M "></div>
+    <div class="espacement-entre contient-texte-discret">
       <p class="texte-discret">Nombre d'élément</p>
       <p class="texte-discret">{{ collection.elementsId.length }}</p>
     </div>
-    <p>{{ collection.userId }}</p>
-
   </div>
 </a>
+<div class="espacement-entre contient-texte-discret see-utili-page" (click)="navigateUserPage(utilisateur._id)">
+  <p class="texte-discret">Collecté par</p>
+  <p class="texte-discret">{{ utilisateur.nomUtilisateur }}</p>
+</div>

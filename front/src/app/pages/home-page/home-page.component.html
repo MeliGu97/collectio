@@ -17,19 +17,65 @@
 </section>
 
 <section class="container-general">
+    <div class="espacement-vertical-L"></div>
+    <h2 class="marges">Les collections publiques</h2>
     <article class="marges centrer-en-colonne">
         <div class="centrer-sur-horizon espacement-vertical-M">
-            <input class=" input-recherche" type="search" id="find" name="find"
+            <input class="input-recherche" type="search" [(ngModel)]="searchTerm"
                 placeholder="Rechercher une collection..." />
-
             <button class="btn-primary btn-medium centrer-milieu"><i class=" fa-solid fa-magnifying-glass"></i></button>
         </div>
-    </article>
+        <div>
+            <ul class="centrer-sur-horizon list-cases">
+                <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId"
+                    class="espace-entre-case mobile-list-item">
+                    <div class="centrer-en-colonne">
+                        <input type="checkbox" class="checkbox" id="periodesId" (change)="onCheckboxChange($event)"
+                            [value]="periode._id" />
 
+                        <p class="tag tag-M periode tooltip" [ngStyle]="{'background': periode.couleur}">
+                            {{ periode.label.slice(0, 2) }}
+                            <span class="tooltiptext tolltiptexte-small-bottom">{{ periode.label }} : <br> de {{
+                                periode.dateDebut }} à {{
+                                periode.dateFin }}</span>
+                        </p>
+                    </div>
+                </li>
+            </ul>
+            <div class="espacement-vertical-L"></div>
+        </div>
+        <div>
+            <ul class="espacement-autour">
+                <li *ngFor="let collection of publicCollections | filter: searchTerm" class="card around medium">
+                    <app-collections [collectionId]="collection"></app-collections>
+                </li>
+            </ul>
+        </div>
+        <div class="espacement-vertical-M"></div>
+        <div class="centrer-sur-horizon centrer-milieu">
+            <button class="btn-primary btn-small espacement-horizontal-M" (click)="previousPage()"
+                [disabled]="currentPage === 1">Précédent</button>
+            <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+            <button class="btn-primary btn-small espacement-horizontal-M" (click)="nextPage()"
+                [disabled]="currentPage === totalPages">Suivant</button>
+        </div>
+        <div class="espacement-vertical-L"></div>
+    </article>
+</section>
+<section class="debordement-vertical-XL fond-couleur-black90">
     <article class="marges">
         <h2>Collections du moment</h2>
-        <li *ngFor="let une of unes" class="card around large">
-            <app-collections [collectionId]="une.collectionId"></app-collections>
-        </li>
+        <div class="espacement-vertical-L"></div>
+        <ul class="espacement-autour">
+            <li *ngFor="let une of unes" class="card around large">
+                <app-collections [collectionId]="une.collectionId"></app-collections>
+            </li>
+        </ul>
+        <div class="espacement-vertical-L"><br></div>
+    </article>
+</section>
+<section class="container-general">
+    <article class="marges">
+        <h2>Collectio en un mot</h2>
     </article>
 </section>

@@ -53,7 +53,7 @@ export class FormMoreOptionComponent {
     this.collectionService.updateCollection(updatedCollection).subscribe(
       () => {
         this.collectionService
-          .getCollectionsByPublicStatus(isPublic)
+          .getCollectionsPrivateByUtilisateurId(this.collection.userId)
           .subscribe((data) => {})
         this.dialogRef.close(updatedCollection)
         // console.log(`coll ${isPublic ? 'rendue publique' : 'privatisée'}`)
@@ -68,16 +68,18 @@ export class FormMoreOptionComponent {
     this.collectionService.deleteCollectionById(id).subscribe({
       next: () => {
         const userId = this.utilisateurService.getCurrentUtilisateur()._id
-        this.collectionService.getCollectionsByUtilisateurId(userId).subscribe({
-          next: (data) => {
-            this.collections = data
-            this.dialogRef.close(userId)
-            // console.log('coll suppr')
-          },
-          error: (error) => {
-            console.error('Error getting collections:', error)
-          }
-        })
+        this.collectionService
+          .getCollectionsPrivateByUtilisateurId(userId)
+          .subscribe({
+            next: (data) => {
+              this.collections = data
+              this.dialogRef.close(userId)
+              // console.log('coll suppr')
+            },
+            error: (error) => {
+              console.error('Error getting collections:', error)
+            }
+          })
       },
       error: (error) => {
         console.error('Error deleting collection:', error)

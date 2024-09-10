@@ -2,7 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 import { FormsModule } from '@angular/forms'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import { Dialog, DialogModule } from '@angular/cdk/dialog'
 
 import { CollectionService } from '../../services/collection.service'
@@ -26,12 +26,22 @@ import { UtilisateurService } from '../../services/utilisateur.service'
   ]
 })
 export class CollectionsComponent implements OnInit {
+  @Input() selectedPeriodes: string[] = []
+
   @Output() collectionsUpdated = new EventEmitter<void>()
   @Output() collectionDeleted = new EventEmitter<void>()
 
   @Input() collectionId: string = ''
+
   collection: any = {}
   collections: any[] = []
+  AllcollectionsPubliques: any[] = []
+  collectionsUtiliPubliques: any[] = []
+  collectionsUtiliPrivates: any[] = []
+
+  utilisateur: any = {}
+  isCurrentUser: boolean = false
+
   gradientColors: string[] = []
   isDisabled = false
   collectionsStatus: any[] = []
@@ -40,41 +50,88 @@ export class CollectionsComponent implements OnInit {
   constructor(
     private collectionService: CollectionService,
     private utilisateurService: UtilisateurService,
-    public dialog: Dialog
+    public dialog: Dialog,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.collection = this.collectionId
     this.collectionService.getCollections().subscribe((data) => {
       this.collections = data
+      this.filterCollectionsByPeriodes()
+    })
+    this.getUtilisateurById(this.collection.userId)
+  }
+
+  filterCollectionsByPeriodes() {
+    if (this.selectedPeriodes.length === 0) {
+      return this.collections
+    }
+
+    return this.collections.filter((collection) =>
+      collection.periodesId.some((periodeId: string) =>
+        this.selectedPeriodes.includes(periodeId)
+      )
+    )
+  }
+
+  // getCollections() {
+  //   this.collectionService.getCollections().subscribe((data) => {
+  //     this.collections = data
+  //     // console.log('Liste des collections mise à jour :', this.collections)
+  //   })
+  // }
+
+  getAllPublicCollections() {
+    this.collectionService.getAllPublicCollections().subscribe((data) => {
+      this.AllcollectionsPubliques = data
     })
   }
 
-  getCollections() {
-    this.collectionService.getCollections().subscribe((data) => {
-      this.collections = data
-      // console.log('Liste des collections mise à jour :', this.collections)
+  // getCollectionsUtiliByPublicStatut(userId: string) {
+  //   this.collectionService
+  //     .getCollectionsPublicByUtilisateurId(userId)
+  //     .subscribe((data) => {
+  //       this.collectionsUtiliPubliques = data
+  //     })
+  // }
+  // getCollectionsUtiliByPrivateStatut(userId: string) {
+  //   this.collectionService
+  //     .getCollectionsPrivateByUtilisateurId(userId)
+  //     .subscribe((data) => {
+  //       this.collectionsUtiliPrivates = data
+  //     })
+  // }
+
+  getCollectionsPubliquesByUtilisateurId() {
+    this.collectionService
+      .getCollectionsPublicByUtilisateurId(this.collection.userId)
+      .subscribe((data) => {
+        this.collectionsUtiliPubliques = data
+      })
+    console.log(
+      'this.collectionsUtiliPubliques',
+      this.collectionsUtiliPubliques
+    )
+  }
+  getCollectionsPrivatesByUtilisateurId() {
+    this.collectionService
+      .getCollectionsPrivateByUtilisateurId(this.collection.userId)
+      .subscribe((data) => {
+        this.collectionsUtiliPrivates = data
+      })
+  }
+
+  getUtilisateurById(userId: string) {
+    this.utilisateurService.getUtilisateurById(userId).subscribe((data) => {
+      this.utilisateur = data
     })
   }
 
-  getCollectionsByPublicStatus(userId: string) {
-    this.collectionService
-      .getCollectionsByPublicStatus(this.collection.public, userId)
-      .subscribe((data) => {
-        this.collectionsStatus = data
-        // console.log(
-        //   'Liste des collections publiques et privées mise à jour :',
-        //   this.collectionsStatus
-        // )
-      })
-  }
-
-  getCollectionsByUtilisateurId() {
-    this.collectionService
-      .getCollectionsByUtilisateurId(this.collection.userId)
-      .subscribe((data) => {
-        this.collection
-      })
+  navigateUserPage(id: string) {
+    if (id) {
+      this.router.navigate(['/utilisateur', id])
+    }
   }
 
   setGradientStyle(collectionPeriodes: any): string {
@@ -100,7 +157,8 @@ export class CollectionsComponent implements OnInit {
           this.collections[index] = result
           this.collectionsUpdated.emit()
           // console.log('collectionsUpdated emitted')
-          this.getCollectionsByUtilisateurId()
+          this.getCollectionsPubliquesByUtilisateurId()
+          this.getCollectionsPrivatesByUtilisateurId()
         }
       }
       this.isDisabled = false
@@ -121,11 +179,12 @@ export class CollectionsComponent implements OnInit {
         if (index !== -1) {
           this.collections[index] = result // Mettre à jour la collection dans la liste
           this.collectionsUpdated.emit()
-          this.getCollectionsByUtilisateurId()
+          this.getCollectionsPubliquesByUtilisateurId()
+          this.getCollectionsPrivatesByUtilisateurId()
         }
       }
       const userId = this.utilisateurService.getCurrentUtilisateur()._id
-      this.getCollectionsByPublicStatus(userId)
+      // this.getCollectionsUtiliByPublicStatus(userId)
     })
   }
 }

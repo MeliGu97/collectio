@@ -47,9 +47,13 @@ $error: #F76848;
 $succes: #43A960;
 
 
-.fond-couleur{
+.fond-couleur-primary{
   background-color: #437C90;
 }
+.fond-couleur-black90{
+  background-color: $black90
+}
+
 
 // .couleur-theme{background-color: $black70;}
 // .couleur-categorie{background-color: $black50;}
@@ -126,14 +130,23 @@ $succes: #43A960;
 .espacement-vertical-XL{
   margin: 50px 0px;
 }
+.debordement-vertical-XL{
+  padding: 50px 0px;
+}
 .espacement-vertical-L{
   margin: 35px 0px;
 }
 .espacement-vertical-M{
   margin: 15px 0px;
 }
+.espacement-horizontal-M{
+  margin: 0px 15px;
+}
 .espacement-vertical-S{
   margin: 5px 0px;
+}
+.espacement-horizontal-S{
+  margin: 0px 5px;
 }
 .saut-de-ligne-L{
   height: 35px;
@@ -176,6 +189,9 @@ h2{
   font-family: 'Euphorigenic';
   font-size: 30px;
   margin-bottom: 0px;
+}
+.fond-couleur-black90 h2{
+  color: whitesmoke;
 }
 h3{
   margin-top: 0px;
@@ -265,9 +281,12 @@ a {
 }
 
 .card-paragraphe {
-  padding: 10px;
+  padding: 10px 15px 0px 15px;
   font-size: 12px;
   border-radius: 0px 0px 10px 10px ;
+}
+.card-paragraphe-elem{
+  padding: 15px 10px 15px 10px;
 }
 .card,
 .card-paragraphe {
@@ -284,6 +303,21 @@ a {
           line-clamp: 2; 
   -webkit-box-orient: vertical;
 }
+
+.abrege {
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+          line-clamp: 10; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.show-all {
+  -webkit-line-clamp: unset;
+          line-clamp: unset; 
+}
+
 .card:hover {
   background-color: whitesmoke;
 }
@@ -299,6 +333,11 @@ a {
   font-size: 10px;
 }
 
+.see-utili-page{
+  font-size: 12px;
+  padding: 0px 15px 10px 15px;
+  cursor: pointer;
+}
 
 .fiche-description{
   // background-color: #f4eee5;
@@ -384,6 +423,17 @@ li {
   padding: 0;
   margin: 0;
 }
+
+.list-cases {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.mobile-list-item {
+  width: auto;
+}
+
 
 // ----------- Tab -----------
 .container {
@@ -515,7 +565,10 @@ input:focus, textarea:focus {
   margin: 0px 10px;
 }
 
-
+.checkbox{
+  margin-bottom: 2px;
+  cursor: pointer;
+}
 .checkbox:focus{
   outline: 0px;
 }
@@ -673,6 +726,7 @@ button {
 
 
 // TAILLE
+
 .btn-medium{
   height: 30px;
 }
@@ -743,6 +797,7 @@ button {
 .tooltip {
   position: relative;
   display: inline-block;
+  margin: 0px 8px;
   // border-bottom: 1px dotted black;
 }
 
@@ -754,7 +809,7 @@ button {
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 5px;
   position: absolute;
   z-index: 1;
   margin-left: -60px;
@@ -770,6 +825,11 @@ button {
 .tolltiptexte-left{
   width: 250px;
   right: 120%;
+}
+.tolltiptexte-small-bottom{
+  width: 120px;
+  top: 125%;
+  left: 50%;
 }
 
 .tooltip .tooltiptext::after {
@@ -789,6 +849,12 @@ button {
   top: 35%;
   left: 102%;
   border-color:  transparent transparent transparent #2E4249 ;
+}
+.tolltiptexte-small-bottom:after{
+  bottom: 100%;
+  left: 50%;
+  // pour faire le petit triangle
+  border-color: transparent transparent #2E4249 transparent;
 }
 
 .tooltip:hover .tooltiptext {
@@ -875,11 +941,20 @@ button {
   .btn-crud {
     opacity: 1; 
   }
+  .input-recherche{
+    width: 220px;
+  }
+  .complete {
+    width: 100%;
+  }
   .large {
     width: 95%;
   }
   .medium {
     width: 45%;
+  }
+  .small {
+    width: 25%;
   }
   .margin-droite-flexible{
     right: 1%;
@@ -891,6 +966,14 @@ button {
   .btn-flottant-bas-droite{
     right: 10%;
   }
+
+  .mobile-list-item {
+      width: 30%;
+  }
+  .tooltip {
+    margin: 3px 5px;
+  }
+
 }
 //  tablette
 @media (min-width: 768px) and (max-width: 1024px) { 
@@ -906,11 +989,17 @@ button {
   .btn-crud {
     opacity: 1; 
   }
+  .complete {
+    width: 100%;
+  }
   .large {
     width: 95%;
   }
   .medium {
     width: 45%;
+  }
+  .small {
+    width: 25%;
   }
   .margin-droite-flexible{
     right: 10%;
@@ -924,11 +1013,17 @@ button {
   .card{
     margin: 1%;
   }
+  .complete {
+    width: 100%;
+  }
   .large {
     width: 45%;
   }
   .medium {
     width: 23%;
+  }
+  .small {
+    width: 25%;
   }
   .margin-droite-flexible{
     right: 20%;
