@@ -6,7 +6,7 @@ import {
   Validators,
   ReactiveFormsModule,
   AbstractControl
-} from '@angular/forms' // Importez FormGroup, FormBuilder et Validators
+} from '@angular/forms'
 import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 import { FormsModule } from '@angular/forms'

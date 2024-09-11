@@ -304,6 +304,30 @@ a {
   -webkit-box-orient: vertical;
 }
 
+.signalement{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  height: auto;
+  width: 100%;
+  background-color: $error;
+  padding: 20px 10px;
+  opacity: 0.95;
+  color: white;
+}
+.signalement p{
+  margin-bottom: 30px;
+}
+.signalement-compris{
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  background-color: $error;
+  opacity: 0.95;
+  color: white;
+  padding: 5px;
+}
+
 .abrege {
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -797,7 +821,7 @@ button {
 .tooltip {
   position: relative;
   display: inline-block;
-  margin: 0px 8px;
+  // margin: 0px 8px;
   // border-bottom: 1px dotted black;
 }
 
@@ -950,12 +974,10 @@ button {
   .large {
     width: 95%;
   }
-  .medium {
+  .medium, .small, .extra-small {
     width: 45%;
   }
-  .small {
-    width: 25%;
-  }
+
   .margin-droite-flexible{
     right: 1%;
   }
@@ -995,11 +1017,8 @@ button {
   .large {
     width: 95%;
   }
-  .medium {
+  .medium, .small, .extra-small {
     width: 45%;
-  }
-  .small {
-    width: 25%;
   }
   .margin-droite-flexible{
     right: 10%;
@@ -1024,6 +1043,9 @@ button {
   }
   .small {
     width: 25%;
+  }
+  .extra-small {
+    width: 15%;
   }
   .margin-droite-flexible{
     right: 20%;

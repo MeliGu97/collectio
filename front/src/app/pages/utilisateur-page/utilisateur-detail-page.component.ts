@@ -6,12 +6,14 @@ import { ActivatedRoute, RouterLink } from '@angular/router'
 import { Dialog, DialogModule } from '@angular/cdk/dialog'
 
 import { CollectionService } from '../../services/collection.service'
+import { UtilisateurService } from '../../services/utilisateur.service'
+import { PeriodeService } from '../../services/periode.service'
+
 import { CollectionsComponent } from '../../components/collection-detail/collections.component'
 import { FormCollectionComponent } from '../../components/form-collection/form-collection.component'
-import { UtilisateurService } from '../../services/utilisateur.service'
-import { FilterPipe } from '../../services/filterByText.pipe'
-import { PeriodeService } from '../../services/periode.service'
+
 import { FilterByPeriodesPipe } from '../../services/filterByPeriodes.pipe'
+import { FilterPipe } from '../../services/filterByText.pipe'
 
 @Component({
   selector: 'app-utilisateur-detail-page',
@@ -39,7 +41,7 @@ import { FilterByPeriodesPipe } from '../../services/filterByPeriodes.pipe'
 export class UtilisateurDetailPageComponent implements OnInit {
   collection: any = {}
   collections: any[] = []
-  collectionId: any
+  collectionId: string = ''
 
   // privateCollections: any[] = []
   // publicCollections: any[] = []
@@ -60,6 +62,7 @@ export class UtilisateurDetailPageComponent implements OnInit {
     private collectionService: CollectionService,
     private periodeService: PeriodeService,
     private utilisateurService: UtilisateurService,
+
     public dialog: Dialog,
     private route: ActivatedRoute
   ) {}
@@ -78,39 +81,15 @@ export class UtilisateurDetailPageComponent implements OnInit {
 
       this.getCollectionsPublicByUtilisateurId(utilisateurId)
       this.getCollectionsPrivateByUtilisateurId(utilisateurId)
-
-      // décompte nombre de coll
-      // this.loadCollection(utilisateurId)
     })
     this.periodeService.getPeriodes().subscribe((data) => {
       this.periodes = data
     })
   }
 
-  // loadCollection(userId: string) {
-  //   this.collectionService
-  //     .getCollectionsPublicByUtilisateurId(userId)
-  //     .subscribe((data) => {
-  //       // console.log('data', data)
-  //       this.collections = data
-  //     })
-  // }
-
   getUserId(): string {
     return this.route.snapshot.params['id']
   }
-
-  // getCollectionsByStatus(userId?: string) {
-  //   this.collectionService
-  //     .getCollectionsUtiliByPublicStatus(userId)
-  //     .subscribe((data) => {
-  //       if (isPublic) {
-  //         this.publicCollections = data
-  //       } else {
-  //         this.privateCollections = data
-  //       }
-  //     })
-  // }
 
   getCollectionsPublicByUtilisateurId(userId: string) {
     this.collectionService
@@ -138,6 +117,31 @@ export class UtilisateurDetailPageComponent implements OnInit {
         )
       })
   }
+
+  getCollectionsByUtilisateurId(userId: string) {
+    this.collectionService
+      .getCollectionsPrivateByUtilisateurId(userId)
+      .subscribe((data) => {
+        this.collections = data
+        this.collectionsPrivate = data
+        // Mettre à jour les collections privées
+        this.collectionsPrivate = this.collections.filter(
+          (collection) => !collection.public
+        )
+      })
+    this.collectionService
+      .getCollectionsPublicByUtilisateurId(userId)
+      .subscribe((data) => {
+        this.collections = data
+        this.collectionsPublic = data
+        // Mettre à jour les collections publiques
+        this.collectionsPublic = this.collections.filter(
+          (collection) => collection.public
+        )
+      })
+    console.log('public coll', this.collectionsPublic)
+  }
+
   onCheckboxChange(periodeEvent: any, userId: string) {
     if (periodeEvent.target.checked) {
       this.collectionsPublic = this.collectionsPublic.filter((collection) =>
@@ -164,9 +168,6 @@ export class UtilisateurDetailPageComponent implements OnInit {
 
     dialogRef.closed.subscribe((result) => {
       if (result) {
-        this.getCollectionsPublicByUtilisateurId(
-          this.route.snapshot.params['id']
-        )
         this.getCollectionsPrivateByUtilisateurId(
           this.route.snapshot.params['id']
         )

@@ -11,26 +11,28 @@
     padding: 10px;
 }
 
-// .btn-crud-office{
-//     opacity: 0.5;
-//     background-color: #f0aa9b;
-//     border: none;
-//     color: #24292E;
-//     padding: 5px 2%;
-//     margin-bottom: 5px;
-//     transition: background-color 0.1s cubic-bezier(0.3, 0, 0.5, 1);
+.btn-crud-office{
+    opacity: 0.5;
+    background-color: #f0aa9b;
+    border: none;
+    color: #24292E;
+    padding: 5px 2%;
+    bottom: 5px;
+    transition: background-color 0.1s cubic-bezier(0.3, 0, 0.5, 1);
     
-//     white-space: nowrap;
-//     word-wrap: break-word;
-//     display: flex;
+    white-space: nowrap;
+    word-wrap: break-word;
+    display: flex;
     
-//     width: 100%;
-//   }
-  
-//   .btn-crud-office:hover{
-//     opacity: 1;
-//     background-color: #cd3217;
-//     color: white;
-//     text-decoration: none;
-//     transition-duration: 0.1s;
-//   }
+    width: 100%;
+  }
+  .carte:hover .btn-crud-office {
+    opacity: 0.5; 
+  }
+  .btn-crud-office:hover{
+    opacity: 1;
+    background-color: #cd3217;
+    color: white;
+    text-decoration: none;
+    transition-duration: 0.1s;
+  }

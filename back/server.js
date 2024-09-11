@@ -12,6 +12,7 @@ const Element = require('./Element');
 const Evenement = require('./Evenement');
 const Periode = require('./Periode');
 const Une = require('./Une');
+const Signalement = require('./Signalement');
 
 const { ObjectId } = require('mongodb');
 
@@ -558,7 +559,55 @@ app.post('/unes', async (req, res) => {
   }
   });
   
+// ------------------------- 
+// #region SIGNALEMENT
+// ------------------------- 
+// Route pour tout récupérer  
+app.get('/signalements', async (req, res) => {
+  try {
+    const signalements = await Signalement.find().populate({
+      path: 'collectionId',
+      populate: {
+        path: 'periodesId'
+      }
+    });
+    res.json(signalements);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
+// Route pour recup signalements depuis l'id de la collection
+app.get('/signalements/collection/:id', async (req, res) => {
+  try {
+    const signalement = await Signalement.findOne({ collectionId: req.params.id });
+    if (!signalement) {
+      return res.status(404).json({ message: 'Signalement not found' });
+    }
+    res.json(signalement);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+// Pour ajouter 
+app.post('/signalements', async (req, res) => {
+  try {
+    const newSignalement = new Signalement({
+      description: req.body.description,
+      collectionId: req.body.collectionId,
+      date: req.body.date,
+    });
+      const SignalementEnregistre = await newSignalement.save();
+      res.status(201).json(SignalementEnregistre);
+      console.log("Alors signalemntEnre",SignalementEnregistre)
+  } catch (error) {
+    console.error(error);
+      res.status(500).json({ message: error.message });
+  }
+  });
 
 
   // 

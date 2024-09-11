@@ -16,8 +16,8 @@
     </article>
     <div class="espacement-vertical-L"></div>
 
-    <article class="marges">
-        <h2>Les collections publiques</h2>
+    <article>
+        <h2 class="marges">Les collections publiques</h2>
         <div class=" centrer-en-colonne">
             <div class="centrer-sur-horizon espacement-vertical-M">
                 <input class="input-recherche" type="search" [(ngModel)]="searchTerm"
@@ -27,16 +27,41 @@
             </div>
             <div>
                 <ul class="espacement-autour">
-                    <li *ngFor="let collection of publicCollections | filter: searchTerm" class="card around small">
+                    <li *ngFor="let collection of publicCollections | filter: searchTerm"
+                        class="card around extra-small">
                         <app-collections [collectionId]=" collection"></app-collections>
-                        <!-- <button class="btn-crud-office espacement-entre">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        <p>Signaler</p>
-                    </button> -->
+                        <p>{{ collection._id }}</p>
+                        <button class="btn-crud-office espacement-entre" (click)="openPopupSignalement(collection._id)">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>Signaler</p>
+                        </button>
                     </li>
                 </ul>
             </div>
         </div>
+        <article *ngIf="formSignalement === true">
+            <app-popup>
+                <article class="marges">
+                    <h2>Signalement de la collection {{ collectionSelect }}</h2>
 
+                    <form [formGroup]="newSignalement" (ngSubmit)="signalementCollection()">
+                        <article>
+                            <div class="saut-de-ligne-M"></div>
+                            <textarea rows="4" type="text" id="description" formControlName="description"
+                                placeholder="Description" class="input-texte"></textarea>
+                            <article class="centrer-en-colonne">
+                                <div class="saut-de-ligne-M"></div>
+                                <div class="fixe-bottom">
+                                    <button type="submit" [disabled]="newSignalement.invalid" class="btn-primary">
+                                        <i class="fa-solid fa-triangle-exclamation"></i>
+                                        <p>Valider le signalement</p>
+                                    </button>
+                                </div>
+                            </article>
+                        </article>
+                    </form>
+                </article>
+            </app-popup>
+        </article>
     </article>
 </section>

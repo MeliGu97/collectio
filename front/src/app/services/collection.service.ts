@@ -10,6 +10,7 @@ import { baseServerUrl } from '../collectio.constant'
 export class CollectionService {
   constructor(private http: HttpClient) {}
 
+  // CRUD GET
   getCollections(): Observable<any[]> {
     return this.http.get<any[]>(
       `${baseServerUrl}/collections?populate=periodesId`
@@ -27,40 +28,9 @@ export class CollectionService {
     )
   }
 
-  // getCollectionsUtiliByPublicStatus(
-  //   isPublic: boolean,
-  //   userId?: string
-  // ): Observable<any[]> {
-  //   let url = `${baseServerUrl}/collections?populate=periodesId`
-
-  //   if (userId) {
-  //     url += `&userId=${userId}`
-  //   }
-
-  //   return this.http.get<any[]>(url).pipe(
-  //     map((collections: any[]) => {
-  //       const filteredCollections = collections.filter(
-  //         (collection: { public: boolean; userId: string }) =>
-  //           collection.public === isPublic &&
-  //           (!userId || collection.userId === userId)
-  //       )
-  //       // console.log('Filtered collections:', filteredCollections)
-  //       return filteredCollections
-  //     })
-  //   )
-  // }
-
   getAllPublicCollections(): Observable<any[]> {
     let url = `${baseServerUrl}/collectionsPublic?populate=periodesId`
     return this.http.get<any[]>(url)
-  }
-
-  makePagination(
-    collections: any[],
-    page: number = 1,
-    limit: number = 4
-  ): any[] {
-    return collections.slice((page - 1) * limit, page * limit)
   }
 
   getCollectionById(id: string): Observable<any> {
@@ -96,6 +66,16 @@ export class CollectionService {
   //   return this.http.get<any>(`${baseServerUrl}/collections/${id}/periodes/couleurs`);
   // }
 
+  // Annexe :
+  makePagination(
+    collections: any[],
+    page: number = 1,
+    limit: number = 4
+  ): any[] {
+    return collections.slice((page - 1) * limit, page * limit)
+  }
+
+  // LES AUTRES CRUDS
   addCollection(collection: any): Observable<any> {
     return this.http.post<any>(`${baseServerUrl}/collections`, collection)
   }
@@ -106,6 +86,15 @@ export class CollectionService {
       `${baseServerUrl}/collections/${collection._id}`,
       collection
     )
+  }
+
+  updateCollectionPublic(
+    collectionId: string,
+    isPublic: boolean
+  ): Observable<any> {
+    return this.http.put(`${baseServerUrl}/collections/${collectionId}`, {
+      public: isPublic
+    })
   }
 
   deleteCollectionById(id: string): Observable<any> {

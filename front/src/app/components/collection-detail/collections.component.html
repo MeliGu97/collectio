@@ -108,3 +108,23 @@
   <p class="texte-discret">Collecté par</p>
   <p class="texte-discret">{{ utilisateur.nomUtilisateur }}</p>
 </div>
+
+<ng-container *ngIf="isCollSignalee === true">
+  <div class="signalement around" *ngIf="compris === false">
+    <div class="centrer-en-colonne text-centrer">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <p class="souligner">{{ collection.label }}</p>
+      <p>Cette collection a été signalée le {{ signalement?.date | date:'dd/MM/yyyy' }} car {{ signalement.description
+        }}</p>
+      <!-- <strong class="error">Elle ne peut plus etre rendue publique sans un accord
+              préalable</strong> -->
+      <br><br>
+      <button class="btn-primary btn-small" (click)="signalementComrpris()">Compris</button>
+    </div>
+  </div>
+  <div *ngIf="compris === true">
+    <div class="signalement-compris">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+  </div>
+</ng-container>

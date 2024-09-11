@@ -55,6 +55,9 @@ export class FormMoreOptionComponent {
         this.collectionService
           .getCollectionsPrivateByUtilisateurId(this.collection.userId)
           .subscribe((data) => {})
+        this.collectionService
+          .getCollectionsPublicByUtilisateurId(this.collection.userId)
+          .subscribe((data) => {})
         this.dialogRef.close(updatedCollection)
         // console.log(`coll ${isPublic ? 'rendue publique' : 'privatisée'}`)
       },

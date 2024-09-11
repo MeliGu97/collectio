@@ -59,12 +59,18 @@ m2=0..*</panel_attributes><additional_attributes>10;10;10;90</additional_attribu
 
 - collectionId: Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>130</y><w>50</w><h>130</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=0..*</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>130</x><y>500</y><w>160</w><h>110</h></coordinates><panel_attributes>Siglement
+m2=0..*</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>130</x><y>500</y><w>160</w><h>110</h></coordinates><panel_attributes>Signalement
 --
 -id: Long {composite}
 - description: String
 - date : Date
 
 - collectionId: Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>420</y><w>130</w><h>100</h></coordinates><panel_attributes>lt=-
+m1=0...*
+m2=1</panel_attributes><additional_attributes>10;80;110;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>210</x><y>50</y><w>160</w><h>80</h></coordinates><panel_attributes>Favoris
+--
+-id: Long {composite}
+-utilisateurId: id
+- collectionsId: ArrayId</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>260</x><y>120</y><w>70</w><h>140</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=1</panel_attributes><additional_attributes>10;80;110;10</additional_attributes></element></diagram>
+m2=1</panel_attributes><additional_attributes>10;120;50;10</additional_attributes></element></diagram>

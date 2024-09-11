@@ -69,7 +69,7 @@
                         <li *ngFor="let collection of collectionsPublic | filter: searchTerm | filterByPeriodes: selectedPeriodes"
                             class="card around large">
                             <app-collections [collectionId]="collection"
-                                (collectionsUpdated)="getCollectionsPublicByUtilisateurId(getUserId())"></app-collections>
+                                (collectionsUpdated)="getCollectionsByUtilisateurId(getUserId())"></app-collections>
                         </li>
                     </ul>
                     <div class="espacement-vertical-XL"></div>
@@ -81,12 +81,13 @@
                         <!-- POUR CHAQUE COLLECTION  -->
                         <ul class="espacement-autour">
                             <p *ngIf=" collectionsPrivate.length==0"> Aucune collection </p>
-                            <li *ngFor="let collection of collectionsPrivate | filter: searchTerm | filterByPeriodes: selectedPeriodes"
+                            <li *ngFor="let collection of collectionsPrivate | filter: searchTerm | filterByPeriodes: selectedPeriodes let i = index"
                                 class="card around large">
                                 <app-collections [collectionId]="collection"
-                                    (collectionsUpdated)="getCollectionsPrivateByUtilisateurId(getUserId())"></app-collections>
+                                    (collectionsUpdated)="getCollectionsByUtilisateurId(getUserId())"></app-collections>
                             </li>
                         </ul>
+
                         <div class="espacement-vertical-XL"></div>
                     </div>
                 </ng-container>
