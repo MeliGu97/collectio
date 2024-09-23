@@ -1,0 +1,28 @@
+<!-- Ici utilisateur-detail-favoris-component page des favoris d'un utilisateur avec liste de ses collections favorites-->
+<section>
+    <article class="container-image-couverture-page-S fond-couleur-fav">
+    </article>
+</section>
+
+<section class="container-general">
+    <article class="marges">
+        <div class="espacement-vertical-M"></div>
+        <div>
+            <ng-container>
+                <h2>Mes favoris</h2>
+            </ng-container>
+        </div>
+    </article>
+
+
+    <article class="marges">
+
+        <ul class="espacement-autour">
+            <p *ngIf="collectionIds.length == 0">Aucune collection favorite</p>
+            <li *ngFor="let collectionId of collectionIds" class="card around large motif-fond-pointille">
+                <app-collections [collectionId]="collectionId"></app-collections>
+            </li>
+        </ul>
+
+    </article>
+</section>

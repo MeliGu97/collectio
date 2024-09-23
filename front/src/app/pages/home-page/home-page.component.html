@@ -1,20 +1,15 @@
 <!-- Ici page générale avec liste de toutes les collections -->
 
 
-<section class="container-image-couverture-homePage">
+<section class="container-image-couverture-homePage img-tiroire">
     <article>
         <div class="centrer-sur-horizon centrer-en-colonne">
             <!-- <img src="assets/logo/Fichier 2.svg" class="miniature espacement-vertical-M"> -->
             <h1 class="titre-site texte-blanc">Collectio</h1>
-            <div class="espacement-vertical-M"></div>
-
-            <button class="btn-primary btn-small espacement-vertical-S" (click)="openPopupLog(false)">Se
-                connecter</button>
-            <button class="btn-primary btn-small espacement-vertical-S" (click)="openPopupLog(true)">S'inscrire</button>
-            <!-- <a [routerLink]="['/homePage']">Continuer en tant que visiteur</a> -->
         </div>
     </article>
 </section>
+
 
 <section class="container-general">
     <div class="espacement-vertical-L"></div>
@@ -46,7 +41,8 @@
         </div>
         <div>
             <ul class="espacement-autour">
-                <li *ngFor="let collection of publicCollections | filter: searchTerm" class="card around medium">
+                <li *ngFor="let collection of publicCollections | filter: searchTerm"
+                    class="card around medium motif-fond-pointille">
                     <app-collections [collectionId]="collection"></app-collections>
                 </li>
             </ul>
@@ -62,20 +58,51 @@
         <div class="espacement-vertical-L"></div>
     </article>
 </section>
+
+
 <section class="debordement-vertical-XL fond-couleur-black90">
     <article class="marges">
         <h2>Collections du moment</h2>
         <div class="espacement-vertical-L"></div>
         <ul class="espacement-autour">
-            <li *ngFor="let une of unes" class="card around large">
+            <li *ngFor="let une of unes" class="card around large motif-fond-pointille">
                 <app-collections [collectionId]="une.collectionId"></app-collections>
             </li>
         </ul>
         <div class="espacement-vertical-L"><br></div>
     </article>
 </section>
+
+
 <section class="container-general">
     <article class="marges">
-        <h2>Collectio en un mot</h2>
+
+        <div class="container-img-text">
+            <div class="text">
+                <div class="espacement-vertical-L"></div>
+                <h1>Partez à la découverte de collections encore insoupsonnées</h1>
+                <div class="centrer-en-colonne">
+                    <div class="espacement-vertical-M"></div>
+                    <button class="btn-primary btn-small espacement-vertical-S" (click)="openPopupLog(false)"><i
+                            class="fa-solid fa-arrow-right-to-bracket"></i>
+                        <p> Se connecter</p>
+                    </button>
+                    <button class="btn-primary btn-small espacement-vertical-S" (click)="openPopupLog(true)"><i
+                            class="fa-solid fa-door-open"></i>
+                        <p> S'inscrire</p>
+                    </button>
+                    <!-- <a [routerLink]="['/homePage']">Continuer en tant que visiteur</a> -->
+                </div>
+
+            </div>
+            <div class="image">
+
+                <img src="../assets/images/accueil/pexels-tima-miroshnichenko-6549373.jpg">
+                <!-- <img src="../assets/images/accueil/vasco-da-gama-8000964_1920.png"> -->
+            </div>
+        </div>
+        <div class="espacement-vertical-L"></div>
     </article>
 </section>
+<!-- <video src="https://videos.pexels.com/video-files/6549531/6549531-hd_1280_720_25fps.mp4" type="video/mp4"
+            autoplay></video> -->

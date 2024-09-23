@@ -97,6 +97,15 @@ export class CollectionService {
     })
   }
 
+  updateCollectionSignalement(
+    collectionId: string,
+    Issignalement: boolean
+  ): Observable<any> {
+    return this.http.put(`${baseServerUrl}/collections/${collectionId}`, {
+      signalement: Issignalement
+    })
+  }
+
   deleteCollectionById(id: string): Observable<any> {
     return this.http.delete(`${baseServerUrl}/collections/${id}`)
   }

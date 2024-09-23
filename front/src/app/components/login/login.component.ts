@@ -32,6 +32,7 @@ import { Router } from '@angular/router'
 })
 export class LoginComponent implements OnInit {
   @Output() utilisateurConnecte = new EventEmitter<any>()
+
   utilisateur: any = []
   newUtilisateurForm: FormGroup = new FormGroup({})
   newUtilisateur: any = {}

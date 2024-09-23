@@ -1,12 +1,12 @@
 <!-- Ici utilisateur-detail-component page générale par utilisateur avec liste de ses collections -->
-<!-- <section>
-    <article class="container-image-couverture-page couleur-home-utili-tempo">
+<section>
+    <article class="container-image-couverture-page-S fond-couleur-primary-foncer">
     </article>
-</section> -->
+</section>
 
 <section class="container-general">
     <article class="marges">
-        <div class="espacement-vertical-XL"></div>
+        <div class="espacement-vertical-M"></div>
         <div>
             <ng-container *ngIf="isCurrentUser; else notMine">
                 <h2>Mes collections</h2>
@@ -67,7 +67,7 @@
                     <ul class="espacement-autour">
                         <p *ngIf=" collectionsPublic.length==0"> Aucune collection </p>
                         <li *ngFor="let collection of collectionsPublic | filter: searchTerm | filterByPeriodes: selectedPeriodes"
-                            class="card around large">
+                            class="card around large motif-fond-pointille">
                             <app-collections [collectionId]="collection"
                                 (collectionsUpdated)="getCollectionsByUtilisateurId(getUserId())"></app-collections>
                         </li>
@@ -82,7 +82,7 @@
                         <ul class="espacement-autour">
                             <p *ngIf=" collectionsPrivate.length==0"> Aucune collection </p>
                             <li *ngFor="let collection of collectionsPrivate | filter: searchTerm | filterByPeriodes: selectedPeriodes let i = index"
-                                class="card around large">
+                                class="card around large motif-fond-pointille">
                                 <app-collections [collectionId]="collection"
                                     (collectionsUpdated)="getCollectionsByUtilisateurId(getUserId())"></app-collections>
                             </li>

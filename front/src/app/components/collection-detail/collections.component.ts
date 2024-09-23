@@ -1,21 +1,33 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
-import { FormsModule } from '@angular/forms'
+import {
+  FormGroup,
+  FormBuilder,
+  ReactiveFormsModule,
+  FormsModule
+} from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
 import { Dialog, DialogModule } from '@angular/cdk/dialog'
 
 import { CollectionService } from '../../services/collection.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
 import { SignalementService } from '../../services/signalement.service'
+import { FavorisService } from '../../services/favoris.service'
 
 import { FormCollectionComponent } from '../form-collection/form-collection.component'
 import { FormMoreOptionComponent } from '../form-more-option/form-more-option.component'
+import { PopupComponent } from '../../design-system/popup/popup.component'
 
 @Component({
   selector: 'app-collections',
   standalone: true,
-  providers: [CollectionService, UtilisateurService, SignalementService],
+  providers: [
+    CollectionService,
+    UtilisateurService,
+    SignalementService,
+    FavorisService
+  ],
   templateUrl: './collections.component.html',
   styleUrl: './collections.component.scss',
 
@@ -24,7 +36,9 @@ import { FormMoreOptionComponent } from '../form-more-option/form-more-option.co
     HttpClientModule,
     DialogModule,
     FormsModule,
-    RouterLink
+    RouterLink,
+    PopupComponent,
+    ReactiveFormsModule
   ]
 })
 export class CollectionsComponent implements OnInit {
@@ -45,21 +59,25 @@ export class CollectionsComponent implements OnInit {
   isCurrentUser: boolean = false
 
   gradientColors: string[] = []
-  isDisabled = false
+
+  BtnAddOrUpdateIsDisabled = false
   isCollection = true
 
   signalement: any = {}
-  signalements: any[] = []
-  isCollSignalee: boolean = false
-  compris: boolean = false
+  reduit: boolean = false
+  formSignalement: boolean = false
+  updateSignalement: FormGroup = new FormGroup({})
+  needReponse: boolean = true
 
   constructor(
     private collectionService: CollectionService,
     private utilisateurService: UtilisateurService,
     private signalementService: SignalementService,
+    private favorisService: FavorisService,
 
     public dialog: Dialog,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -67,10 +85,19 @@ export class CollectionsComponent implements OnInit {
     this.collectionService.getCollections().subscribe((data) => {
       this.collections = data
       this.filterCollectionsByPeriodes()
+
+      // si la collection a un signalement a true
+      // alors va chercher ce signalement par l'id de la coll
+      if (this.collection.signalement) {
+        this.getSignalemetByCollId(this.collection._id)
+      }
+
+      this.updateSignalement = this.formBuilder.group({
+        reponseUtili: [''],
+        reponseDate: [new Date()]
+      })
     })
     this.getUtilisateurById(this.collection.userId)
-    this.getSignalementByCollectionId(this.collection._id)
-    // this.getAllSignalements()
   }
 
   filterCollectionsByPeriodes() {
@@ -86,7 +113,6 @@ export class CollectionsComponent implements OnInit {
   }
 
   // LES CRUD GET
-
   getAllPublicCollections() {
     this.collectionService.getAllPublicCollections().subscribe((data) => {
       this.AllcollectionsPubliques = data
@@ -118,51 +144,53 @@ export class CollectionsComponent implements OnInit {
     })
   }
 
-  getSignalementByCollectionId(collectionId: string) {
+  getSignalemetByCollId(collectionId: string) {
     this.signalementService
       .getSignalementByCollectionId(collectionId)
-      .subscribe({
-        next: (signalement) => {
-          if (signalement) {
-            this.isCollSignalee = true
-            this.signalement = signalement
-          } else {
-            this.isCollSignalee = false
-            this.signalement = undefined
-          }
-        },
-        error: (error) => {
-          if (error.status === 404) {
-            this.isCollSignalee = false
-            this.signalement = undefined
-          } else {
-            console.error(
-              'Erreur lors de la récupération du signalement',
-              error
-            )
-          }
+      .subscribe((data) => {
+        this.signalement = data
+        if (this.signalement.reponseUtili === '') {
+          this.needReponse = true
+        } else {
+          this.needReponse = false
         }
       })
   }
 
-  // getAllSignalements() {
-  //   this.signalementService.getAllSignalements().subscribe({
-  //     next: (signalements) => {
-  //       const signalement = signalements.find(
-  //         (s) => s.collectionId === this.collection._id
-  //       )
-  //       if (signalement) {
-  //         this.isCollSignalee = true
-  //       } else {
-  //         this.isCollSignalee = false
-  //       }
-  //     },
-  //     error: (error) => {
-  //       console.error('Erreur lors de la récupération des signalements', error)
-  //     }
-  //   })
-  //   console.log('signal', this.signalement)
-  // }
+  signalementReduit(Isreduit: boolean) {
+    this.reduit = Isreduit
+  }
+
+  // LES POST
+  AddToFavoris(collectionId: string) {
+    const userId = this.utilisateurService.getCurrentUtilisateur()._id
+    this.favorisService.addToFavoris(userId, collectionId).subscribe({
+      next: () => {
+        // Mettre à jour la propriété isFavorite de la collection
+        this.collection.isFavorite = true
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
+  }
+
+  updateSignalementCollection() {
+    if (this.updateSignalement.valid) {
+      const updatedSignalement = {
+        ...this.signalement,
+        ...this.updateSignalement.value
+      }
+
+      this.signalementService
+        .updateSignalement(updatedSignalement)
+        .subscribe((data) => {
+          console.log('Updated signalement:', data)
+          this.needReponse = false
+        })
+    }
+    this.ClosePopupSignalement()
+  }
 
   // ANNEXE
   navigateUserPage(id: string) {
@@ -178,13 +206,8 @@ export class CollectionsComponent implements OnInit {
     return `linear-gradient(0.25turn, ${colors.join(', ')})`
   }
 
-  signalementComrpris() {
-    this.compris = true
-    console.log(this.compris)
-  }
-
   openPopupUpdateColl(collectionId: string) {
-    this.isDisabled = true
+    this.BtnAddOrUpdateIsDisabled = true
     const dialogRef = this.dialog.open<any>(FormCollectionComponent, {
       data: {
         collection: this.collections.find((e) => e._id === collectionId),
@@ -203,7 +226,7 @@ export class CollectionsComponent implements OnInit {
           this.getCollectionsPrivatesByUtilisateurId()
         }
       }
-      this.isDisabled = false
+      this.BtnAddOrUpdateIsDisabled = false
     })
   }
 
@@ -228,5 +251,13 @@ export class CollectionsComponent implements OnInit {
       const userId = this.utilisateurService.getCurrentUtilisateur()._id
       // this.getCollectionsUtiliByPublicStatus(userId)
     })
+  }
+
+  openPopupSignalement(collectionId: string) {
+    this.formSignalement = true
+    this.collection = collectionId
+  }
+  ClosePopupSignalement() {
+    this.formSignalement = false
   }
 }

@@ -20,7 +20,21 @@ export class SignalementService {
 
   getSignalementByCollectionId(collectionId: string): Observable<any> {
     return this.http.get(
-      `${baseServerUrl}/signalements/collection/${collectionId}`
+      `${baseServerUrl}/signalementCollection/${collectionId}`
+    )
+  }
+
+  updateSignalement(signalement: any): Observable<any> {
+    console.log('ID du signalement :', signalement._id)
+    return this.http.put(
+      `${baseServerUrl}/signalementCollection/${signalement._id}`,
+      signalement
+    )
+  }
+
+  deleteSignalementByCollectionId(collectionId: string): Observable<any> {
+    return this.http.delete(
+      `${baseServerUrl}/signalementCollection/${collectionId}`
     )
   }
 }

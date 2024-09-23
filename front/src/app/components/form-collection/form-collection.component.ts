@@ -60,7 +60,8 @@ export class FormCollectionComponent implements OnInit {
       //ajouter une validation pour que ça ne soit pas vide
       periodesId: this.formBuilder.array([]),
       public: false,
-      userId: [storage_user_id._id || '']
+      userId: [storage_user_id._id || ''],
+      signalement: false
     })
 
     if (this.data.isUpdate) {

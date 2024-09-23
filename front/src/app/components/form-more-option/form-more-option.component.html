@@ -22,15 +22,13 @@
             </button>
 
             <ng-template #private>
-                <button class="btn-crud-modal" (click)="makePublicOrPrivate(collection._id, true)">
-                    <i class="fa-solid fa-lock-open"></i>
-                    <p>Rendre publique</p>
-                </button>
+                <div *ngIf="collection.signalement === false">
+                    <button class="btn-crud-modal" (click)="makePublicOrPrivate(collection._id, true)">
+                        <i class="fa-solid fa-lock-open"></i>
+                        <p>Rendre publique</p>
+                    </button>
+                </div>
             </ng-template>
-            <!-- <button class="btn-crud-modal">
-                <i class="fa-solid fa-heart"></i>
-                <p>Ajouter aux favoris</p>
-            </button> -->
         </article>
 
         <article *ngIf="!isCollection">

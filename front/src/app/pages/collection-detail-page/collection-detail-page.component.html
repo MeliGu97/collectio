@@ -70,7 +70,13 @@
     </article>
 
     <article class="marges">
-        <h1>{{collection.label}}</h1>
+        <div class="centrer-sur-horizon">
+            <h1>{{collection.label}}</h1>
+            <div *ngIf="collection.signalement === true" class="espacement-horizontal-M">
+                <h2 class="fa-solid fa-triangle-exclamation texte-error"></h2>
+            </div>
+        </div>
+
         <div class="espacement-vertical-S"></div>
         <div *ngIf=" collection.description.length <= 1"></div>
         <div *ngIf=" collection.description.length >= 1">
@@ -104,7 +110,7 @@
     <article class="marges">
         <ul class="espacement-autour">
             <li *ngIf="collection.elementsId.length === 0">Aucun élément</li>
-            <li *ngFor="let element of elements  | filter: searchTerm" class="card medium">
+            <li *ngFor="let element of elements  | filter: searchTerm" class="card medium motif-fond-pointille">
                 <a [routerLink]="['/elements', element._id]">
                     <!-- <app-element-detail [idElement]="element"></app-element-detail> -->
                     <div class="image-couverture-card-element-tempo couleur-element-tempo"
@@ -113,7 +119,7 @@
                     <ng-template #imageCouv>
                         <img src="{{ element.imageUrl }}" class="image-couverture-card-element-tempo image-de-fond">
                     </ng-template>
-                    <div class="card-paragraphe card-paragraphe-elem">
+                    <div class="card-paragraphe card-paragraphe-elem motif-fond-pointille">
                         <!-- <p>({{ element._id }})</p> -->
                         <h5><strong>{{ element.label }}</strong></h5>
                         <p class="text-description conserve-espace-origine">{{ element.description }}</p>

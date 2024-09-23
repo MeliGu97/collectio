@@ -1,6 +1,19 @@
 <!-- collections.component : Page qui affiche chaque collection -->
 
-<!-- CRUD -->
+<!-- ------------------------------ -->
+<!-- ------------------------------ CRUD ------------------------------ -->
+<!-- ------------------------------ -->
+<!-- favoris -->
+<div *ngIf="collection.signalement === false">
+  <div class="centrer-milieu crud-haut-gauche">
+    <button (click)="AddToFavoris(collection._id)" class="btn-crud tooltip">
+      <i class="fa-regular fa-heart"></i>
+      <span class="tooltiptext tolltiptexte-small-top">Favoris</span>
+    </button>
+  </div>
+</div>
+
+
 <div class="centrer-milieu crud-haut-droite">
   <!-- MODIFIER -->
   <button (click)="openPopupUpdateColl(collection._id)" class="btn-crud tooltip">
@@ -14,23 +27,34 @@
   </button>
 </div>
 
+
+
+<!-- ------------------------------ -->
+<!-- ------------------------------ CONTAINEUR DE LA CARTE ------------------------------ -->
+<!-- ------------------------------ -->
+
 <!-- Au clic sur une collection redirige vers le détail de la collection en question -->
 <a [routerLink]="['/collections', collection._id]" class="around">
 
+  <!-- ------------------------------ -->
+  <!-- ------------------------------ HEADER DE LA CARTE ------------------------------ -->
+  <!-- ------------------------------ -->
+  <!-- IMAGE -->
   <!-- si pas d'image de couverture alors met une couleur définit, sinon affiche l'image de couv -->
   <div class="image-couverture-card-tempo couleur-element-tempo" *ngIf="collection.imageUrl === '' else imageCouv">
   </div>
+  <!-- sinon affiche l'image de couverture -->
   <ng-template #imageCouv>
     <img src="{{ collection.imageUrl }}" class="image-couverture-card-tempo image-de-fond">
   </ng-template>
 
 
-  <!-- Detail de la collection -->
-  <div class="card-paragraphe">
+  <div class="card-paragraphe motif-fond-pointille">
+    <!-- PICTO ET PASTILLE -->
     <div class="centrer-sur-horizon espacement-entre">
       <div *ngIf=" collection.periodesId.length==1">
         <div *ngFor=" let periode of collection.periodesId">
-          <!-- Picto du theme -->
+          <!-- Picto du theme si plusieurs periode-->
           <p class="circle-picto circle-picto-S margin-top-S-negatif" [ngStyle]="{'background': periode.couleur}"><i
               class="fa-solid {{ collection.picto }}"></i>
           </p>
@@ -58,6 +82,9 @@
       </div>
     </div>
 
+    <!-- ------------------------------ -->
+    <!-- ------------------------------ DOBY DE LA CARTE ------------------------------ -->
+    <!-- ------------------------------ -->
     <h4><strong>{{ collection.label }}</strong></h4>
     <div class="espacement-vertical-S"></div>
     <p class="text-description">{{ collection.description }}</p>
@@ -97,6 +124,10 @@
         </ng-template>
       </div>
     </div>
+
+
+    <!-- ------------------------------ -->
+    <!-- PARAGRAPHE -->
     <div class="espacement-vertical-M "></div>
     <div class="espacement-entre contient-texte-discret">
       <p class="texte-discret">Nombre d'élément</p>
@@ -109,22 +140,87 @@
   <p class="texte-discret">{{ utilisateur.nomUtilisateur }}</p>
 </div>
 
-<ng-container *ngIf="isCollSignalee === true">
-  <div class="signalement around" *ngIf="compris === false">
+
+
+<div *ngIf="collection.signalement === true">
+  <div class="signalement around" *ngIf="reduit === false">
+    <div class="centrer-milieu crud-haut-gauche">
+      <button (click)="signalementReduit(true)" class="btn-crud tooltip">
+        <i class="fa-solid fa-down-left-and-up-right-to-center"></i>
+        <span class="tooltiptext tolltiptexte-small-top">Réduire</span>
+      </button>
+    </div>
+
     <div class="centrer-en-colonne text-centrer">
       <i class="fa-solid fa-triangle-exclamation"></i>
-      <p class="souligner">{{ collection.label }}</p>
-      <p>Cette collection a été signalée le {{ signalement?.date | date:'dd/MM/yyyy' }} car {{ signalement.description
-        }}</p>
-      <!-- <strong class="error">Elle ne peut plus etre rendue publique sans un accord
-              préalable</strong> -->
+      <p class="souligner">Signalement</p>
+      <p>Cette collection fait l'objet d'un signalement</p>
       <br><br>
-      <button class="btn-primary btn-small" (click)="signalementComrpris()">Compris</button>
+      <div class="centrer-milieu">
+        <button class="btn-primary btn-small" (click)=" openPopupSignalement(collectionId)">
+          Voir la raison</button>
+      </div>
     </div>
+
   </div>
-  <div *ngIf="compris === true">
-    <div class="signalement-compris">
+  <div *ngIf="reduit === true">
+    <div class="signalement-compris tooltip" (click)="signalementReduit(false)" style="cursor: pointer;">
       <i class="fa-solid fa-triangle-exclamation"></i>
     </div>
   </div>
-</ng-container>
+
+</div>
+<article *ngIf="formSignalement === true">
+  <app-popup>
+    <div *ngIf="needReponse === false" class="crud-haut-gauche">
+      <p class=" texte-discret texte-small">En attente de
+        validation</p>
+    </div>
+    <article class="centrer-sur-horizon">
+      <button class="crud-haut-droite btn-discret btn-small" (click)="ClosePopupSignalement()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </article>
+    <article class="padding-S">
+      <h3 class="no-margin">Signalement</h3>
+      <p class="texte-discret texte-small">Sans modification des éléments problématiques, vous ne pouvez pas rendre
+        publique votre
+        collection</p>
+      <br>
+      <div class="around motif-fond-carreaux padding-S">
+        <p style="float: right;">{{ signalement.date |
+          date:'dd/MM/yyyy' }}</p>
+        <br>
+        <p class="souligner">Raison du signalement :</p>
+        <p>{{ signalement.description }}</p>
+        <br>
+        <p>----------</p>
+        <br>
+
+        <div *ngIf="needReponse === true">
+          <p class="texte-small">Vous pouvez remplir le formulaire si dessous afin d'argumenter en votre faveur et
+            demander la lever du
+            signalement</p>
+          <br>
+          <form [formGroup]="updateSignalement" (ngSubmit)="updateSignalementCollection()">
+            <p>Votre réponse : *</p>
+            <textarea rows="4" type="text" id="reponseUtili" formControlName="reponseUtili"
+              placeholder="Voici les élements que j'ai modifié..." class="input-texte"></textarea>
+            <div class="espacement-autour">
+              <button class="btn-primary btn-small">Envoyer la demande</button>
+            </div>
+          </form>
+        </div>
+
+
+        <div *ngIf="needReponse === false">
+          <p style="float: right;">{{ signalement.reponseDate |
+            date:'dd/MM/yyyy' }}</p>
+          <p class="souligner">Votre réponse : </p>
+          <p>{{ signalement.reponseUtili }}</p>
+        </div>
+      </div>
+
+    </article>
+  </app-popup>
+</article>

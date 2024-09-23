@@ -11,6 +11,7 @@ const collectionSchema = new mongoose.Schema({
   categorie: String,
   sousCategorie: String,
   public: Boolean,
+  signalement: Boolean,
 })
 
 module.exports = mongoose.model('Collection', collectionSchema)

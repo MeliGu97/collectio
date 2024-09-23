@@ -7,6 +7,7 @@ import { Dialog, DialogModule } from '@angular/cdk/dialog'
 
 import { CollectionService } from '../../services/collection.service'
 import { ElementService } from '../../services/element.service'
+
 import { ElementDetailPageComponent } from '../element-detail-page/element-detail-page.component'
 import { ElementDetailComponent } from '../../components/element-detail/element-detail.component'
 import { FormElementComponent } from '../../components/form-element/form-element.component'
@@ -53,7 +54,7 @@ export class CollectionDetailPageComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       const collectionId = params['id']
-      console.log('collectionId', collectionId)
+      // console.log('collectionId', collectionId)
       this.collectionService
         .getCollectionById(collectionId)
         .subscribe((data) => {
@@ -61,7 +62,6 @@ export class CollectionDetailPageComponent implements OnInit {
           this.loadElements(collectionId)
         })
     })
-    console.log('collection')
   }
 
   showMore() {

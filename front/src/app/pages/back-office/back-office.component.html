@@ -1,67 +1,160 @@
-<section class="container-general">
+<section class="container-image-couverture-homePage img-admin">
+    <article>
+        <div class="centrer-sur-horizon centrer-en-colonne">
+            <h1 class="titre-site texte-blanc">Gestionnaire</h1>
+        </div>
+    </article>
+</section>
+
+<section>
     <div class="espacement-vertical-L"></div>
-    <h1 class="marges">Gestionnaire Collectio</h1>
+    <!-- <h1 class="marges">Gestionnaire Collectio</h1> -->
     <article class="marges espacement-autour">
         <div class="carte complete around">
             <p>Nombre de collections publiques : </p>
             <p class="mega-chiffre"> {{publicCollections.length}} </p>
         </div>
-        <li *ngFor="let periode of periodes" class="carte around small" [ngStyle]="{'background': periode.couleur}">
+        <!-- <li *ngFor="let periode of periodes" class="carte around small" [ngStyle]="{'background': periode.couleur}">
             <div>
                 <p>{{ periode.label }}</p>
-                <!-- chiffres faux -->
+
                 <p class="mega-chiffre">{{ periode.collectionsId.length }}</p>
             </div>
-        </li>
+        </li> -->
     </article>
-    <div class="espacement-vertical-L"></div>
 
-    <article>
-        <h2 class="marges">Les collections publiques</h2>
-        <div class=" centrer-en-colonne">
+</section>
+
+<section>
+    <article class="marges">
+        <!-- RECHERCHE PAR MOT CLEF -->
+        <div class="centrer-en-colonne">
             <div class="centrer-sur-horizon espacement-vertical-M">
                 <input class="input-recherche" type="search" [(ngModel)]="searchTerm"
                     placeholder="Rechercher une collection..." />
                 <button class="btn-primary btn-medium centrer-milieu"><i
                         class=" fa-solid fa-magnifying-glass"></i></button>
             </div>
-            <div>
-                <ul class="espacement-autour">
-                    <li *ngFor="let collection of publicCollections | filter: searchTerm"
-                        class="card around extra-small">
-                        <app-collections [collectionId]=" collection"></app-collections>
-                        <p>{{ collection._id }}</p>
-                        <button class="btn-crud-office espacement-entre" (click)="openPopupSignalement(collection._id)">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <p>Signaler</p>
-                        </button>
-                    </li>
-                </ul>
+        </div>
+        <!-- TITRE DES ONGLETS  -->
+        <div class="container">
+            <input type="radio" id="tab1" name="tab" checked>
+            <label for="tab1">Publiques</label>
+
+            <input type="radio" id="tab2" name="tab">
+            <label for="tab2">Signalées</label>
+            <div class="line"></div>
+            <!-- ----- -->
+            <div class="content-container">
+                <!-- onglet 1 -->
+                <div class="content" id="c1">
+                    <div>
+                        <ul class="espacement-autour">
+                            <li *ngFor="let collection of publicCollections | filter: searchTerm"
+                                class="card around small motif-fond-pointille">
+                                <app-collections [collectionId]=" collection"></app-collections>
+                                <button class="btn-crud-office espacement-entre"
+                                    (click)="openPopupSignalement(collection._id)">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    <p>Signaler</p>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="espacement-vertical-XL"></div>
+                    <!-- formulaire signalement pop up -->
+                    <article *ngIf="formSignalement === true">
+                        <app-popup>
+                            <article class="centrer-sur-horizon">
+                                <button class="crud-haut-droite btn-discret btn-small"
+                                    (click)="ClosePopupSignalement()">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </article>
+                            <article class="padding-S">
+                                <h2>Signalement de la collection {{ collection.label }}</h2>
+
+                                <form [formGroup]="newSignalement" (ngSubmit)="createSignalementCollection()">
+                                    <article>
+                                        <div class="saut-de-ligne-M"></div>
+                                        <p>Description de la raison du signalement :</p>
+                                        <textarea rows="8" type="text" id="description" formControlName="description"
+                                            placeholder="Expliquez la raison du signalement"
+                                            class="input-texte"></textarea>
+                                        <article class="centrer-en-colonne">
+                                            <div class="saut-de-ligne-M"></div>
+                                            <div class="fixe-bottom">
+                                                <button type="submit" [disabled]="newSignalement.invalid"
+                                                    class="btn-primary">
+                                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                                    <p>Valider le signalement</p>
+                                                </button>
+                                            </div>
+                                        </article>
+                                    </article>
+                                </form>
+                            </article>
+                        </app-popup>
+                    </article>
+                </div>
+
+                <!-- Onglet 2 -->
+                <ng-container>
+                    <div class="content" id="c2">
+                        <div class="centrer-sur-horizon centrer-milieu">
+                            <p>Tous</p>
+                            <label class="switch">
+                                <input type="checkbox" id="switch" (change)="toggleSignalementReponse($event)"><span
+                                    class="slider">
+                                </span>
+                            </label>
+                            <p>Avec reponse</p>
+                        </div>
+
+                        <ul class="espacement-autour">
+                            <li *ngFor="let signalement of AllSignalements"
+                                class="card around complete motif-fond-carreaux">
+                                <div class="padding-S">
+                                    <p style="float: right;">{{ signalement.date |
+                                        date:'dd/MM/yyyy' }}</p>
+                                    <p>N°: {{ signalement._id }}</p>
+                                    <p>Collection : <strong style="cursor: pointer;"
+                                            [routerLink]="['/collections', signalement.collectionId._id]">" {{
+                                            signalement.collectionId.label }} "</strong>
+                                    </p>
+                                    <br>
+                                    <p class="souligner">Raison du signalement envoyée :</p>
+                                    <p>{{ signalement.description }}</p>
+                                    <br>
+
+                                    <div *ngIf="signalement.reponseUtili !== ''">
+                                        <p>----------</p>
+                                        <div *ngIf="signalement.reponseUtili !== ''">
+                                            <p class="surligner">L'utilisateur à répondu</p>
+                                        </div>
+                                        <br>
+                                        <p style="float: right;">{{ signalement.reponseDate |
+                                            date:'dd/MM/yyyy' }}</p>
+                                        <p class="souligner">Réponse utilisateur : </p>
+                                        <p>{{ signalement.reponseUtili }}</p>
+                                        <div class="saut-de-ligne-M"></div>
+                                        <div class=" espacement-autour">
+                                            <button class="btn-primary btn-small"
+                                                (click)="suppSignalementCollection(signalement.collectionId._id)">Fermer
+                                                le signalement</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                        </ul>
+                        <div class="espacement-vertical-XL"></div>
+                    </div>
+                </ng-container>
+
             </div>
         </div>
-        <article *ngIf="formSignalement === true">
-            <app-popup>
-                <article class="marges">
-                    <h2>Signalement de la collection {{ collectionSelect }}</h2>
 
-                    <form [formGroup]="newSignalement" (ngSubmit)="signalementCollection()">
-                        <article>
-                            <div class="saut-de-ligne-M"></div>
-                            <textarea rows="4" type="text" id="description" formControlName="description"
-                                placeholder="Description" class="input-texte"></textarea>
-                            <article class="centrer-en-colonne">
-                                <div class="saut-de-ligne-M"></div>
-                                <div class="fixe-bottom">
-                                    <button type="submit" [disabled]="newSignalement.invalid" class="btn-primary">
-                                        <i class="fa-solid fa-triangle-exclamation"></i>
-                                        <p>Valider le signalement</p>
-                                    </button>
-                                </div>
-                            </article>
-                        </article>
-                    </form>
-                </article>
-            </app-popup>
-        </article>
     </article>
 </section>

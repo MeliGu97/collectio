@@ -13,6 +13,7 @@ const Evenement = require('./Evenement');
 const Periode = require('./Periode');
 const Une = require('./Une');
 const Signalement = require('./Signalement');
+const Favoris = require('./Favoris')
 
 const { ObjectId } = require('mongodb');
 
@@ -152,6 +153,7 @@ app.post('/collections', async (req, res) => {
       periodesId: req.body.periodesId,
       public: req.body.public,
       userId: req.body.userId,
+      signalement: req.body.public,
     });
       const collectionEnregistre = await newCollection.save();
       res.status(201).json(collectionEnregistre);
@@ -558,6 +560,69 @@ app.post('/unes', async (req, res) => {
       res.status(500).json({ message: error.message });
   }
   });
+
+  // ------------------------- 
+// #region FAVORIS
+// ------------------------- 
+
+app.get('/favorisUser/:userId', async (req, res) => {
+  try {
+    const favoris = await Favoris.find({ userId: req.params.userId }).populate({
+      path: 'collectionIds',
+      populate: {
+        path: 'periodesId',
+        options: { sort: { dateDebut: 1 } } // Tri par dateDebut croissant
+      }
+    });
+    res.json(favoris);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+// // Ajouter une collection aux favoris d'un utilisateur
+// router.post('/:userId', async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+//     const { collectionId } = req.body;
+
+//     const favoris = new Favoris({
+//       userId,
+//       collectionId
+//     });
+
+//     await favoris.save();
+//     res.status(201).send(favoris);
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
+
+// // Récupérer la liste des collections favorites d'un utilisateur
+// router.get('/:userId', async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+
+//     const favoris = await Favoris.find({ userId }).populate('collectionId');
+//     res.send(favoris);
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
+
+// // Supprimer une collection des favoris d'un utilisateur
+// router.delete('/:userId/:collectionId', async (req, res) => {
+//   try {
+//     const { userId, collectionId } = req.params;
+
+//     await Favoris.findOneAndDelete({ userId, collectionId });
+//     res.send({ message: 'Favoris supprimé avec succès' });
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
+
   
 // ------------------------- 
 // #region SIGNALEMENT
@@ -579,7 +644,7 @@ app.get('/signalements', async (req, res) => {
 });
 
 // Route pour recup signalements depuis l'id de la collection
-app.get('/signalements/collection/:id', async (req, res) => {
+app.get('/signalementCollection/:id', async (req, res) => {
   try {
     const signalement = await Signalement.findOne({ collectionId: req.params.id });
     if (!signalement) {
@@ -599,6 +664,8 @@ app.post('/signalements', async (req, res) => {
       description: req.body.description,
       collectionId: req.body.collectionId,
       date: req.body.date,
+      reponseUtili: req.body.reponseUtili,
+      reponseDate: req.body.reponseDate,
     });
       const SignalementEnregistre = await newSignalement.save();
       res.status(201).json(SignalementEnregistre);
@@ -608,6 +675,30 @@ app.post('/signalements', async (req, res) => {
       res.status(500).json({ message: error.message });
   }
   });
+
+  // Pour modifier
+app.put('/signalementCollection/:id', async (req, res) => {
+  try {
+    const signalement = await Signalement.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!signalement) {
+      return res.status(404).json({ message: 'Signalement non trouvé' });
+    }
+    res.json(signalement);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Pour supp
+app.delete('/signalementCollection/:collectionId', async (req, res) => {
+  try {
+    const collectionId = req.params.collectionId;
+    const result = await Signalement.deleteMany({ collectionId });
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 
   // 

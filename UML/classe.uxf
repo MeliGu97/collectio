@@ -1,11 +1,11 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>80</x><y>240</y><w>210</w><h>130</h></coordinates><panel_attributes>Utilisateur
+<diagram program="umletino" version="15.1"><zoom_level>12</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>343</x><y>288</y><w>252</w><h>156</h></coordinates><panel_attributes>Utilisateur
 --
 -id: Long {composite}
 - nom: String
 - prenom : String
 - nomUtilisateur : String {unique}
 - motDePasse : 
-- role : String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>380</x><y>530</y><w>160</w><h>150</h></coordinates><panel_attributes>Période
+- role : String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>703</x><y>780</y><w>192</w><h>180</h></coordinates><panel_attributes>Période
 --
 -id: Long {composite}
 - label : String
@@ -14,7 +14,7 @@
 - imageUrl : String
 - couleur : String
 
-- collectionsId : Array Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>680</x><y>450</y><w>150</w><h>180</h></coordinates><panel_attributes>Evenement
+- collectionsId : Array Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1039</x><y>576</y><w>180</w><h>216</h></coordinates><panel_attributes>Evenement
 --
 -id: Long {composite}
 - label : String
@@ -25,7 +25,7 @@
 - minute: Integer
 - detail: String
 
-- elementId: Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>390</x><y>240</y><w>160</w><h>200</h></coordinates><panel_attributes>Collection
+- elementId: Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>715</x><y>288</y><w>192</w><h>276</h></coordinates><panel_attributes>Collection
 --
 -id: Long {composite}
 - label : String
@@ -34,43 +34,50 @@
 - picto : String
 - categorie : String
 - sousCategorie: String
+- public : Boolean
+- signalement: Boolean
 
 - utilisateurId : id
 - periodesId: Array Id
-- elementsId : Array Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>670</x><y>240</y><w>160</w><h>130</h></coordinates><panel_attributes>Element
+- elementsId : Array Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1027</x><y>288</y><w>192</w><h>156</h></coordinates><panel_attributes>Element
 --
 -id: Long {composite}
 - label : String
 - description: String
 - imageUrl : String
 
-- collectionsId: Array Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>270</y><w>130</w><h>40</h></coordinates><panel_attributes>lt=-
+- collectionsId: Array Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>583</x><y>324</y><w>156</w><h>48</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=0..*</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>270</y><w>150</w><h>40</h></coordinates><panel_attributes>lt=-
+m2=0..*</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>895</x><y>324</y><w>156</w><h>48</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=0..*</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>430</y><w>50</w><h>120</h></coordinates><panel_attributes>lt=-
+m2=0..*</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>811</x><y>552</y><w>60</w><h>252</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=1..*</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>780</x><y>360</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=-
+m2=1..*</panel_attributes><additional_attributes>10;10;10;190</additional_attributes></element><element><id>Relation</id><coordinates><x>1159</x><y>432</y><w>60</w><h>168</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=0..*</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>460</x><y>40</y><w>160</w><h>100</h></coordinates><panel_attributes>Une
+m2=0..*</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>907</x><y>24</y><w>192</w><h>120</h></coordinates><panel_attributes>Une
 --
 -id: Long {composite}
 - order: Integer
 
-- collectionId: Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>130</y><w>50</w><h>130</h></coordinates><panel_attributes>lt=-
+- collectionId: Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>823</x><y>132</y><w>144</w><h>180</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=0..*</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>130</x><y>500</y><w>160</w><h>110</h></coordinates><panel_attributes>Signalement
+m2=0..*</panel_attributes><additional_attributes>100;10;10;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>403</x><y>636</y><w>192</w><h>144</h></coordinates><panel_attributes>Signalement
 --
 -id: Long {composite}
 - description: String
 - date : Date
 
-- collectionId: Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>420</y><w>130</w><h>100</h></coordinates><panel_attributes>lt=-
+- utilisateurId: id
+- collectionId: Id</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>583</x><y>504</y><w>156</w><h>156</h></coordinates><panel_attributes>lt=-
 m1=0...*
-m2=1</panel_attributes><additional_attributes>10;80;110;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>210</x><y>50</y><w>160</w><h>80</h></coordinates><panel_attributes>Favoris
+m2=1</panel_attributes><additional_attributes>10;110;110;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>559</x><y>0</y><w>192</w><h>96</h></coordinates><panel_attributes>Favoris
 --
 -id: Long {composite}
 -utilisateurId: id
-- collectionsId: ArrayId</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>260</x><y>120</y><w>70</w><h>140</h></coordinates><panel_attributes>lt=-
+- collectionsId: ArrayId</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>535</x><y>432</y><w>60</w><h>228</h></coordinates><panel_attributes>lt=-
+m1=0...*
+m2=1</panel_attributes><additional_attributes>10;170;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>715</x><y>84</y><w>60</w><h>228</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=1</panel_attributes><additional_attributes>10;120;50;10</additional_attributes></element></diagram>
+m2=0..*</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>Relation</id><coordinates><x>571</x><y>84</y><w>48</w><h>228</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;170;10;10</additional_attributes></element></diagram>

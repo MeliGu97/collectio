@@ -8,7 +8,6 @@ import { Dialog, DialogModule } from '@angular/cdk/dialog'
 import { CollectionService } from '../../services/collection.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
 import { PeriodeService } from '../../services/periode.service'
-
 import { CollectionsComponent } from '../../components/collection-detail/collections.component'
 import { FormCollectionComponent } from '../../components/form-collection/form-collection.component'
 
@@ -97,12 +96,11 @@ export class UtilisateurDetailPageComponent implements OnInit {
       .subscribe((data) => {
         this.collections = data
         this.collectionsPublic = data
-        // Mettre à jour les collections publiques
+        // Met à jour les collections publiques
         this.collectionsPublic = this.collections.filter(
           (collection) => collection.public
         )
       })
-    console.log('public coll', this.collectionsPublic)
   }
 
   getCollectionsPrivateByUtilisateurId(userId: string) {
@@ -111,7 +109,7 @@ export class UtilisateurDetailPageComponent implements OnInit {
       .subscribe((data) => {
         this.collections = data
         this.collectionsPrivate = data
-        // Mettre à jour les collections privées
+        // Met à jour les collections privées
         this.collectionsPrivate = this.collections.filter(
           (collection) => !collection.public
         )

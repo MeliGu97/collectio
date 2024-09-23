@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterOutlet, Router } from '@angular/router'
-import { DialogModule } from '@angular/cdk/dialog'
+import { DialogModule, Dialog } from '@angular/cdk/dialog'
+import { HttpClientModule } from '@angular/common/http'
+
+import { UtilisateurService } from './services/utilisateur.service'
 
 import { MenuComponent } from './design-system/menu/menu.component'
-import { UtilisateurService } from './services/utilisateur.service'
-import { HttpClientModule } from '@angular/common/http'
+import { LoginComponent } from './components/login/login.component'
+
+export interface DialogData {
+  Isinscription: boolean
+}
 
 @Component({
   selector: 'app-root',
@@ -15,7 +21,8 @@ import { HttpClientModule } from '@angular/common/http'
     RouterOutlet,
     DialogModule,
     HttpClientModule,
-    MenuComponent
+    MenuComponent,
+    LoginComponent
   ],
   providers: [UtilisateurService],
   templateUrl: './app.component.html',
@@ -23,25 +30,49 @@ import { HttpClientModule } from '@angular/common/http'
 })
 export class AppComponent implements OnInit {
   title = 'collectio'
-  utilisateur: any
   IsOpen: boolean = false
+
+  utilisateur: any
+  UserConnecte: boolean = false
 
   constructor(
     private router: Router,
-    private utilisateurService: UtilisateurService
+    private utilisateurService: UtilisateurService,
+    public dialog: Dialog
   ) {}
 
   ngOnInit(): void {
-    // Check if the user is logged in and retrieve the user data
+    this.checkUserLoggedIn()
+  }
+
+  checkUserLoggedIn() {
     const userId = localStorage.getItem('storage_user_id')
-    console.log(userId)
     if (userId) {
       this.utilisateurService.getUtilisateurById(userId).subscribe((user) => {
         this.utilisateur = user
+        this.UserConnecte = true
       })
     }
   }
 
+  openPopupLog(Isinscription: boolean) {
+    this.IsOpen = false
+    const dialogRef = this.dialog.open<any>(LoginComponent, {
+      data: {
+        Isinscription: Isinscription
+      }
+    })
+
+    dialogRef.closed.subscribe((response: any) => {
+      console.log('On ferme')
+      if (response) {
+        console.log('resuuuult :', response)
+        this.UserConnecte = true
+        this.utilisateur = response
+        this.checkUserLoggedIn()
+      }
+    })
+  }
   navigateHomePage() {
     this.router.navigate(['/homePage'])
     this.IsOpen = false
@@ -54,6 +85,18 @@ export class AppComponent implements OnInit {
     }
   }
 
+  navigateUserPageFavoris(id: string) {
+    if (id) {
+      this.router.navigate(['/favoris/user', id])
+      this.IsOpen = false
+    }
+  }
+
+  navigateBackOffice() {
+    this.router.navigate(['/backOffice'])
+    this.IsOpen = false
+  }
+
   logout() {
     // Clear the storage_user_id from localStorage
     localStorage.removeItem('storage_user_id')
@@ -61,5 +104,6 @@ export class AppComponent implements OnInit {
     // Redirect to the login page or any other page
     this.router.navigate(['/'])
     this.IsOpen = false
+    this.UserConnecte = false
   }
 }

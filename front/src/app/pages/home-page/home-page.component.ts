@@ -5,8 +5,9 @@ import { Dialog } from '@angular/cdk/dialog'
 import { FormsModule } from '@angular/forms'
 
 import { CollectionsComponent } from '../../components/collection-detail/collections.component'
-import { UneService } from '../../services/une.service'
 import { LoginComponent } from '../../components/login/login.component'
+
+import { UneService } from '../../services/une.service'
 import { CollectionService } from '../../services/collection.service'
 import { FilterPipe } from '../../services/filterByText.pipe'
 import { PeriodeService } from '../../services/periode.service'
