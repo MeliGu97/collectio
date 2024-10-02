@@ -4,9 +4,11 @@ import { Routes, RouterModule } from '@angular/router'
 import { LoginComponent } from './components/login/login.component'
 import { HomePageComponent } from './pages/home-page/home-page.component'
 import { UtilisateurDetailPageComponent } from './pages/utilisateur-page/utilisateur-detail-page.component'
+import { UtilisateurPageFavorisComponent } from './pages/utilisateur-page-favoris/utilisateur-page-favoris.component'
 
 import { CollectionDetailPageComponent } from './pages/collection-detail-page/collection-detail-page.component'
 import { ElementDetailPageComponent } from './pages/element-detail-page/element-detail-page.component'
+
 import { AuthGuard } from './auth.guard'
 import { LoginPageComponent } from './pages/login-page/login-page.component'
 import { BackOfficeComponent } from './pages/back-office/back-office.component'
@@ -22,6 +24,11 @@ export const routes: Routes = [
   {
     path: 'utilisateur/:id',
     component: UtilisateurDetailPageComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'favoris/user/:id',
+    component: UtilisateurPageFavorisComponent,
     canActivate: [AuthGuard]
   },
   { path: 'backOffice', component: BackOfficeComponent }

@@ -89,6 +89,7 @@ export class FormCollectionComponent implements OnInit {
       }
     })
   }
+
   // Regarde si les cases periodes sont cochées ou non
   onCheckboxChange(e: any) {
     const periodesArray: FormArray = this.newCollectionForm.get(

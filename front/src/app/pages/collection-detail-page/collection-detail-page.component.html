@@ -109,7 +109,11 @@
     <!-- BODY -->
     <article class="marges">
         <ul class="espacement-autour">
-            <li *ngIf="collection.elementsId.length === 0">Aucun élément</li>
+            <li *ngIf="collection.elementsId.length === 0">
+                <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucun élément</h2>
+                <!-- a montrer que si utili = le createur -->
+                <p class="texte-discret">Vous pouvez en ajouter en cliquant sur le bouton en bas</p>
+            </li>
             <li *ngFor="let element of elements  | filter: searchTerm" class="card medium motif-fond-pointille">
                 <a [routerLink]="['/elements', element._id]">
                     <!-- <app-element-detail [idElement]="element"></app-element-detail> -->
@@ -127,11 +131,13 @@
                 </a>
                 <div class="centrer-milieu crud-haut-droite">
                     <!-- MODIFIER -->
+                    <!-- a montrer que si utili = le createur -->
                     <button (click)="openPopupUpdateElem(element._id)" class="btn-crud tooltip">
                         <i class="fa-solid fa-pencil"></i>
                         <span class="tooltiptext tolltiptexte-small-top">Modifier</span>
                     </button>
                     <!-- Plus d'options -->
+                    <!-- a montrer que si utili = le createur -->
                     <button (click)="openPopupMoreOptioneElem(element._id)" class="btn-crud tooltip">
                         <i class="fa-solid fa-ellipsis"></i>
                         <span class="tooltiptext tolltiptexte-small-top">Plus d'options</span>
@@ -151,6 +157,7 @@
     <!-- appel de la pop up formulaire pour ajouter un element  -->
     <article class="btn-flottant-bas-droite">
         <!-- AJOUTER -->
+        <!-- a montrer que si utili = le createur -->
         <button (click)="openPopupAddElem(collection._id)" [disabled]="isDisabled" class="btn-primary">
             <i class="fa-solid fa-plus"></i>
             <p>Ajouter un élément</p>

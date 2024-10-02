@@ -100,6 +100,18 @@ $favoris:#7a1a33;
   align-items: center;
   height: 100vh;
 }
+.centro-centrer-S{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+.centro-centrer-XS{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+}
 .indienne{
   display: inline-block;
 }
@@ -979,13 +991,7 @@ button {
 .img-admin{
   background-image: url("../src/assets/images/accueil/pexels-tima-miroshnichenko-6549364.jpg");
 }
-.img-boite{
-  background-image: url("../src/assets/images/accueil/pexels-kaboompics-5842.jpg");
-  min-height: 750px;
-}
-.img-no-data{
-  background-image: url("../src/assets/Picto/cloud.png");
-}
+
 
 .container-img-text {
   display: flex;

@@ -65,7 +65,13 @@
                 <!-- onglet 1 -->
                 <div class="content" id="c1">
                     <ul class="espacement-autour">
-                        <p *ngIf=" collectionsPublic.length==0"> Aucune collection </p>
+                        <li *ngIf=" collectionsPublic.length==0">
+                            <div class="centro-centrer-XS">
+                                <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucune
+                                    collection publique
+                                </h2>
+                            </div>
+                        </li>
                         <li *ngFor="let collection of collectionsPublic | filter: searchTerm | filterByPeriodes: selectedPeriodes"
                             class="card around large motif-fond-pointille">
                             <app-collections [collectionId]="collection"
@@ -80,7 +86,13 @@
                     <div class="content" id="c2">
                         <!-- POUR CHAQUE COLLECTION  -->
                         <ul class="espacement-autour">
-                            <p *ngIf=" collectionsPrivate.length==0"> Aucune collection </p>
+                            <li *ngIf=" collectionsPrivate.length==0">
+                                <div class="centro-centrer-XS">
+                                    <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucune
+                                        collection privée
+                                    </h2>
+                                </div>
+                            </li>
                             <li *ngFor="let collection of collectionsPrivate | filter: searchTerm | filterByPeriodes: selectedPeriodes let i = index"
                                 class="card around large motif-fond-pointille">
                                 <app-collections [collectionId]="collection"

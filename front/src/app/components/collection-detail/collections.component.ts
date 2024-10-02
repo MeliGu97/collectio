@@ -7,8 +7,10 @@ import {
   ReactiveFormsModule,
   FormsModule
 } from '@angular/forms'
-import { Router, RouterLink } from '@angular/router'
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { Dialog, DialogModule } from '@angular/cdk/dialog'
+import { Observable } from 'rxjs/internal/Observable'
+import { map } from 'rxjs'
 
 import { CollectionService } from '../../services/collection.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
@@ -43,11 +45,10 @@ import { PopupComponent } from '../../design-system/popup/popup.component'
 })
 export class CollectionsComponent implements OnInit {
   @Input() selectedPeriodes: string[] = []
+  @Input() collectionId: string = ''
 
   @Output() collectionsUpdated = new EventEmitter<void>()
   @Output() collectionDeleted = new EventEmitter<void>()
-
-  @Input() collectionId: string = ''
 
   collection: any = {}
   collections: any[] = []
@@ -69,6 +70,12 @@ export class CollectionsComponent implements OnInit {
   updateSignalement: FormGroup = new FormGroup({})
   needReponse: boolean = true
 
+  isCollFav: boolean = false
+  favoris: any = {}
+  Allfavoris: any[] = []
+  favorisExistant: boolean = false
+  collectionIds: any[] = []
+
   constructor(
     private collectionService: CollectionService,
     private utilisateurService: UtilisateurService,
@@ -77,9 +84,11 @@ export class CollectionsComponent implements OnInit {
 
     public dialog: Dialog,
     private router: Router,
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {}
 
+  // ---------------------------------
   ngOnInit() {
     this.collection = this.collectionId
     this.collectionService.getCollections().subscribe((data) => {
@@ -91,20 +100,29 @@ export class CollectionsComponent implements OnInit {
       if (this.collection.signalement) {
         this.getSignalemetByCollId(this.collection._id)
       }
-
       this.updateSignalement = this.formBuilder.group({
         reponseUtili: [''],
         reponseDate: [new Date()]
       })
     })
+    // recup l'utili conneté :
+    const utilisateurId = this.utilisateurService.getCurrentUtilisateur()._id
+    if (utilisateurId) {
+      // Récupérer les favoris de l'utilisateur connecté
+      this.getFavorisCollectionsByUserId(utilisateurId)
+    } else {
+      console.log('Aucun utilisateur connecté')
+    }
+
     this.getUtilisateurById(this.collection.userId)
   }
+
+  // ---------------------------------------
 
   filterCollectionsByPeriodes() {
     if (this.selectedPeriodes.length === 0) {
       return this.collections
     }
-
     return this.collections.filter((collection) =>
       collection.periodesId.some((periodeId: string) =>
         this.selectedPeriodes.includes(periodeId)
@@ -138,12 +156,100 @@ export class CollectionsComponent implements OnInit {
       })
   }
 
+  // pour afficher le nom du créateur de la collection
   getUtilisateurById(userId: string) {
     this.utilisateurService.getUtilisateurById(userId).subscribe((data) => {
       this.utilisateur = data
     })
   }
 
+  // ---------------------------------------
+  // LES FAVORIS
+
+  getFavorisCollectionsByUserId(userId: string) {
+    this.favorisService.getFavorisByUserId(userId).subscribe(
+      (data) => {
+        if (data.length === 0) {
+          // Aucune liste de favori trouvé pour cet utilisateur
+          this.favoris = null
+        } else {
+          this.favoris = data[0]
+          if (this.favoris && this.favoris.collectionIds) {
+            this.collectionIds = this.favoris.collectionIds.map(
+              (collection: any) => collection
+            )
+            // console.log(this.collectionIds)
+            console.log('je me recharge')
+            this.CheckIfCollIsInFav(this.collection._id)
+          }
+        }
+      },
+      (error) => {
+        console.error('Error:', error)
+      }
+    )
+  }
+  CheckIfCollIsInFav(collectionId: string) {
+    // Vérifier si l'identifiant de la collection courante se trouve dans le tableau collectionIds
+    if (
+      this.collectionIds.some(
+        (collection: any) => collection._id === collectionId
+      )
+    ) {
+      this.isCollFav = true
+    } else {
+      this.isCollFav = false
+    }
+  }
+
+  AddToFavoris(collectionId: string) {
+    const utilisateurId = this.utilisateurService.getCurrentUtilisateur()._id
+    if (utilisateurId) {
+      this.favorisService
+        .addCollectionToFavoris(utilisateurId, collectionId)
+        .subscribe({
+          next: () => {
+            // Mettre à jour le tableau collectionIds avec la nouvelle collection favorite
+            this.collectionIds.push(collectionId)
+            this.isCollFav = true
+            console.log('[compo] Collection ajoutée aux favoris avec succès !')
+          },
+          error: (error) => {
+            console.error(
+              "[compo] Erreur lors de l'ajout de la collection aux favoris :",
+              error
+            )
+          }
+        })
+    } else {
+      console.log('Aucun utilisateur connecté')
+    }
+  }
+
+  RemoveToFavoris(collectionId: string) {
+    const utilisateurId = this.utilisateurService.getCurrentUtilisateur()._id
+    this.favorisService
+      .removeCollectionFromFavoris(utilisateurId, collectionId)
+      .subscribe({
+        next: () => {
+          // console.log('[compo] collectionId', collectionId)
+          this.isCollFav = false
+
+          // Mettre à jour la liste des favoris de l'utilisateur connecté
+          this.getFavorisCollectionsByUserId(utilisateurId)
+          console.log('recharge toi')
+        },
+        error: (error) => {
+          console.error(
+            "Erreur lors du retrait de l'identifiant de collection des favoris :",
+            error
+          )
+        }
+      })
+  }
+
+  // ---------------------------------------
+  // LES SIGNALEMENTS
   getSignalemetByCollId(collectionId: string) {
     this.signalementService
       .getSignalementByCollectionId(collectionId)
@@ -159,20 +265,6 @@ export class CollectionsComponent implements OnInit {
 
   signalementReduit(Isreduit: boolean) {
     this.reduit = Isreduit
-  }
-
-  // LES POST
-  AddToFavoris(collectionId: string) {
-    const userId = this.utilisateurService.getCurrentUtilisateur()._id
-    this.favorisService.addToFavoris(userId, collectionId).subscribe({
-      next: () => {
-        // Mettre à jour la propriété isFavorite de la collection
-        this.collection.isFavorite = true
-      },
-      error: (error) => {
-        console.error(error)
-      }
-    })
   }
 
   updateSignalementCollection() {

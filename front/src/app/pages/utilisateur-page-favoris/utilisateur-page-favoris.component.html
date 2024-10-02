@@ -18,10 +18,22 @@
     <article class="marges">
 
         <ul class="espacement-autour">
-            <p *ngIf="collectionIds.length == 0">Aucune collection favorite</p>
-            <li *ngFor="let collectionId of collectionIds" class="card around large motif-fond-pointille">
-                <app-collections [collectionId]="collectionId"></app-collections>
-            </li>
+            <!-- verifier si l'utilisateur n'a pas une liste de fav:  -->
+            <div *ngIf="!favorisExistant" class="centrer-en-colonne">
+                <h3>Vous n'avez pas encore de liste de favoris</h3>
+                <button class="btn-primary btn-small" (click)="creerFavoris()">Créer une liste de favoris</button>
+            </div>
+            <div *ngIf="favorisExistant">
+                <!-- s'il a une liste de fav  -->
+                <div *ngIf="collectionIds.length == 0" class="centrer-en-colonne">
+                    <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucune collection favorite
+                    </h2>
+                </div>
+                <li *ngFor="let collectionId of collectionIds" class="card around large motif-fond-pointille">
+                    <app-collections [collectionId]="collectionId"></app-collections>
+                </li>
+            </div>
+
         </ul>
 
     </article>

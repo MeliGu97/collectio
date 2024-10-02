@@ -76,10 +76,12 @@ export class CollectionService {
   }
 
   // LES AUTRES CRUDS
+  // POST
   addCollection(collection: any): Observable<any> {
     return this.http.post<any>(`${baseServerUrl}/collections`, collection)
   }
 
+  // UPDATE
   updateCollection(collection: any): Observable<any> {
     console.log('ID de la collection :', collection._id)
     return this.http.put(
@@ -106,6 +108,7 @@ export class CollectionService {
     })
   }
 
+  // DELETE
   deleteCollectionById(id: string): Observable<any> {
     return this.http.delete(`${baseServerUrl}/collections/${id}`)
   }

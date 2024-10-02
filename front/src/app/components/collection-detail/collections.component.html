@@ -5,11 +5,19 @@
 <!-- ------------------------------ -->
 <!-- favoris -->
 <div *ngIf="collection.signalement === false">
+
   <div class="centrer-milieu crud-haut-gauche">
-    <button (click)="AddToFavoris(collection._id)" class="btn-crud tooltip">
-      <i class="fa-regular fa-heart"></i>
-      <span class="tooltiptext tolltiptexte-small-top">Favoris</span>
+    <!-- si coll est dans les favoris utilisateur alors -->
+    <button *ngIf="isCollFav" (click)="RemoveToFavoris(collection._id)" class="btn-crud tooltip">
+      <i class="fa-solid fa-heart"></i>
+      <span class="tooltiptext tolltiptexte-small-top">Retirer des favoris</span>
     </button>
+    <!-- sinon  -->
+    <button *ngIf="!isCollFav" (click)="AddToFavoris(collection._id)" class="btn-crud tooltip">
+      <i class="fa-regular fa-heart"></i>
+      <span class="tooltiptext tolltiptexte-small-top">Ajouter aux favoris</span>
+    </button>
+
   </div>
 </div>
 
