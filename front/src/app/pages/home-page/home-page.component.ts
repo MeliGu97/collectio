@@ -9,7 +9,7 @@ import { LoginComponent } from '../../components/login/login.component'
 
 import { UneService } from '../../services/une.service'
 import { CollectionService } from '../../services/collection.service'
-import { FilterPipe } from '../../services/filterByText.pipe'
+import { FilterPipeCollection } from '../../services/filterByText.pipe'
 import { PeriodeService } from '../../services/periode.service'
 
 export interface DialogData {
@@ -19,14 +19,19 @@ export interface DialogData {
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  providers: [UneService, CollectionService, PeriodeService, FilterPipe],
+  providers: [
+    UneService,
+    CollectionService,
+    PeriodeService,
+    FilterPipeCollection
+  ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
   imports: [
     CommonModule,
     RouterLink,
     CollectionsComponent,
-    FilterPipe,
+    FilterPipeCollection,
     FormsModule
   ]
 })
@@ -69,9 +74,9 @@ export class HomePageComponent implements OnInit {
       this.publicCollections = this.collectionService.makePagination(
         data,
         this.currentPage,
-        4
+        8
       )
-      this.totalPages = Math.ceil(data.length / 4)
+      this.totalPages = Math.ceil(data.length / 8)
     })
   }
 
@@ -85,7 +90,7 @@ export class HomePageComponent implements OnInit {
       )
       // Met à jour la pagination
       this.onPeriodeChange
-      this.totalPages = Math.ceil(this.publicCollections.length / 3)
+      this.totalPages = Math.ceil(this.publicCollections.length / 7)
     } else {
       this.loadCollections()
     }

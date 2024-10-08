@@ -620,6 +620,7 @@ input:focus, textarea:focus {
 .input-texte{
   width: 100%;
   font-family: 'courier-prime';
+  min-height: 30px;
 }
 .input-basic{
   height: 30px;
@@ -1055,6 +1056,7 @@ button {
   }
   .btn-crud {
     opacity: 1; 
+    color: #1A2F37;
   }
   .input-recherche{
     width: 220px;
@@ -1087,6 +1089,26 @@ button {
     margin: 3px 5px;
   }
 
+
+  .container-img-text {
+    display: inline-block;
+  }
+  
+  .image {
+    display: none;
+  }
+  .image-fillette{
+    background-image: url("../src/assets/images/accueil/pexels-tima-miroshnichenko-6549373.jpg");
+    background-size: cover;
+    background-position-y: center;
+  }
+  
+  .text {
+    z-index: 20;
+    text-align: center;
+    color: white;
+  }
+  
 }
 //  tablette
 @media (min-width: 768px) and (max-width: 1024px) { 
@@ -1101,6 +1123,7 @@ button {
   }
   .btn-crud {
     opacity: 1; 
+    color: #1A2F37;
   }
   .complete {
     width: 100%;

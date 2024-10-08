@@ -28,8 +28,8 @@ export class FavorisService {
     userId: string,
     collectionId: string
   ): Observable<any> {
-    console.log('[service] userId :', userId)
-    console.log('[service] collectionId :', collectionId)
+    // console.log('[service] userId :', userId)
+    // console.log('[service] collectionId :', collectionId)
 
     return this.http.patch(`${baseServerUrl}/favorisUser/${userId}`, {
       collectionId

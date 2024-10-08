@@ -18,7 +18,7 @@ import { SignalementService } from '../../services/signalement.service'
 import { CollectionsComponent } from '../../components/collection-detail/collections.component'
 import { PopupComponent } from '../../design-system/popup/popup.component'
 
-import { FilterPipe } from '../../services/filterByText.pipe'
+import { FilterPipeCollection } from '../../services/filterByText.pipe'
 
 @Component({
   selector: 'app-back-office',
@@ -26,7 +26,7 @@ import { FilterPipe } from '../../services/filterByText.pipe'
   providers: [
     CollectionService,
     PeriodeService,
-    FilterPipe,
+    FilterPipeCollection,
     UneService,
     UtilisateurService,
     SignalementService
@@ -37,7 +37,7 @@ import { FilterPipe } from '../../services/filterByText.pipe'
     CommonModule,
     RouterLink,
     CollectionsComponent,
-    FilterPipe,
+    FilterPipeCollection,
     FormsModule,
     PopupComponent,
     ReactiveFormsModule

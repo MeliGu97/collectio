@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable, map } from 'rxjs'
 import { baseServerUrl } from '../collectio.constant'
 
@@ -30,19 +30,31 @@ export class ElementService {
       )
   }
 
-  addElement(element: any): Observable<any> {
-    return this.http.post<any>(`${baseServerUrl}/elements`, element)
+  addElement(element: any, token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: token
+    })
+    return this.http.post<any>(`${baseServerUrl}/elements`, element, {
+      headers
+    })
   }
 
-  updateElement(element: any): Observable<any> {
+  updateElement(element: any, token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: token
+    })
     console.log('ID de la element :', element._id)
     return this.http.put<any>(
       `${baseServerUrl}/elements/${element._id}`,
-      element
+      element,
+      { headers }
     )
   }
 
-  deleteElementById(id: string): Observable<any> {
-    return this.http.delete(`${baseServerUrl}/elements/${id}`)
+  deleteElementById(id: string, token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: token
+    })
+    return this.http.delete(`${baseServerUrl}/elements/${id}`, { headers })
   }
 }

@@ -12,7 +12,7 @@ import { CollectionsComponent } from '../../components/collection-detail/collect
 import { FormCollectionComponent } from '../../components/form-collection/form-collection.component'
 
 import { FilterByPeriodesPipe } from '../../services/filterByPeriodes.pipe'
-import { FilterPipe } from '../../services/filterByText.pipe'
+import { FilterPipeCollection } from '../../services/filterByText.pipe'
 
 @Component({
   selector: 'app-utilisateur-detail-page',
@@ -21,7 +21,7 @@ import { FilterPipe } from '../../services/filterByText.pipe'
     CollectionService,
     PeriodeService,
     UtilisateurService,
-    FilterPipe,
+    FilterPipeCollection,
     FilterByPeriodesPipe
   ],
   templateUrl: './utilisateur-detail-page.component.html',
@@ -33,7 +33,7 @@ import { FilterPipe } from '../../services/filterByText.pipe'
     FormsModule,
     RouterLink,
     CollectionsComponent,
-    FilterPipe,
+    FilterPipeCollection,
     FilterByPeriodesPipe
   ]
 })
@@ -104,8 +104,10 @@ export class UtilisateurDetailPageComponent implements OnInit {
   }
 
   getCollectionsPrivateByUtilisateurId(userId: string) {
+    const token = localStorage.getItem('storage_token') || 'default_token_value'
     this.collectionService
-      .getCollectionsPrivateByUtilisateurId(userId)
+      // On passe bien les deux arguments : l'id de l'utili et le token qu'on est allé cherché dans le localStorage
+      .getCollectionsPrivateByUtilisateurId(userId, token)
       .subscribe((data) => {
         this.collections = data
         this.collectionsPrivate = data
@@ -117,8 +119,10 @@ export class UtilisateurDetailPageComponent implements OnInit {
   }
 
   getCollectionsByUtilisateurId(userId: string) {
+    const token = localStorage.getItem('storage_token') || 'default_token_value'
+    console.log(localStorage)
     this.collectionService
-      .getCollectionsPrivateByUtilisateurId(userId)
+      .getCollectionsPrivateByUtilisateurId(userId, token)
       .subscribe((data) => {
         this.collections = data
         this.collectionsPrivate = data

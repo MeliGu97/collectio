@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable, tap } from 'rxjs'
+
 import { baseServerUrl } from '../collectio.constant'
 
 @Injectable({
@@ -8,10 +9,6 @@ import { baseServerUrl } from '../collectio.constant'
 })
 export class UtilisateurService {
   constructor(private http: HttpClient) {}
-
-  verifyToken(token: string): Observable<any> {
-    return this.http.post(`${baseServerUrl}/verify-token`, { token })
-  }
 
   getUtilisateurs(): Observable<any> {
     return this.http.get(`${baseServerUrl}/utilisateurs`)

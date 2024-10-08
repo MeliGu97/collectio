@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core'
 
 @Pipe({
-  name: 'filter',
+  name: 'filterElement',
   standalone: true
 })
-export class FilterPipe implements PipeTransform {
+export class FilterPipeElement implements PipeTransform {
   transform(items: any[], searchText: string): any[] {
     if (!items) {
       return []
@@ -17,9 +17,30 @@ export class FilterPipe implements PipeTransform {
       return (
         item.label.toLowerCase().includes(searchText) ||
         item.description.toLowerCase().includes(searchText)
-        // ||
-        // item.categorie.toLowerCase().includes(searchText) ||
-        // item.sousCategorie.toLowerCase().includes(searchText)
+      )
+    })
+  }
+}
+
+@Pipe({
+  name: 'filterCollection',
+  standalone: true
+})
+export class FilterPipeCollection implements PipeTransform {
+  transform(items: any[], searchText: string): any[] {
+    if (!items) {
+      return []
+    }
+    if (!searchText) {
+      return items
+    }
+    searchText = searchText.toLowerCase()
+    return items.filter((item) => {
+      return (
+        item.label.toLowerCase().includes(searchText) ||
+        item.description.toLowerCase().includes(searchText) ||
+        item.categorie.toLowerCase().includes(searchText) ||
+        item.sousCategorie.toLowerCase().includes(searchText)
       )
     })
   }

@@ -50,7 +50,7 @@
                 <div class="content" id="c1">
                     <div>
                         <ul class="espacement-autour">
-                            <li *ngFor="let collection of publicCollections | filter: searchTerm"
+                            <li *ngFor="let collection of publicCollections | filterCollection: searchTerm"
                                 class="card around small motif-fond-pointille">
                                 <app-collections [collectionId]=" collection"></app-collections>
                                 <button class="btn-crud-office espacement-entre"

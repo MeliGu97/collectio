@@ -14,7 +14,6 @@
   
 .popup {
   background: white;
-    // padding: 20px;
     width: 50%;
     position: relative;
     border-radius: 5px;
@@ -24,6 +23,8 @@
 @media (min-width: 0px) and (max-width: 768px){
   .popup {
       width: 90%;
+      
+      
     }
 }
 //  tablette

@@ -69,13 +69,14 @@ export class FormElementComponent implements OnInit {
   }
 
   createOrUpdateElement(): void {
+    const token = localStorage.getItem('storage_token') || 'default_token_value'
     if (this.nouvelElementForm.valid) {
       if (this.data.isUpdate && this.data.element) {
         const updatedElement = {
           ...this.data.element,
           ...this.nouvelElementForm.value
         }
-        this.elementService.updateElement(updatedElement).subscribe({
+        this.elementService.updateElement(updatedElement, token).subscribe({
           next: (updatedElement) => {
             console.log('Element updated successfully', updatedElement)
             this.dialogRef.close(updatedElement)
@@ -85,18 +86,20 @@ export class FormElementComponent implements OnInit {
           }
         })
       } else {
-        this.elementService.addElement(this.nouvelElementForm.value).subscribe({
-          next: (elementAjoute) => {
-            console.log('element ajouté avec succès', elementAjoute)
-            this.elements.push(elementAjoute)
-            this.nouvelElementForm.reset() // Réinitialisation du formulaire après l'ajout
-            this.dialogRef.close(elementAjoute)
-          },
-          error: (error) => {
-            console.log('elementAjoute', this.nouvelElementForm.value)
-            console.error("Erreur lors de l'ajout d'un element", error)
-          }
-        })
+        this.elementService
+          .addElement(this.nouvelElementForm.value, token)
+          .subscribe({
+            next: (elementAjoute) => {
+              console.log('element ajouté avec succès', elementAjoute)
+              this.elements.push(elementAjoute)
+              this.nouvelElementForm.reset() // Réinitialisation du formulaire après l'ajout
+              this.dialogRef.close(elementAjoute)
+            },
+            error: (error) => {
+              console.log('elementAjoute', this.nouvelElementForm.value)
+              console.error("Erreur lors de l'ajout d'un element", error)
+            }
+          })
       }
     }
   }

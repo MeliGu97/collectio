@@ -72,7 +72,7 @@
                                 </h2>
                             </div>
                         </li>
-                        <li *ngFor="let collection of collectionsPublic | filter: searchTerm | filterByPeriodes: selectedPeriodes"
+                        <li *ngFor="let collection of collectionsPublic | filterCollection : searchTerm | filterByPeriodes: selectedPeriodes"
                             class="card around large motif-fond-pointille">
                             <app-collections [collectionId]="collection"
                                 (collectionsUpdated)="getCollectionsByUtilisateurId(getUserId())"></app-collections>
@@ -93,7 +93,7 @@
                                     </h2>
                                 </div>
                             </li>
-                            <li *ngFor="let collection of collectionsPrivate | filter: searchTerm | filterByPeriodes: selectedPeriodes let i = index"
+                            <li *ngFor="let collection of collectionsPrivate | filterCollection : searchTerm | filterByPeriodes: selectedPeriodes let i = index"
                                 class="card around large motif-fond-pointille">
                                 <app-collections [collectionId]="collection"
                                     (collectionsUpdated)="getCollectionsByUtilisateurId(getUserId())"></app-collections>

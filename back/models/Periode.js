@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose, { Schema } from "mongoose";
 
-const periodeSchema = new mongoose.Schema({
+const periodeSchema = new Schema({
   label: String,
   dateDebut: Number,
   dateFin: Number,
@@ -9,4 +9,6 @@ const periodeSchema = new mongoose.Schema({
   collectionsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Collection' }]
 })
 
-module.exports = mongoose.model('Periode', periodeSchema)
+
+const Periode = mongoose.model('Periode', periodeSchema)
+export default Periode

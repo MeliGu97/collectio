@@ -41,7 +41,7 @@
         </div>
         <div>
             <ul class="espacement-autour">
-                <li *ngFor="let collection of publicCollections | filter: searchTerm"
+                <li *ngFor="let collection of publicCollections | filterCollection: searchTerm"
                     class="card around medium motif-fond-pointille">
                     <app-collections [collectionId]="collection"></app-collections>
                 </li>
@@ -74,7 +74,7 @@
 </section>
 
 
-<section class="container-general">
+<section class="container-general  image-fillette">
     <article class="marges">
 
         <div class="container-img-text">
@@ -96,7 +96,6 @@
 
             </div>
             <div class="image">
-
                 <img src="../assets/images/accueil/pexels-tima-miroshnichenko-6549373.jpg">
                 <!-- <img src="../assets/images/accueil/vasco-da-gama-8000964_1920.png"> -->
             </div>

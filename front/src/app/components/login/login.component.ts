@@ -13,13 +13,15 @@ import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 
 import { UtilisateurService } from '../../services/utilisateur.service'
+import { AuthService } from '../../services/auth.service'
+
 import { PopupComponent } from '../../design-system/popup/popup.component'
 import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  providers: [UtilisateurService],
+  providers: [UtilisateurService, AuthService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   imports: [
@@ -38,6 +40,7 @@ export class LoginComponent implements OnInit {
   newUtilisateur: any = {}
   Isinscription?: boolean
   newConnectUtilisateurForm: FormGroup = new FormGroup({})
+  errorMessage: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,7 +48,7 @@ export class LoginComponent implements OnInit {
     public dialogRef: DialogRef<any>,
     @Inject(DIALOG_DATA)
     public data: LoginComponent,
-    private router: Router
+    private router: Router // private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -92,15 +95,32 @@ export class LoginComponent implements OnInit {
         .connectUtilisateur(this.newConnectUtilisateurForm.value)
         .subscribe({
           next: (response) => {
-            console.log('Utilisateur connecté avec succès', response)
-            // Assuming the storage_user_id is in the response object
-            localStorage.setItem('storage_user_id', response._id)
+            // console.log(
+            //   'Utilisateur connecté avec succès',
+            //   response,
+            //   'response.user._id',
+            //   response.user._id,
+            //   'response.token',
+            //   response.token
+            // )
+            //  on vient enregistrer storage_user_id is in the response object
+            // localStorage.setItem('storage_user_id', response._id)
+
+            localStorage.setItem('storage_user_id', response.user._id)
+            // on vient enregistrer le token dans le localStorage
+            localStorage.setItem('storage_token', response.token)
+
+            // On envoie l'evenement : utilisateur connecté
             this.utilisateurConnecte.emit(response)
+
+            // this.authService.login(response.user)
             this.dialogRef.close(response)
-            this.router.navigate(['/utilisateur', response._id])
+            // redirection vers la page de l'utilisateur qui vient de se connecté
+            this.router.navigate(['/utilisateur', response.user._id])
           },
           error: (error) => {
             console.error('Erreur lors de la connexion', error)
+            this.errorMessage = "Nom d'utilisateur ou mot de passe incorrect"
           }
         })
     }

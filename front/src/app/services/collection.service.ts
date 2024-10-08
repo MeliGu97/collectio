@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable, map, tap } from 'rxjs'
 
 import { baseServerUrl } from '../collectio.constant'
@@ -22,9 +22,17 @@ export class CollectionService {
       `${baseServerUrl}/collectionsPublicByUtili/user/${userId}`
     )
   }
-  getCollectionsPrivateByUtilisateurId(userId: string): Observable<any[]> {
+  // passer en parametre le header : Authorization
+  getCollectionsPrivateByUtilisateurId(
+    userId: string,
+    token: string
+  ): Observable<any[]> {
+    const headers = new HttpHeaders({
+      Authorization: token
+    })
     return this.http.get<any[]>(
-      `${baseServerUrl}/collectionsPrivateByUtili/user/${userId}`
+      `${baseServerUrl}/collectionsPrivateByUtili/user/${userId}`,
+      { headers }
     )
   }
 
@@ -109,7 +117,10 @@ export class CollectionService {
   }
 
   // DELETE
-  deleteCollectionById(id: string): Observable<any> {
-    return this.http.delete(`${baseServerUrl}/collections/${id}`)
+  deleteCollectionById(id: string, token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: token
+    })
+    return this.http.delete(`${baseServerUrl}/collections/${id}`, { headers })
   }
 }

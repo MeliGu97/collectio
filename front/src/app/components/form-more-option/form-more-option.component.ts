@@ -52,8 +52,10 @@ export class FormMoreOptionComponent {
 
     this.collectionService.updateCollection(updatedCollection).subscribe(
       () => {
+        const token =
+          localStorage.getItem('storage_token') || 'default_token_value'
         this.collectionService
-          .getCollectionsPrivateByUtilisateurId(this.collection.userId)
+          .getCollectionsPrivateByUtilisateurId(this.collection.userId, token)
           .subscribe((data) => {})
         this.collectionService
           .getCollectionsPublicByUtilisateurId(this.collection.userId)
@@ -68,11 +70,14 @@ export class FormMoreOptionComponent {
   }
 
   deleteCollection(id: string): void {
-    this.collectionService.deleteCollectionById(id).subscribe({
+    const token = localStorage.getItem('storage_token') || 'default_token_value'
+    this.collectionService.deleteCollectionById(id, token).subscribe({
       next: () => {
         const userId = this.utilisateurService.getCurrentUtilisateur()._id
+        const token =
+          localStorage.getItem('storage_token') || 'default_token_value'
         this.collectionService
-          .getCollectionsPrivateByUtilisateurId(userId)
+          .getCollectionsPrivateByUtilisateurId(userId, token)
           .subscribe({
             next: (data) => {
               this.collections = data
@@ -91,7 +96,8 @@ export class FormMoreOptionComponent {
   }
 
   deleteElement(id: string): void {
-    this.elementService.deleteElementById(id).subscribe({
+    const token = localStorage.getItem('storage_token') || 'default_token_value'
+    this.elementService.deleteElementById(id, token).subscribe({
       next: () => {
         this.dialogRef.close(id)
       },

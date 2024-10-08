@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose, { Schema } from "mongoose";
 
-const collectionSchema = new mongoose.Schema({
+const collectionSchema = new Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Utilisateur' },
   label: String,
   description: String,
@@ -14,4 +14,6 @@ const collectionSchema = new mongoose.Schema({
   signalement: Boolean,
 })
 
-module.exports = mongoose.model('Collection', collectionSchema)
+// module.exports = mongoose.model('Collection', collectionSchema)
+const Collection = mongoose.model('Collection', collectionSchema)
+export default Collection

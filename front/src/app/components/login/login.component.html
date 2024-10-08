@@ -12,14 +12,14 @@
             <div class="saut-de-ligne-M"></div>
             <div class="centrer-en-colonne">
                 <form [formGroup]="newUtilisateurForm" (ngSubmit)="ajouterUtilisateur()">
-                    <input class="input-basic" type="text" id="nom" formControlName="nom" placeholder="Nom">
-                    <input class="input-basic" type="text" id="prenom" formControlName="prenom" placeholder="Prénom">
+                    <input class="input-texte" type="text" id="nom" formControlName="nom" placeholder="Nom">
+                    <input class="input-texte" type="text" id="prenom" formControlName="prenom" placeholder="Prénom">
                     <div class="espacement-vertical-S"></div>
-                    <input class="input-basic" type="text" id="nomUtilisateur" formControlName="nomUtilisateur"
+                    <input class="input-texte" type="text" id="nomUtilisateur" formControlName="nomUtilisateur"
                         placeholder="Nom d'utilisateur">
-                    <!-- <input class="input-basic" type="text" id="role" formControlName="role" placeholder="Role"> -->
+                    <!-- <input class="input-texte" type="text" id="role" formControlName="role" placeholder="Role"> -->
                     <div class="espacement-vertical-S"></div>
-                    <input class="input-basic" type="password" id="motDePasse" formControlName="motDePasse"
+                    <input class="input-texte" type="password" id="motDePasse" formControlName="motDePasse"
                         placeholder="Mot de passe">
 
                     <div class="centrer-en-colonne">
@@ -32,12 +32,14 @@
         </article>
         <article class="padding-S" *ngIf="Isinscription === false">
             <h3>Connectez vous</h3>
-            <form [formGroup]="newConnectUtilisateurForm" (ngSubmit)="connectUtilisateur()">
-                <input class="input-basic" type="text" id="nomUtilisateur" formControlName="nomUtilisateur"
-                    placeholder="Nom d'utilisateur">
-                <input class="input-basic" type="password" id="motDePasse" formControlName="motDePasse"
-                    placeholder="Mot de passe">
 
+            <form [formGroup]="newConnectUtilisateurForm" (ngSubmit)="connectUtilisateur()">
+
+                <input class="input-texte" type="text" id="nomUtilisateur" formControlName="nomUtilisateur"
+                    placeholder="Nom d'utilisateur">
+                <input class="input-texte" type="password" id="motDePasse" formControlName="motDePasse"
+                    placeholder="Mot de passe">
+                <p *ngIf="errorMessage" class="texte-error">{{errorMessage}}</p><br>
                 <div class="centrer-en-colonne">
                     <button type="submit" [disabled]="newConnectUtilisateurForm.invalid" class="btn-primary btn-small">
                         <p>Se connecter</p>

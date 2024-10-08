@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose, { Schema } from "mongoose";
 
-const evenementSchema = new mongoose.Schema({
+const evenementSchema = new Schema({
   label: String,
   jour: Number,
   mois: Number,
@@ -12,4 +12,5 @@ const evenementSchema = new mongoose.Schema({
   elementId: { type: mongoose.Schema.Types.ObjectId, ref: 'Element' },
 })
 
-module.exports = mongoose.model('Evenement', evenementSchema)
+const Evenement = mongoose.model('Evenement', evenementSchema)
+export default Evenement

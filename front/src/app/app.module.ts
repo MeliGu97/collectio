@@ -29,7 +29,8 @@ import { UtilisateurService } from './services/utilisateur.service'
     ElementService,
     PeriodeService,
     EvenementService,
-    UtilisateurService
+    UtilisateurService,
+    HttpClient
   ]
 })
 export class AppModule {}

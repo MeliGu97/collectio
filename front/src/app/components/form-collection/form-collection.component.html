@@ -10,6 +10,7 @@
             <i class="fa-solid fa-xmark"></i>
             <p>Fermer</p>
           </button>
+          <!-- IMAGE DE COUVERTURE -->
           <input type="file" id="imageUrl" formControlName="imageUrl" accept="image/png, image/jpg, image/jpeg" />
         </div>
       </article>
@@ -21,24 +22,26 @@
           <p class="circle-picto circle-picto-M margin-top-S-negatif couleur-element-tempo input-btn">
             <i class="fa-solid fa-hippo"></i>
           </p>
+
           <!-- CATEGORIES -->
-          <div class="espacement-vertical-S">
+          <div class="espacement-vertical-S centrer-en-colonne">
             <input type="text" id="categorie" formControlName="categorie" placeholder="Catégorie*"
               class="tag tag-L input-tag">
             <input type="text" id="sousCategorie" formControlName="sousCategorie" placeholder="Sous catégorie"
               class="tag tag-L input-tag">
           </div>
-          <!-- <div class="espacement-vertical-S">
-            <ul>
-              <li class="aligner-droite margin-droite-flexible">
-                <div>
-                  <p class="tag tag-L couleur-element-tempo input-btn">période</p>
-                </div>
-              </li>
-            </ul>
-          </div> -->
+
+          <!-- PERIODE BUTTON -->
+          <div class="espacement-vertical-S">
+            <div (click)="popUpPeriodeIsOpen = true" class="aligner-droite margin-droite-flexible"
+              style="cursor: pointer;">
+              <p class="tag tag-L couleur-element-tempo input-btn">période*</p>
+            </div>
+          </div>
         </div>
       </article>
+
+
       <article class="marges">
         <!-- TITRE COLLECTION -->
         <div class="centrer-sur-horizon">
@@ -48,29 +51,44 @@
         </div>
         <input type="text" id="label" formControlName="label" placeholder="Titre de la collection*" class="input-titre">
         <!-- DESCRIPTION -->
-        <textarea rows="4" type="text" id="description" formControlName="description" placeholder="Description"
+        <textarea rows="6" type="text" id="description" formControlName="description" placeholder="Description"
           class="input-texte"></textarea>
 
         <!-- PERIODE -->
-        <div>
-          <p>Période : </p>
-          <div class="espacement-vertical-M"></div>
-          <ul class="centrer-sur-horizon list-cases">
-            <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId"
-              class="espace-entre-case mobile-list-item">
-              <div class="centrer-en-colonne">
-                <input type="checkbox" class="checkbox" id="periodesId" [formControlName]="i" [value]="periode._id"
-                  (change)="onCheckboxChange($event)" />
-                <p class="tag tag-M periode tooltip" [ngStyle]="{'background': periode.couleur}">
-                  {{ periode.label.slice(0, 2) }}
-                  <span class="tooltiptext tolltiptexte-small-bottom">{{ periode.label }} : de {{
-                    periode.dateDebut }} à {{
-                    periode.dateFin }}</span>
-                </p>
+        <app-popup *ngIf="popUpPeriodeIsOpen === true">
+          <div class="padding-S">
+            <button class="aligner-droite margin-droite-S espacement-vertical-S centrer-milieu btn-primary btn-small"
+              (click)="popUpPeriodeIsOpen = false">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+            <p>Période : </p>
+            <div class="espacement-vertical-L"></div>
+            <ul class="centrer-sur-horizon list-cases">
+              <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId"
+                class="espace-entre-case mobile-list-item">
+                <div class="centrer-en-colonne">
+                  <input type="checkbox" class="checkbox" id="periodesId" [formControlName]="i" [value]="periode._id"
+                    (change)="onCheckboxChange($event)" />
+                  <p class="tag tag-M periode tooltip" [ngStyle]="{'background': periode.couleur}">
+                    {{ periode.label.slice(0, 2) }}
+                    <span class="tooltiptext tolltiptexte-small-bottom">{{ periode.label }} : de {{
+                      periode.dateDebut }} à {{
+                      periode.dateFin }}</span>
+                  </p>
+                </div>
+              </li>
+            </ul>
+            <div class="espacement-vertical-L"></div>
+            <div class="centrer-en-colonne">
+              <div class="fixe-bottom">
+                <button class="btn-primary btn-small" (click)="popUpPeriodeIsOpen = false">
+                  <p>Valider</p>
+                </button>
               </div>
-            </li>
-          </ul>
-        </div>
+            </div>
+          </div>
+        </app-popup>
+
 
 
       </article>

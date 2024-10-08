@@ -38,6 +38,7 @@ export class FormCollectionComponent implements OnInit {
   newCollectionForm: FormGroup = new FormGroup({})
   newCollection: any = {}
   periodes: any
+  popUpPeriodeIsOpen: boolean = false
 
   constructor(
     private collectionService: CollectionService,
@@ -56,7 +57,7 @@ export class FormCollectionComponent implements OnInit {
       categorie: ['', [Validators.required]],
       sousCategorie: [''],
       imageUrl: [''],
-      picto: [''],
+      picto: ['fa-hippo'],
       //ajouter une validation pour que ça ne soit pas vide
       periodesId: this.formBuilder.array([]),
       public: false,

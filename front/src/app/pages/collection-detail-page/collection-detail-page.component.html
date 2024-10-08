@@ -1,31 +1,37 @@
 <!-- Ici page détail d'une collection en fonction de son identifiant -->
-<section>
-    <article>
-        <div class="container-image-couverture-page couleur-element-tempo"
-            *ngIf="collection.imageUrl === '' else imageCouv">
-        </div>
-        <ng-template #imageCouv>
-            <img src="{{ collection.imageUrl }}" class="container-image-couverture-page image-de-fond">
-        </ng-template>
-    </article>
-</section>
+<header>
+    <div class="container-image-couverture-page couleur-element-tempo"
+        *ngIf="collection.imageUrl === '' else imageCouv">
+    </div>
+    <ng-template #imageCouv>
+        <img src="{{ collection.imageUrl }}" class="container-image-couverture-page image-de-fond">
+    </ng-template>
+</header>
 
 <section class="container-general">
     <!-- Info sur la collection -->
     <!-- HEADER -->
-    <article class="marges">
+    <header class="marges">
         <br>
-        <div *ngIf=" collection.periodesId.length==1">
+        <div *ngIf="collection.periodesId && collection.periodesId.length==1">
             <div class="centrer-sur-horizon" *ngFor=" let periode of collection.periodesId">
                 <p class="circle-picto circle-picto-M margin-top-S-negatif" [ngStyle]="{'background': periode.couleur}">
                     <i class="fa-solid {{ collection.picto }}"></i>
                 </p>
                 <div class="espacement-vertical-S" *ngFor=" let periode of collection.periodesId">
                     <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">{{ collection.categorie }}</p>
-                    <div class="tag tag-with-pastille ">
+
+                    <p *ngIf="collection.sousCategorie === '' else tagSousCategorie1color"></p>
+                    <ng-template #tagSousCategorie1color>
+                        <div class="tag tag-with-pastille ">
+                            <div class="tag-XS" [ngStyle]="{'background': periode.couleur}"></div>
+                            <p>{{ collection.sousCategorie }}</p>
+                        </div>
+                    </ng-template>
+                    <!-- <div class="tag tag-with-pastille ">
                         <div class="tag-XS" [ngStyle]="{'background': periode.couleur}"></div>
                         <p>{{ collection.sousCategorie }}</p>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="espacement-vertical-S">
                     <ul>
@@ -39,7 +45,7 @@
             </div>
         </div>
 
-        <div *ngIf="collection.periodesId.length>=2">
+        <div *ngIf="collection.periodesId && collection.periodesId.length>=2">
             <div class="centrer-sur-horizon">
                 <p class="circle-picto circle-picto-M margin-top-S-negatif"
                     [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">
@@ -49,16 +55,21 @@
                     <p class="tag tag-L" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">
                         {{ collection.categorie }}
                     </p>
-                    <div class="tag tag-with-pastille ">
-                        <div class="tag-XS" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}"></div>
-                        <p>{{ collection.sousCategorie }}</p>
-                    </div>
+                    <p *ngIf="collection.sousCategorie === '' else tagSousCategorie"></p>
+                    <ng-template #tagSousCategorie>
+                        <div class="tag tag-with-pastille ">
+                            <div class="tag-XS" [ngStyle]="{'background': setGradientStyle(collection.periodesId)}">
+                            </div>
+                            <p>{{ collection.sousCategorie }}</p>
+                        </div>
+                    </ng-template>
                 </div>
                 <div class="espacement-vertical-S">
                     <ul>
                         <li class="aligner-droite margin-droite-flexible">
                             <div *ngFor="let periode of collection.periodesId" class="indienne">
-                                <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">{{ periode.label }}</p>
+                                <p class="tag tag-L" [ngStyle]="{'background': periode.couleur}">{{ periode.label
+                                    }}</p>
                             </div>
                         </li>
                     </ul>
@@ -66,8 +77,7 @@
             </div>
         </div>
 
-
-    </article>
+    </header>
 
     <article class="marges">
         <div class="centrer-sur-horizon">
@@ -78,8 +88,8 @@
         </div>
 
         <div class="espacement-vertical-S"></div>
-        <div *ngIf=" collection.description.length <= 1"></div>
-        <div *ngIf=" collection.description.length >= 1">
+        <div *ngIf="collection.description && collection.description.length <= 1"></div>
+        <div *ngIf="collection.description && collection.description.length >= 1">
             <p class="conserve-espace-origine">
                 <span class="souligner">Description</span>
                 : {{ collection.description }}
@@ -109,12 +119,12 @@
     <!-- BODY -->
     <article class="marges">
         <ul class="espacement-autour">
-            <li *ngIf="collection.elementsId.length === 0">
+            <li *ngIf="collection.elementsId && collection.elementsId.length === 0">
                 <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucun élément</h2>
                 <!-- a montrer que si utili = le createur -->
                 <p class="texte-discret">Vous pouvez en ajouter en cliquant sur le bouton en bas</p>
             </li>
-            <li *ngFor="let element of elements  | filter: searchTerm" class="card medium motif-fond-pointille">
+            <li *ngFor="let element of elements  | filterElement : searchTerm" class="card medium motif-fond-pointille">
                 <a [routerLink]="['/elements', element._id]">
                     <!-- <app-element-detail [idElement]="element"></app-element-detail> -->
                     <div class="image-couverture-card-element-tempo couleur-element-tempo"

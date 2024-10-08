@@ -93,6 +93,7 @@ export class CollectionsComponent implements OnInit {
     this.collection = this.collectionId
     this.collectionService.getCollections().subscribe((data) => {
       this.collections = data
+
       this.filterCollectionsByPeriodes()
 
       // si la collection a un signalement a true
@@ -149,8 +150,9 @@ export class CollectionsComponent implements OnInit {
     )
   }
   getCollectionsPrivatesByUtilisateurId() {
+    const token = localStorage.getItem('storage_token') || 'default_token_value'
     this.collectionService
-      .getCollectionsPrivateByUtilisateurId(this.collection.userId)
+      .getCollectionsPrivateByUtilisateurId(this.collection.userId, token)
       .subscribe((data) => {
         this.collectionsUtiliPrivates = data
       })
@@ -179,7 +181,7 @@ export class CollectionsComponent implements OnInit {
               (collection: any) => collection
             )
             // console.log(this.collectionIds)
-            console.log('je me recharge')
+            // console.log('je me recharge')
             this.CheckIfCollIsInFav(this.collection._id)
           }
         }

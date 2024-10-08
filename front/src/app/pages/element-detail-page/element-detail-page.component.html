@@ -1,14 +1,11 @@
 <!-- Ici page détail d'un ELEMENT en fonction de son identifiant -->
-<section>
-    <article>
-        <div class="container-image-couverture-page couleur-element-tempo"
-            *ngIf="element.imageUrl === '' else imageCouv">
-        </div>
-        <ng-template #imageCouv>
-            <img src="{{ element.imageUrl }}" class="container-image-couverture-page image-de-fond">
-        </ng-template>
-    </article>
-</section>
+<header>
+    <div class="container-image-couverture-page couleur-element-tempo" *ngIf="element.imageUrl === '' else imageCouv">
+    </div>
+    <ng-template #imageCouv>
+        <img src="{{ element.imageUrl }}" class="container-image-couverture-page image-de-fond">
+    </ng-template>
+</header>
 
 <section class="marges">
     <article>

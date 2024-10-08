@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterOutlet, Router } from '@angular/router'
 import { DialogModule, Dialog } from '@angular/cdk/dialog'
 import { HttpClientModule } from '@angular/common/http'
 
 import { UtilisateurService } from './services/utilisateur.service'
+import { AuthService } from './services/auth.service'
 
 import { MenuComponent } from './design-system/menu/menu.component'
 import { LoginComponent } from './components/login/login.component'
@@ -24,11 +25,12 @@ export interface DialogData {
     MenuComponent,
     LoginComponent
   ],
-  providers: [UtilisateurService],
+  providers: [UtilisateurService, AuthService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+  @Input() utilisateurConnecte: any
   title = 'collectio'
   IsOpen: boolean = false
 
@@ -38,13 +40,19 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private utilisateurService: UtilisateurService,
-    public dialog: Dialog
+    public dialog: Dialog // private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.checkUserLoggedIn()
+    // this.authService.user$.subscribe((user) => {
+    //   this.utilisateur = user
+    //   this.UserConnecte = !!user
+    console.log('Hey !')
+    // })
   }
 
+  // NE PLUS VERIFIER PAR L'ID CAR PAR SECUR
   checkUserLoggedIn() {
     const userId = localStorage.getItem('storage_user_id')
     if (userId) {
@@ -54,6 +62,11 @@ export class AppComponent implements OnInit {
       })
     }
   }
+
+  // handleUtilisateurConnecte(event: any) {
+  //   this.utilisateur = event
+  //   this.UserConnecte = true
+  // }
 
   openPopupLog(Isinscription: boolean) {
     this.IsOpen = false
@@ -100,6 +113,7 @@ export class AppComponent implements OnInit {
   logout() {
     // Clear the storage_user_id from localStorage
     localStorage.removeItem('storage_user_id')
+    localStorage.removeItem('storage_token')
     this.utilisateur = null
     // Redirect to the login page or any other page
     this.router.navigate(['/'])
