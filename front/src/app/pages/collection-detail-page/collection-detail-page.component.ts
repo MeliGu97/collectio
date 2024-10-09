@@ -7,6 +7,7 @@ import { Dialog, DialogModule } from '@angular/cdk/dialog'
 
 import { CollectionService } from '../../services/collection.service'
 import { ElementService } from '../../services/element.service'
+import { UtilisateurService } from '../../services/utilisateur.service'
 
 import { ElementDetailPageComponent } from '../element-detail-page/element-detail-page.component'
 import { ElementDetailComponent } from '../../components/element-detail/element-detail.component'
@@ -18,7 +19,12 @@ import { FilterPipeElement } from '../../services/filterByText.pipe'
 @Component({
   selector: 'app-collection-detail-page',
   standalone: true,
-  providers: [CollectionService, ElementService, FilterPipeElement],
+  providers: [
+    CollectionService,
+    ElementService,
+    FilterPipeElement,
+    UtilisateurService
+  ],
   templateUrl: './collection-detail-page.component.html',
   styleUrl: './collection-detail-page.component.scss',
   imports: [
@@ -44,11 +50,16 @@ export class CollectionDetailPageComponent implements OnInit {
 
   searchTerm: string = ''
 
+  collUserId: any
+  utilisateurId: any
+  isCreator: boolean = false
+
   // pour afficher l'ensemble de la description ou non
   // showAll = false
 
   constructor(
     private collectionService: CollectionService,
+    private utilisateurService: UtilisateurService,
     private elementService: ElementService,
     private route: ActivatedRoute,
     public dialog: Dialog
@@ -57,14 +68,44 @@ export class CollectionDetailPageComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       const collectionId = params['id']
-      // console.log('collectionId', collectionId)
+      // console.log('collectionId', collectionId);
       this.collectionService
         .getCollectionById(collectionId)
         .subscribe((data) => {
           this.collection = data
           this.loadElements(collectionId)
+
+          this.collUserId = this.collection.userId
+          // console.log('Utili de la collection', this.collUserId)
+
+          this.compareId()
         })
     })
+  }
+
+  compareId() {
+    const token = localStorage.getItem('storage_token')
+    if (token) {
+      // on utilise le service secu pour recup id de l'utili
+      this.utilisateurService.getCurrentUtilisateurSecur().subscribe(
+        (utilisateurId: any) => {
+          this.utilisateurId = utilisateurId._id
+          // console.log(' this.collUserId', this.collUserId)
+          // console.log('this.utilisateurId', this.utilisateurId)
+          if (this.collUserId === this.utilisateurId) {
+            this.isCreator = true
+          } else {
+            this.isCreator = false
+          }
+        },
+        (error: any) => {
+          console.error(
+            "Erreur lors de la récupération de l'ID de l'utilisateur connecté:",
+            error
+          )
+        }
+      )
+    }
   }
 
   // showMore() {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { Observable, tap } from 'rxjs'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { map, Observable, of, tap } from 'rxjs'
 
 import { baseServerUrl } from '../collectio.constant'
 
@@ -18,6 +18,31 @@ export class UtilisateurService {
     const user = localStorage.getItem('storage_user_id')
     // console.log('storage_user_id:', user)
     return user ? { _id: user } : {}
+  }
+
+  getCurrentUtilisateurSecur(): Observable<any> {
+    const token = localStorage.getItem('storage_token')
+    if (token) {
+      // console.log('Token trouvé dans localStorage')
+      return this.http
+        .get(`${baseServerUrl}/currentUtilisateur`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        .pipe(
+          tap((user) => {
+            // console.log("Réponse de l'API:", user)
+          }),
+          map((user) => {
+            // console.log("ID de l'utilisateur:", user)
+            return user
+          })
+        )
+    } else {
+      // console.log('Aucun token trouvé dans localStorage')
+      return this.http.get(`${baseServerUrl}/currentUtilisateur`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+    }
   }
 
   getUtilisateurById(id: string): Observable<any> {

@@ -5,9 +5,12 @@ import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { Dialog, DialogModule } from '@angular/cdk/dialog'
 
-import { ElementService } from '../../services/element.service'
-import { FormEvenementComponent } from '../../components/form-evenement/form-evenement.component'
 import { EvenementService } from '../../services/evenement.service'
+import { ElementService } from '../../services/element.service'
+import { CollectionService } from '../../services/collection.service'
+import { UtilisateurService } from '../../services/utilisateur.service'
+
+import { FormEvenementComponent } from '../../components/form-evenement/form-evenement.component'
 
 @Component({
   selector: 'app-element-detail-page',
@@ -19,24 +22,36 @@ import { EvenementService } from '../../services/evenement.service'
     FormEvenementComponent,
     DialogModule
   ],
-  providers: [ElementService, EvenementService],
+  providers: [
+    ElementService,
+    EvenementService,
+    CollectionService,
+    UtilisateurService
+  ],
   templateUrl: './element-detail-page.component.html',
   styleUrl: './element-detail-page.component.scss'
 })
 export class ElementDetailPageComponent implements OnInit {
+  collection: any = {}
   element: any = {}
   evenement: any = {}
   evenements: any[] = []
   isDisabled = false
 
+  utilisateurId: any
+  isCreator: boolean = false
+
   constructor(
     private elementService: ElementService,
     private evenementService: EvenementService,
+    private collectionService: CollectionService,
+    private utilisateurService: UtilisateurService,
     private route: ActivatedRoute,
     public dialog: Dialog
   ) {}
 
   ngOnInit() {
+    this.getCurrentUtilisateurId()
     // Récupérer l'ID de l'élément à partir de la route active
     this.route.params.subscribe((params) => {
       const elementId = params['id']
@@ -44,8 +59,27 @@ export class ElementDetailPageComponent implements OnInit {
       this.elementService.getElementById(elementId).subscribe((data) => {
         this.element = data
         this.loadEvenements(elementId)
+        this.getCollectionByElementId(elementId)
       })
     })
+  }
+
+  getCurrentUtilisateurId() {
+    const token = localStorage.getItem('storage_token')
+    if (token) {
+      this.utilisateurService.getCurrentUtilisateurSecur().subscribe(
+        (utilisateurId: any) => {
+          console.log("ID de l'utilisateur connecté:", utilisateurId._id)
+          this.utilisateurId = utilisateurId._id
+        },
+        (error: any) => {
+          console.error(
+            "Erreur lors de la récupération de l'ID de l'utilisateur connecté:",
+            error
+          )
+        }
+      )
+    }
   }
 
   loadEvenements(elementId: string) {
@@ -56,6 +90,42 @@ export class ElementDetailPageComponent implements OnInit {
       })
   }
 
+  getCollectionByElementId(elementId: string) {
+    this.elementService.getElementById(elementId).subscribe({
+      next: (element) => {
+        if (
+          element &&
+          element.collectionsId &&
+          element.collectionsId.length > 0
+        ) {
+          const collectionId = element.collectionsId[0]
+
+          this.collectionService.getCollectionById(collectionId).subscribe({
+            next: (collection) => {
+              this.collection = collection
+              console.log('collection.userId', collection.userId)
+              console.log('this.utilisateurId', this.utilisateurId)
+              if (collection.userId === this.utilisateurId) {
+                this.isCreator = true
+              } else {
+                this.isCreator = false
+              }
+            },
+            error: (error) => {
+              console.error('Error on attend une collection:', error)
+            }
+          })
+        } else {
+          console.log('Element a pas de collections')
+        }
+      },
+      error: (error) => {
+        console.error('Error on attend element:', error)
+      }
+    })
+  }
+
+  // ---
   openPopupAddEvent(elementId: string) {
     this.isDisabled = true
     const dialogRef = this.dialog.open<string>(FormEvenementComponent, {

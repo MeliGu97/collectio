@@ -99,7 +99,7 @@
                         </div>
                     </div>
                 </article>
-                <article class="btn-flottant-bas-droite">
+                <article *ngIf="isCreator === true" class="btn-flottant-bas-droite">
                     <!-- AJOUTER UN EVENT : ouvre pop up formulaire -->
                     <button (click)="openPopupAddEvent(element._id)" [disabled]="isDisabled" class="btn-primary">
                         <i class="fa-solid fa-plus"></i>

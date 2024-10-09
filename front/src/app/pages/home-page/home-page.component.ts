@@ -44,6 +44,7 @@ export class HomePageComponent implements OnInit {
   unes: any[] = []
   collectionId: any = {}
   publicCollections: any[] = []
+  collectionsAll: any[] = []
 
   currentPage: number = 1
   totalPages: number = 0
@@ -62,36 +63,61 @@ export class HomePageComponent implements OnInit {
     this.uneService.getUnes().subscribe((data) => {
       this.unes = data
       this.collections = this.unes.map((une) => une.collectionId)
+      // console.log('Collections récupérées :', this.collections)
     })
     this.periodeService.getPeriodes().subscribe((data) => {
       this.periodes = data
     })
-    this.loadCollections()
-  }
-
-  loadCollections() {
     this.collectionService.getAllPublicCollections().subscribe((data) => {
+      this.collectionsAll = data // Stock toutes les coll
+      // console.log('Toutes les collections récupérées :', this.collectionsAll)
       this.publicCollections = this.collectionService.makePagination(
         data,
         this.currentPage,
         8
       )
+      // console.log('Collections paginées initiales :', this.publicCollections)
+      this.totalPages = Math.ceil(data.length / 8)
+    })
+  }
+
+  loadCollections() {
+    this.collectionService.getAllPublicCollections().subscribe((data) => {
+      this.collectionsAll = data // Stock toutes les collections
+      // console.log(
+      //   'Toutes les collections récupérées (après changement de période) :',
+      //   this.collectionsAll
+      // )
+      this.publicCollections = this.collectionService.makePagination(
+        data,
+        this.currentPage,
+        8
+      )
+      // console.log(
+      //   'Collections paginées après changement de période :',
+      //   this.publicCollections
+      // )
       this.totalPages = Math.ceil(data.length / 8)
     })
   }
 
   onCheckboxChange(periodeEvent: any) {
     if (periodeEvent.target.checked) {
-      console.log('publicColl: ', this.publicCollections)
-      this.publicCollections = this.publicCollections.filter((collection) =>
+      this.publicCollections = this.collectionsAll.filter((collection) =>
         collection.periodesId.some(
           (periode: { _id: any }) => periode._id === periodeEvent.target.value
         )
       )
-      // Met à jour la pagination
-      this.onPeriodeChange
-      this.totalPages = Math.ceil(this.publicCollections.length / 7)
+      // Met à jour la pagination directement à partir de la liste filtrée
+      this.currentPage = 1
+      this.publicCollections = this.collectionService.makePagination(
+        this.publicCollections,
+        this.currentPage,
+        8
+      )
+      this.totalPages = Math.ceil(this.publicCollections.length / 8)
     } else {
+      // console.log('Désélection de la période :', periodeEvent.target.value)
       this.loadCollections()
     }
   }

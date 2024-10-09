@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { CommonModule } from '@angular/common'
 
 import { FavorisService } from '../../services/favoris.service'
@@ -42,7 +42,8 @@ export class UtilisateurPageFavorisComponent implements OnInit {
     private collectionService: CollectionService,
     private periodeService: PeriodeService,
     private utilisateurService: UtilisateurService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -107,5 +108,9 @@ export class UtilisateurPageFavorisComponent implements OnInit {
         this.favorisExistant = false
       }
     )
+  }
+
+  navigateHomePage() {
+    this.router.navigate(['/homePage'])
   }
 }

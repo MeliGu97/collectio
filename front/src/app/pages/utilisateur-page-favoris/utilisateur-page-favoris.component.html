@@ -28,6 +28,12 @@
                 <div *ngIf="collectionIds.length == 0" class="centrer-en-colonne">
                     <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucune collection favorite
                     </h2>
+                    <div class="espacement-vertical-M"></div>
+
+                    <button class="btn-primary btn-small" (click)="navigateHomePage()"><i
+                            class="fa-solid fa-binoculars"></i>
+                        <p>Parcourir les collections</p>
+                    </button>
                 </div>
                 <li *ngFor="let collectionId of collectionIds" class="card around large motif-fond-pointille">
                     <app-collections [collectionId]="collectionId"></app-collections>

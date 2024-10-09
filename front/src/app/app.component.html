@@ -7,15 +7,25 @@
     </div>
 
     <div *ngIf="utilisateur">
-        <button class="btn-discret btn-small btn-flottant-haut-droite centrer-milieu"
-            (click)="navigateUserPage(utilisateur?._id)">
-            <div *ngIf="utilisateur.role === 'administrateur'">
-                <p><i class="fa-solid fa-crown"></i> {{ utilisateur?.nomUtilisateur }}</p>
-            </div>
-            <div *ngIf="utilisateur.role === 'collectionneur'">
-                <p><i class="fa-solid fa-user"></i> {{ utilisateur?.nomUtilisateur }}</p>
-            </div>
-
+        <div class="btn-flottant-haut-droite">
+            <button class="btn-discret btn-small centrer-milieu" (click)="navigateUserPage(utilisateur?._id)">
+                <div *ngIf="utilisateur.role === 'administrateur'">
+                    <p><i class="fa-solid fa-crown"></i> {{ utilisateur?.nomUtilisateur }}</p>
+                </div>
+                <div *ngIf="utilisateur.role === 'collectionneur'">
+                    <p><i class="fa-solid fa-user"></i> {{ utilisateur?.nomUtilisateur }}</p>
+                </div>
+            </button>
+            <button class="btn-discret btn-small centrer-milieu tooltip" (click)="logout()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span class="tooltiptext tolltiptexte-small-left">Se déconnecter</span>
+            </button>
+        </div>
+    </div>
+    <div class="btn-flottant-haut-droite" *ngIf="!UserConnecte">
+        <button class="btn-discret btn-small centrer-milieu tooltip" (click)="openPopupLog(false)">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <span class="tooltiptext tolltiptexte-small-left">Se connecter</span>
         </button>
     </div>
 </header>
@@ -48,10 +58,11 @@
             </article>
             <article>
                 <div class="espacement-vertical-M"></div>
-                <div *ngIf="utilisateur.role === 'administrateur'">
+                <div *ngIf="utilisateur?.role === 'administrateur'">
                     <button class="btn-crud-modal" (click)="navigateBackOffice()">
-                        <i class="fa-brands fa-fort-awesome"></i>
-                        <p>BackOffice</p>
+                        <!-- <i class="fa-brands fa-fort-awesome"></i> -->
+                        <i class="fa-solid fa-crown"></i>
+                        <p>Gestionnaire</p>
                     </button>
                 </div>
             </article>
@@ -102,7 +113,6 @@
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         <p>Se déconnecter</p>
                     </button>
-
                 </div>
 
             </article>

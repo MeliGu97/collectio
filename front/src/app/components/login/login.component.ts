@@ -13,7 +13,6 @@ import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 
 import { UtilisateurService } from '../../services/utilisateur.service'
-import { AuthService } from '../../services/auth.service'
 
 import { PopupComponent } from '../../design-system/popup/popup.component'
 import { Router } from '@angular/router'
@@ -21,7 +20,7 @@ import { Router } from '@angular/router'
 @Component({
   selector: 'app-login',
   standalone: true,
-  providers: [UtilisateurService, AuthService],
+  providers: [UtilisateurService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   imports: [
@@ -33,7 +32,7 @@ import { Router } from '@angular/router'
   ]
 })
 export class LoginComponent implements OnInit {
-  @Output() utilisateurConnecte = new EventEmitter<any>()
+  @Output() utilisateurConnecte = new EventEmitter<void>()
 
   utilisateur: any = []
   newUtilisateurForm: FormGroup = new FormGroup({})
@@ -52,13 +51,26 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.newUtilisateurForm = this.formBuilder.group({
-      nom: ['', Validators.required],
-      prenom: ['', Validators.required],
-      nomUtilisateur: ['', Validators.required],
-      motDePasse: ['', Validators.required],
-      role: ['collectionneur']
-    })
+    this.newUtilisateurForm = this.formBuilder.group(
+      {
+        nom: ['', Validators.required],
+        prenom: ['', Validators.required],
+        nomUtilisateur: ['', Validators.required],
+        motDePasse: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(
+              '^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};:\'"\\|,.<>\\/?]).+$'
+            )
+          ]
+        ],
+        motDePasseConfirmation: ['', Validators.required],
+        role: ['collectionneur']
+      },
+      { validator: this.passwordMatchValidator }
+    )
     this.newConnectUtilisateurForm = this.formBuilder.group({
       nomUtilisateur: ['', Validators.required],
       motDePasse: ['', Validators.required]
@@ -68,6 +80,12 @@ export class LoginComponent implements OnInit {
     } else {
       this.Isinscription = false
     }
+  }
+
+  passwordMatchValidator(g: FormGroup) {
+    return g.get('motDePasse')?.value === g.get('motDePasseConfirmation')?.value
+      ? null
+      : { mismatch: true }
   }
 
   ajouterUtilisateur(): void {
@@ -111,10 +129,10 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('storage_token', response.token)
 
             // On envoie l'evenement : utilisateur connecté
-            this.utilisateurConnecte.emit(response)
+            this.utilisateurConnecte.emit(response.user)
 
             // this.authService.login(response.user)
-            this.dialogRef.close(response)
+            this.dialogRef.close(response.user)
             // redirection vers la page de l'utilisateur qui vient de se connecté
             this.router.navigate(['/utilisateur', response.user._id])
           },

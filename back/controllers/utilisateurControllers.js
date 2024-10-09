@@ -18,6 +18,25 @@ const getUtilisateurById = async (req, res) => {
     };
 
 
+// #region get current utili 
+    const getCurrentUtilisateur = async (req, res) => {
+      try {
+        const token = req.header('Authorization').replace('Bearer ', '');
+        if (!token) {
+          return res.status(401).json({ message: 'Utilisateur non connecté' });
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const utilisateur = await Utilisateur.findById(decoded._id);
+        if (!utilisateur) {
+          return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+        res.json(utilisateur);
+      } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
+      }
+    }
+
+
 // #regiron ----
 // #region create utili
 const createUtilisateur = async (req, res) => {
@@ -87,6 +106,8 @@ const createConnexionByUtilisateur = async (req, res) => {
 // #region export
 export{
     getUtilisateurById,
+    getCurrentUtilisateur,
+    
     createUtilisateur,
     createConnexionByUtilisateur
 }

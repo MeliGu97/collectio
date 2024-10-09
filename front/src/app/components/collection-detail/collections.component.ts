@@ -59,6 +59,12 @@ export class CollectionsComponent implements OnInit {
   utilisateur: any = {}
   isCurrentUser: boolean = false
 
+  // Pour savoir si l'utili connecté est le meme que le createur de la coll
+  collUserId: any
+  utilisateurId: any
+  isCreator: boolean = false
+
+  // Pour la couleur de fond si plusieurs periodes
   gradientColors: string[] = []
 
   BtnAddOrUpdateIsDisabled = false
@@ -93,6 +99,9 @@ export class CollectionsComponent implements OnInit {
     this.collection = this.collectionId
     this.collectionService.getCollections().subscribe((data) => {
       this.collections = data
+      this.collUserId = this.collection.userId
+
+      this.compareId()
 
       this.filterCollectionsByPeriodes()
 
@@ -106,29 +115,47 @@ export class CollectionsComponent implements OnInit {
         reponseDate: [new Date()]
       })
     })
+
     // recup l'utili conneté :
     const utilisateurId = this.utilisateurService.getCurrentUtilisateur()._id
     if (utilisateurId) {
       // Récupérer les favoris de l'utilisateur connecté
       this.getFavorisCollectionsByUserId(utilisateurId)
+      this.isCurrentUser = true
     } else {
-      console.log('Aucun utilisateur connecté')
+      // console.log('Aucun utilisateur connecté')
+      this.isCurrentUser = false
     }
 
+    // pour afficher le nom de l'utilisateur a la fin de la carte collection
     this.getUtilisateurById(this.collection.userId)
   }
 
   // ---------------------------------------
 
-  filterCollectionsByPeriodes() {
-    if (this.selectedPeriodes.length === 0) {
-      return this.collections
-    }
-    return this.collections.filter((collection) =>
-      collection.periodesId.some((periodeId: string) =>
-        this.selectedPeriodes.includes(periodeId)
+  compareId() {
+    const token = localStorage.getItem('storage_token')
+    if (token) {
+      // on utilise le service secu pour recup id de l'utili
+      this.utilisateurService.getCurrentUtilisateurSecur().subscribe(
+        (utilisateurId: any) => {
+          this.utilisateurId = utilisateurId._id
+          // console.log(' this.collUserId', this.collUserId)
+          // console.log('this.utilisateurId', this.utilisateurId)
+          if (this.collUserId === this.utilisateurId) {
+            this.isCreator = true
+          } else {
+            this.isCreator = false
+          }
+        },
+        (error: any) => {
+          console.error(
+            "Erreur lors de la récupération de l'ID de l'utilisateur connecté:",
+            error
+          )
+        }
       )
-    )
+    }
   }
 
   // LES CRUD GET
@@ -224,7 +251,7 @@ export class CollectionsComponent implements OnInit {
           }
         })
     } else {
-      console.log('Aucun utilisateur connecté')
+      // console.log('Aucun utilisateur connecté')
     }
   }
 
@@ -287,6 +314,19 @@ export class CollectionsComponent implements OnInit {
   }
 
   // ANNEXE
+
+  filterCollectionsByPeriodes() {
+    if (this.selectedPeriodes.length === 0) {
+      return this.collections
+    }
+    return this.collections.filter((collection) =>
+      collection.periodesId.some((periodeId: string) =>
+        this.selectedPeriodes.includes(periodeId)
+      )
+    )
+  }
+
+  // ----
   navigateUserPage(id: string) {
     if (id) {
       this.router.navigate(['/utilisateur', id])

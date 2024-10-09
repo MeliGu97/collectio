@@ -8,19 +8,44 @@
             </button>
         </article>
         <article class="padding-S" *ngIf="Isinscription === true">
-            <h3>Devenez collectionneur</h3>
+            <h2>Devenez collectionneur</h2>
             <div class="saut-de-ligne-M"></div>
             <div class="centrer-en-colonne">
                 <form [formGroup]="newUtilisateurForm" (ngSubmit)="ajouterUtilisateur()">
-                    <input class="input-texte" type="text" id="nom" formControlName="nom" placeholder="Nom">
-                    <input class="input-texte" type="text" id="prenom" formControlName="prenom" placeholder="Prénom">
+                    <label for="nom">Nom</label>
+                    <input class="input-texte" type="text" id="nom" formControlName="nom" placeholder="Do">
+
+                    <label for="prenom">Prénom</label>
+                    <input class="input-texte" type="text" id="prenom" formControlName="prenom" placeholder="John">
                     <div class="espacement-vertical-S"></div>
+
+                    <label for="nomUtilisateur">Nom d'utilisateur</label>
                     <input class="input-texte" type="text" id="nomUtilisateur" formControlName="nomUtilisateur"
-                        placeholder="Nom d'utilisateur">
+                        placeholder="JohnDooo44">
                     <!-- <input class="input-texte" type="text" id="role" formControlName="role" placeholder="Role"> -->
                     <div class="espacement-vertical-S"></div>
+
+
+                    <p *ngIf="newUtilisateurForm.get('motDePasse')?.hasError('minlength')"
+                        class="texte-error texte-small">
+                        Le mot de passe doit contenir au moins 8 caractères.
+                    </p>
+                    <p *ngIf="newUtilisateurForm.get('motDePasse')?.hasError('pattern')"
+                        class="texte-error texte-small">
+                        Il doit également contenir au moins une lettre majuscule et un caractère spécial.
+                    </p>
+                    <label for="motDePasse">Mot de passe</label>
                     <input class="input-texte" type="password" id="motDePasse" formControlName="motDePasse"
-                        placeholder="Mot de passe">
+                        placeholder="**********">
+                    <div class="espacement-vertical-S"></div>
+
+                    <p *ngIf="newUtilisateurForm.hasError('mismatch')" class="texte-error texte-small">
+                        Les mots de passe ne correspondent pas.
+                    </p>
+                    <label for="motDePasseConfirmation">Confirmer le mot de passe</label>
+                    <input class="input-texte" type="password" id="motDePasseConfirmation"
+                        formControlName="motDePasseConfirmation" placeholder="**********">
+                    <div class="espacement-vertical-S"></div>
 
                     <div class="centrer-en-colonne">
                         <button type="submit" [disabled]="newUtilisateurForm.invalid" class="btn-primary btn-small">
@@ -39,7 +64,7 @@
                     placeholder="Nom d'utilisateur">
                 <input class="input-texte" type="password" id="motDePasse" formControlName="motDePasse"
                     placeholder="Mot de passe">
-                <p *ngIf="errorMessage" class="texte-error">{{errorMessage}}</p><br>
+                <p *ngIf="errorMessage" class="texte-error texte-small">{{errorMessage}}</p><br>
                 <div class="centrer-en-colonne">
                     <button type="submit" [disabled]="newConnectUtilisateurForm.invalid" class="btn-primary btn-small">
                         <p>Se connecter</p>

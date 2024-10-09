@@ -22,7 +22,7 @@
 </div>
 
 
-<div class="centrer-milieu crud-haut-droite">
+<div *ngIf="isCreator === true" class="centrer-milieu crud-haut-droite">
   <!-- MODIFIER -->
   <button (click)="openPopupUpdateColl(collection._id)" class="btn-crud tooltip">
     <i class="fa-solid fa-pencil"></i>

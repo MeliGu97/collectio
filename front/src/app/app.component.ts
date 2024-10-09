@@ -5,7 +5,6 @@ import { DialogModule, Dialog } from '@angular/cdk/dialog'
 import { HttpClientModule } from '@angular/common/http'
 
 import { UtilisateurService } from './services/utilisateur.service'
-import { AuthService } from './services/auth.service'
 
 import { MenuComponent } from './design-system/menu/menu.component'
 import { LoginComponent } from './components/login/login.component'
@@ -25,7 +24,7 @@ export interface DialogData {
     MenuComponent,
     LoginComponent
   ],
-  providers: [UtilisateurService, AuthService],
+  providers: [UtilisateurService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -40,19 +39,22 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private utilisateurService: UtilisateurService,
-    public dialog: Dialog // private authService: AuthService
+    public dialog: Dialog
   ) {}
 
   ngOnInit(): void {
     this.checkUserLoggedIn()
-    // this.authService.user$.subscribe((user) => {
-    //   this.utilisateur = user
-    //   this.UserConnecte = !!user
-    console.log('Hey !')
-    // })
+
+    if (this.utilisateurConnecte === undefined) {
+    } else {
+      this.utilisateurConnecte.subscribe((utilisateur: any) => {
+        this.utilisateur = utilisateur
+        this.UserConnecte = true
+      })
+    }
   }
 
-  // NE PLUS VERIFIER PAR L'ID CAR PAR SECUR
+  // NE PLUS VERIFIER PAR L'ID CAR PAs SECUR
   checkUserLoggedIn() {
     const userId = localStorage.getItem('storage_user_id')
     if (userId) {
@@ -61,13 +63,24 @@ export class AppComponent implements OnInit {
         this.UserConnecte = true
       })
     }
+    this.getCurrentUtilisateurId()
   }
-
-  // handleUtilisateurConnecte(event: any) {
-  //   this.utilisateur = event
-  //   this.UserConnecte = true
-  // }
-
+  getCurrentUtilisateurId() {
+    const token = localStorage.getItem('storage_token')
+    if (token) {
+      this.utilisateurService.getCurrentUtilisateurSecur().subscribe(
+        (utilisateurId: any) => {
+          // console.log("ID de l'utilisateur connecté:", utilisateurId._id)
+        },
+        (error: any) => {
+          console.error(
+            "Erreur lors de la récupération de l'ID de l'utilisateur connecté:",
+            error
+          )
+        }
+      )
+    }
+  }
   openPopupLog(Isinscription: boolean) {
     this.IsOpen = false
     const dialogRef = this.dialog.open<any>(LoginComponent, {
@@ -77,9 +90,9 @@ export class AppComponent implements OnInit {
     })
 
     dialogRef.closed.subscribe((response: any) => {
-      console.log('On ferme')
+      // console.log('On ferme')
       if (response) {
-        console.log('resuuuult :', response)
+        // console.log('resuuuult :', response)
         this.UserConnecte = true
         this.utilisateur = response
         this.checkUserLoggedIn()

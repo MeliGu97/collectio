@@ -453,6 +453,9 @@ a {
 .picto-small{
   height: 12px;
 }
+.fa-solid{
+  margin: 0px 4px 0px 4px;
+}
 // ----------- IMAGE ----------
 .miniature {
   width: 200px;
@@ -538,6 +541,7 @@ li {
     }
   }
   label {
+    font-family: 'Euphorigenic';
     display: inline-block;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -921,7 +925,10 @@ button {
   top: 125%;
   left: 50%;
 }
-
+.tolltiptexte-small-left{
+  width: 120px;
+  right: 120%;
+}
 .tooltip .tooltiptext::after {
   content: "";
   position: absolute;
@@ -938,6 +945,11 @@ button {
 .tolltiptexte-left:after{
   top: 35%;
   left: 102%;
+  border-color:  transparent transparent transparent #2E4249 ;
+}
+.tolltiptexte-small-left:after{
+  top: 20%;
+  left: 104%;
   border-color:  transparent transparent transparent #2E4249 ;
 }
 .tolltiptexte-small-bottom:after{
@@ -1044,6 +1056,9 @@ button {
     right: 5%;
   }
   .nav-barre{
+    opacity: 1;
+  }
+  .titre-nav{
     opacity: 1;
   }
   .marges{
