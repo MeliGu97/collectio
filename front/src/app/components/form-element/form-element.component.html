@@ -11,13 +11,34 @@
 <app-popup>
   <form [formGroup]="nouvelElementForm" (ngSubmit)="createOrUpdateElement()">
     <section>
-      <article>
-        <div class="container-image-couverture-page couleur-element-tempo">
-          <button class="aligner-droite margin-droite-S espacement-vertical-S centrer-milieu btn-primary btn-small"
-            (click)="dialogRef.close()">
-            <i class="fa-solid fa-xmark"></i> Fermer</button>
+      <!-- photo de fond -->
+      <article class="container-image-couverture-page couleur-element-tempo">
+        <div *ngIf="element.imageUrl === '' else imageCouv">
+          <div class="container-image-couverture-page couleur-element-tempo"></div>
+        </div>
+
+        <ng-template #imageCouv>
+          <div *ngIf="selectedPhoto">
+            <img [src]="selectedPhoto.src.large" alt="Selected photo"
+              class="container-image-couverture-page image-de-fond">
+          </div>
+        </ng-template>
+
+        <!-- BTN POUR FERMER POPUP -->
+        <button class="crud-haut-droite centrer-milieu btn-primary btn-small" (click)="dialogRef.close()">
+          <i class="fa-solid fa-xmark"></i>
+          <p>Fermer</p>
+        </button>
+
+        <!-- BTN CHOISIR IMAGE DE COUVERTURE -->
+        <div class="centrer-en-colonne padding-S">
+          <button (click)="popUpPhotoIsOpen = true" class="btn-primary btn-small crud-centre">
+            <p>Choisir une photo</p>
+          </button>
         </div>
       </article>
+
+
     </section>
     <section class="container-general">
       <article class="marges">
@@ -32,9 +53,23 @@
 
         <textarea rows="4" type="text" id="description" formControlName="description" placeholder="Description"
           class="input-texte"></textarea>
-
-
       </article>
+
+      <!-- POP UP PHOTO -->
+      <app-popup *ngIf="popUpPhotoIsOpen === true">
+        <div class="padding-S">
+          <button class="aligner-droite margin-droite-S espacement-vertical-S centrer-milieu btn-primary btn-small"
+            (click)="popUpPhotoIsOpen = false">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <app-photo (photoSelected)="updateImageUrl($event)"></app-photo>
+
+        </div>
+      </app-popup>
+
+
+      <!-- VALIDER LE FORMULAURE -->
       <article class="centrer-en-colonne">
         <div class="fixe-bottom">
           <button type="submit" [disabled]="nouvelElementForm.invalid" class="btn-primary">

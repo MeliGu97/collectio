@@ -1,10 +1,15 @@
 <!-- Ici page détail d'une collection en fonction de son identifiant -->
 <header>
-    <div class="container-image-couverture-page couleur-element-tempo"
-        *ngIf="collection.imageUrl === '' else imageCouv">
+    <div *ngIf="collection.imageUrl === '' else imageCouv">
+        <div class="container-image-couverture-page couleur-element-tempo"></div>
     </div>
+
     <ng-template #imageCouv>
-        <img src="{{ collection.imageUrl }}" class="container-image-couverture-page image-de-fond">
+        <div *ngIf="photoColl">
+            <img [src]="photoColl.src.large2x" alt="Selected photo"
+                class="container-image-couverture-page image-de-fond">
+        </div>
+        <!-- <img src="{{ collection.imageUrl }}" class="container-image-couverture-page image-de-fond"> -->
     </ng-template>
 </header>
 
@@ -127,17 +132,14 @@
             </li>
             <li *ngFor="let element of elements  | filterElement : searchTerm" class="card medium motif-fond-pointille">
                 <a [routerLink]="['/elements', element._id]">
-                    <!-- <app-element-detail [idElement]="element"></app-element-detail> -->
-                    <div class="image-couverture-card-element-tempo couleur-element-tempo"
-                        *ngIf="element.imageUrl === '' else imageCouv">
-                    </div>
-                    <ng-template #imageCouv>
-                        <img src="{{ element.imageUrl }}" class="image-couverture-card-element-tempo image-de-fond">
-                    </ng-template>
+                    <!-- fournir l'id de l'ement pour afficher son image -->
+                    <app-element-detail [idElement]="element"></app-element-detail>
+                    <!-- Dette : deplacer le reste des infos et actions des elements dans element-detail-composant -->
                     <div class="card-paragraphe card-paragraphe-elem motif-fond-pointille">
                         <!-- <p>({{ element._id }})</p> -->
                         <h5><strong>{{ element.label }}</strong></h5>
-                        <p class="text-description conserve-espace-origine">{{ element.description }}</p>
+                        <p *ngIf="element.description && element.description.length >= 1"
+                            class="text-description conserve-espace-origine">{{ element.description }}</p>
                     </div>
                 </a>
                 <div *ngIf="isCreator === true" class="centrer-milieu crud-haut-droite">

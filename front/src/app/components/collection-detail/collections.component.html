@@ -53,7 +53,11 @@
   </div>
   <!-- sinon affiche l'image de couverture -->
   <ng-template #imageCouv>
-    <img src="{{ collection.imageUrl }}" class="image-couverture-card-tempo image-de-fond">
+    <div *ngIf="photo">
+      <img [src]="photo.src.large" alt="Selected photo" class="image-couverture-card-tempo image-de-fond">
+    </div>
+    <!-- <img src="{{ collection.imageUrl }}" class="image-couverture-card-tempo image-de-fond"> -->
+
   </ng-template>
 
 

@@ -16,6 +16,7 @@ import { CollectionService } from '../../services/collection.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
 import { SignalementService } from '../../services/signalement.service'
 import { FavorisService } from '../../services/favoris.service'
+import { PhotoService } from '../../services/photo.service'
 
 import { FormCollectionComponent } from '../form-collection/form-collection.component'
 import { FormMoreOptionComponent } from '../form-more-option/form-more-option.component'
@@ -28,7 +29,8 @@ import { PopupComponent } from '../../design-system/popup/popup.component'
     CollectionService,
     UtilisateurService,
     SignalementService,
-    FavorisService
+    FavorisService,
+    PhotoService
   ],
   templateUrl: './collections.component.html',
   styleUrl: './collections.component.scss',
@@ -82,11 +84,14 @@ export class CollectionsComponent implements OnInit {
   favorisExistant: boolean = false
   collectionIds: any[] = []
 
+  photo: any
+
   constructor(
     private collectionService: CollectionService,
     private utilisateurService: UtilisateurService,
     private signalementService: SignalementService,
     private favorisService: FavorisService,
+    private photoService: PhotoService,
 
     public dialog: Dialog,
     private router: Router,
@@ -99,6 +104,7 @@ export class CollectionsComponent implements OnInit {
     this.collection = this.collectionId
     this.collectionService.getCollections().subscribe((data) => {
       this.collections = data
+
       this.collUserId = this.collection.userId
 
       this.compareId()
@@ -115,7 +121,7 @@ export class CollectionsComponent implements OnInit {
         reponseDate: [new Date()]
       })
     })
-
+    this.getImageById()
     // recup l'utili conneté :
     const utilisateurId = this.utilisateurService.getCurrentUtilisateur()._id
     if (utilisateurId) {
@@ -158,6 +164,16 @@ export class CollectionsComponent implements OnInit {
     }
   }
 
+  getImageById(): void {
+    if (this.collection.imageUrl) {
+      this.photoService
+        .getPhoto(this.collection.imageUrl)
+        .subscribe((photo) => {
+          this.photo = photo
+        })
+    }
+  }
+
   // LES CRUD GET
   getAllPublicCollections() {
     this.collectionService.getAllPublicCollections().subscribe((data) => {
@@ -171,10 +187,10 @@ export class CollectionsComponent implements OnInit {
       .subscribe((data) => {
         this.collectionsUtiliPubliques = data
       })
-    console.log(
-      'this.collectionsUtiliPubliques',
-      this.collectionsUtiliPubliques
-    )
+    // console.log(
+    //   'this.collectionsUtiliPubliques',
+    //   this.collectionsUtiliPubliques
+    // )
   }
   getCollectionsPrivatesByUtilisateurId() {
     const token = localStorage.getItem('storage_token') || 'default_token_value'
@@ -266,7 +282,7 @@ export class CollectionsComponent implements OnInit {
 
           // Mettre à jour la liste des favoris de l'utilisateur connecté
           this.getFavorisCollectionsByUserId(utilisateurId)
-          console.log('recharge toi')
+          // console.log('recharge toi')
         },
         error: (error) => {
           console.error(
@@ -306,7 +322,7 @@ export class CollectionsComponent implements OnInit {
       this.signalementService
         .updateSignalement(updatedSignalement)
         .subscribe((data) => {
-          console.log('Updated signalement:', data)
+          // console.log('Updated signalement:', data)
           this.needReponse = false
         })
     }

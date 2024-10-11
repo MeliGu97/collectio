@@ -3,23 +3,39 @@
 <app-popup>
   <form [formGroup]="newCollectionForm" (ngSubmit)="createOrUpdateCollection()">
     <section>
-      <article>
-        <div class="container-image-couverture-page couleur-element-tempo">
-          <button class="aligner-droite margin-droite-S espacement-vertical-M centrer-milieu btn-primary btn-small"
-            (click)="dialogRef.close()">
-            <i class="fa-solid fa-xmark"></i>
-            <p>Fermer</p>
+      <!-- photo de fond -->
+      <article class="container-image-couverture-page couleur-element-tempo">
+        <div *ngIf="collection.imageUrl === '' else imageCouv">
+          <div class="container-image-couverture-page couleur-element-tempo"></div>
+        </div>
+
+        <ng-template #imageCouv>
+          <div *ngIf="selectedPhoto">
+            <img [src]="selectedPhoto.src.large" alt="Selected photo"
+              class="container-image-couverture-page image-de-fond">
+          </div>
+        </ng-template>
+
+        <!-- BTN POUR FERMER POPUP -->
+        <button class="crud-haut-droite centrer-milieu btn-primary btn-small" (click)="dialogRef.close()">
+          <i class="fa-solid fa-xmark"></i>
+          <p>Fermer</p>
+        </button>
+
+        <!-- BTN CHOISIR IMAGE DE COUVERTURE -->
+        <div class="centrer-en-colonne padding-S">
+          <button (click)="popUpPhotoIsOpen = true" class="btn-primary btn-small crud-centre">
+            <p>Choisir une photo</p>
           </button>
-          <!-- IMAGE DE COUVERTURE -->
-          <input type="file" id="imageUrl" formControlName="imageUrl" accept="image/png, image/jpg, image/jpeg" />
         </div>
       </article>
     </section>
+
     <section class="container-general">
       <article class="marges">
         <!-- PICTO -->
         <div class="centrer-sur-horizon">
-          <p class="circle-picto circle-picto-M margin-top-S-negatif couleur-element-tempo input-btn">
+          <p class="circle-picto circle-picto-M margin-top-S-negatif couleur-element-tempo">
             <i class="fa-solid fa-hippo"></i>
           </p>
 
@@ -33,9 +49,9 @@
 
           <!-- PERIODE BUTTON -->
           <div class="espacement-vertical-S">
-            <div (click)="popUpPeriodeIsOpen = true" class="aligner-droite margin-droite-flexible"
-              style="cursor: pointer;">
-              <p class="tag tag-L couleur-element-tempo input-btn">période*</p>
+            <div (click)="popUpPeriodeIsOpen = true"
+              class="aligner-droite margin-droite-S tag tag-L btn-primary input-btn btn-small">
+              <p class="">période(s)*</p>
             </div>
           </div>
         </div>
@@ -54,49 +70,60 @@
         <textarea rows="6" type="text" id="description" formControlName="description" placeholder="Description"
           class="input-texte"></textarea>
 
-        <!-- PERIODE -->
-        <app-popup *ngIf="popUpPeriodeIsOpen === true">
-          <div class="padding-S">
-            <button class="aligner-droite margin-droite-S espacement-vertical-S centrer-milieu btn-primary btn-small"
-              (click)="popUpPeriodeIsOpen = false">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-            <p>Période : </p>
-            <div class="espacement-vertical-L"></div>
-            <ul class="centrer-sur-horizon list-cases">
-              <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId"
-                class="espace-entre-case mobile-list-item">
-                <div class="centrer-en-colonne">
-                  <input type="checkbox" class="checkbox" id="periodesId" [formControlName]="i" [value]="periode._id"
-                    (change)="onCheckboxChange($event)" />
-                  <p class="tag tag-M periode tooltip" [ngStyle]="{'background': periode.couleur}">
-                    {{ periode.label.slice(0, 2) }}
-                    <span class="tooltiptext tolltiptexte-small-bottom">{{ periode.label }} : de {{
-                      periode.dateDebut }} à {{
-                      periode.dateFin }}</span>
-                  </p>
-                </div>
-              </li>
-            </ul>
-            <div class="espacement-vertical-L"></div>
-            <div class="centrer-en-colonne">
-              <div class="fixe-bottom">
-                <button class="btn-primary btn-small" (click)="popUpPeriodeIsOpen = false">
-                  <p>Valider</p>
-                </button>
-              </div>
-            </div>
-          </div>
-        </app-popup>
-
-
 
       </article>
+      <!-- POP UP PERIODE -->
+      <app-popup *ngIf="popUpPeriodeIsOpen === true">
+        <div class="padding-S">
+          <button class="aligner-droite margin-droite-S espacement-vertical-S centrer-milieu btn-primary btn-small"
+            (click)="popUpPeriodeIsOpen = false">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <p>Période : </p>
+          <div class="espacement-vertical-L"></div>
+          <ul class="centrer-sur-horizon list-cases">
+            <li *ngFor="let periode of periodes; let i = index" formArrayName="periodesId"
+              class="espace-entre-case mobile-list-item">
+              <div class="centrer-en-colonne">
+                <input type="checkbox" class="checkbox" id="periodesId" [formControlName]="i" [value]="periode._id"
+                  (change)="onCheckboxChange($event)" />
+                <p class="tag tag-M periode tooltip" [ngStyle]="{'background': periode.couleur}">
+                  {{ periode.label.slice(0, 2) }}
+                  <span class="tooltiptext tolltiptexte-small-bottom">{{ periode.label }} : de {{
+                    periode.dateDebut }} à {{
+                    periode.dateFin }}</span>
+                </p>
+              </div>
+            </li>
+          </ul>
+          <div class="espacement-vertical-L"></div>
+          <div class="centrer-en-colonne">
+            <div class="fixe-bottom">
+              <button class="btn-primary btn-small" (click)="popUpPeriodeIsOpen = false">
+                <p>Valider</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </app-popup>
+
+      <!-- POP UP PHOTO -->
+      <app-popup *ngIf="popUpPhotoIsOpen === true">
+        <div class="padding-S">
+          <button class="aligner-droite margin-droite-S espacement-vertical-S centrer-milieu btn-primary btn-small"
+            (click)="popUpPhotoIsOpen = false">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <app-photo (photoSelected)="updateImageUrl($event)"></app-photo>
+        </div>
+      </app-popup>
+
+      <!-- VALIDER LE FORMULAIRE -->
       <article class="centrer-en-colonne">
         <div class="fixe-bottom">
-          <button type="submit" [disabled]="newCollectionForm.invalid" class="btn-primary">
+          <button type="submit" [disabled]="newCollectionForm.invalid" class="centrer-milieu btn-primary">
             <!-- <i class=" fa-solid fa-plus"></i> -->
-            <p>Valider</p>
+            <p>Enregistrer la collection</p>
           </button>
         </div>
       </article>

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core'
+import { Component, Inject, Input, OnInit } from '@angular/core'
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog'
 import {
   FormGroup,
@@ -12,7 +12,10 @@ import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 
 import { ElementService } from '../../services/element.service'
+import { PhotoService } from '../../services/photo.service'
+
 import { PopupComponent } from '../../design-system/popup/popup.component'
+import { PhotoComponent } from '../photo/photo.component'
 
 export interface DialogElementData {
   collectionIdFromPage: string
@@ -29,21 +32,29 @@ export interface DialogElementData {
     FormsModule,
     FormsModule,
     ReactiveFormsModule,
-    PopupComponent
+    PopupComponent,
+    PhotoComponent
   ],
-  providers: [ElementService],
+  providers: [ElementService, PhotoService],
   templateUrl: './form-element.component.html',
   styleUrl: './form-element.component.scss'
 })
 export class FormElementComponent implements OnInit {
+  @Input() photoSelected: number | undefined
+
   elements: any[] = []
   element: any = {}
   nouvelElementForm: FormGroup = new FormGroup({})
   nouvelElement: any = {}
   // isUpdate = false;
 
+  popUpPhotoIsOpen: boolean = false
+  selectedPhoto: any
+
   constructor(
     private elementService: ElementService,
+    private photoService: PhotoService,
+
     private formBuilder: FormBuilder,
     public dialogRef: DialogRef<any>,
     @Inject(DIALOG_DATA)
@@ -61,10 +72,29 @@ export class FormElementComponent implements OnInit {
 
     if (this.data.element && this.data.isUpdate) {
       this.nouvelElementForm.patchValue(this.data.element)
+      // Si modif alors montre l'image de couv
+      this.getPhotoDetails(this.data.element.imageUrl)
     }
 
     this.elementService.getElements().subscribe((data) => {
       this.elements = data
+    })
+  }
+
+  updateImageUrl(id: number): void {
+    this.popUpPhotoIsOpen = false
+    // on vient renseigner le champ imageUrl de la collection
+    this.nouvelElementForm.patchValue({ imageUrl: id })
+    console.log('hey j ai une donnee: ', id)
+
+    this.getPhotoDetails(id)
+  }
+
+  getPhotoDetails(id: number): void {
+    this.photoService.getPhoto(id).subscribe((photo) => {
+      console.log('Photo details depuis formulaire:', photo)
+      this.photoSelected = photo.id
+      this.selectedPhoto = photo
     })
   }
 

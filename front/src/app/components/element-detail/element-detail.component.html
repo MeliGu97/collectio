@@ -1,0 +1,12 @@
+<!-- IMAGE ELEMENT -->
+<!-- so pas d'image alors fond gris -->
+<div class="image-couverture-card-element-tempo couleur-element-tempo" *ngIf="element.imageUrl === '' else imageCouv">
+</div>
+<!-- sinon affiche l'image -->
+<ng-template #imageCouv>
+    <div *ngIf="photoElement">
+        <img [src]="photoElement.src.large" alt="Selected photo"
+            class="image-couverture-card-element-tempo image-de-fond">
+    </div>
+    <!-- <img src="{{ element.imageUrl }}" class="image-couverture-card-element-tempo image-de-fond"> -->
+</ng-template>

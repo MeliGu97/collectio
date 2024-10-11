@@ -8,6 +8,7 @@ import { Dialog, DialogModule } from '@angular/cdk/dialog'
 import { CollectionService } from '../../services/collection.service'
 import { ElementService } from '../../services/element.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
+import { PhotoService } from '../../services/photo.service'
 
 import { ElementDetailPageComponent } from '../element-detail-page/element-detail-page.component'
 import { ElementDetailComponent } from '../../components/element-detail/element-detail.component'
@@ -23,7 +24,8 @@ import { FilterPipeElement } from '../../services/filterByText.pipe'
     CollectionService,
     ElementService,
     FilterPipeElement,
-    UtilisateurService
+    UtilisateurService,
+    PhotoService
   ],
   templateUrl: './collection-detail-page.component.html',
   styleUrl: './collection-detail-page.component.scss',
@@ -54,6 +56,8 @@ export class CollectionDetailPageComponent implements OnInit {
   utilisateurId: any
   isCreator: boolean = false
 
+  photoColl: any
+
   // pour afficher l'ensemble de la description ou non
   // showAll = false
 
@@ -61,6 +65,8 @@ export class CollectionDetailPageComponent implements OnInit {
     private collectionService: CollectionService,
     private utilisateurService: UtilisateurService,
     private elementService: ElementService,
+    private photoService: PhotoService,
+
     private route: ActivatedRoute,
     public dialog: Dialog
   ) {}
@@ -79,6 +85,7 @@ export class CollectionDetailPageComponent implements OnInit {
           // console.log('Utili de la collection', this.collUserId)
 
           this.compareId()
+          this.getImageCollById()
         })
     })
   }
@@ -108,11 +115,22 @@ export class CollectionDetailPageComponent implements OnInit {
     }
   }
 
+  getImageCollById(): void {
+    if (this.collection.imageUrl) {
+      this.photoService
+        .getPhoto(this.collection.imageUrl)
+        .subscribe((photo) => {
+          this.photoColl = photo
+        })
+    }
+  }
+
   // showMore() {
   //   this.showAll = true
   // }
 
   loadElements(collectionId: string) {
+    // console.log('loadElements')
     this.elementService
       .getElementsByCollectionId(collectionId)
       .subscribe((data) => {
@@ -184,7 +202,7 @@ export class CollectionDetailPageComponent implements OnInit {
   deleteElement(id: string): void {
     const token = localStorage.getItem('storage_token') || 'default_token_value'
 
-    console.log('ID de element supp est :', id)
+    // console.log('ID de element supp est :', id)
     this.elementService.deleteElementById(id, token).subscribe({
       next: () => {
         // Element et tout ses events supp en cascade

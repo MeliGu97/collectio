@@ -1,9 +1,19 @@
 <!-- Ici page détail d'un ELEMENT en fonction de son identifiant -->
 <header>
-    <div class="container-image-couverture-page couleur-element-tempo" *ngIf="element.imageUrl === '' else imageCouv">
+    <!-- <div class="container-image-couverture-page couleur-element-tempo" *ngIf="element.imageUrl === '' else imageCouv">
     </div>
     <ng-template #imageCouv>
         <img src="{{ element.imageUrl }}" class="container-image-couverture-page image-de-fond">
+    </ng-template> -->
+
+    <div *ngIf="element.imageUrl === '' else imageCouv">
+        <div class="container-image-couverture-page couleur-element-tempo"></div>
+    </div>
+
+    <ng-template #imageCouv>
+        <div *ngIf="photo">
+            <img [src]="photo.src.large2x" alt="Selected photo" class="container-image-couverture-page image-de-fond">
+        </div>
     </ng-template>
 </header>
 
@@ -26,13 +36,13 @@
             <!-- onglet 1 -->
             <div class="content" id="c1">
                 <article>
-                    <div *ngIf=" element.description.length <= 1">
+                    <div *ngIf="element.description && element.description.length <= 1">
                         <div class="centro-centrer-XS">
                             <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucune description
                             </h2>
                         </div>
                     </div>
-                    <div *ngIf=" element.description.length >= 1">
+                    <div *ngIf="element.description && element.description.length >= 1">
                         <p class="espacement-vertical-L conserve-espace-origine"><span
                                 class="souligner">Description</span>
                             : {{

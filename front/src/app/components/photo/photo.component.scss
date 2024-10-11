@@ -1,0 +1,50 @@
+.boite-a-image {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .col-md-4 {
+    flex: 0 0 23%;
+    max-width: 23.5%;
+    margin: 0 2px 5px;
+  }
+  
+  .card {
+    border: none;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .card-img-top {
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .card-body {
+    padding: 10px;
+  }
+  
+  .api-logo{
+    height: 20px;
+  }
+// telephone
+@media (min-width: 0px) and (max-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 43%;
+        max-width: 43.5%;
+        margin: 0 2px 5px;
+      }
+}
+  //  tablette
+@media (min-width: 768px) and (max-width: 1024px) {
+    .col-md-4 {
+        flex: 0 0 28%;
+        max-width: 28.5%;
+        margin: 0 2px 5px;
+      }
+}

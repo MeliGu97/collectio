@@ -1,6 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
+// import axios from "axios";
 
 // #region importer les routes
 import collectionRoute from './routes/collectionRoute.js';
@@ -19,6 +20,10 @@ import https from 'https';
 const app = express();
 
 import ObjectId from 'mongodb';
+
+// import { createClient } from 'pexels';
+// const client = createClient(process.env.API_PEXELS);
+
 
 // #region ---
 var corsOptions = {
@@ -64,3 +69,23 @@ mongoose.connect(urlBDD, options)
   .catch((error) => {
     console.error('Erreur de connexion à la base de données MongoDB :', error);
   });
+
+
+  // // pexels
+  // const PEXELS_API_KEY = process.env.PEXELS_API_KEY;
+  // const PEXELS_API_URL = 'https://api.pexels.com/v1/';
+
+  // async function getRandomPhotos(count = 10) {
+  //   try {
+  //     const response = await axios.get(`${PEXELS_API_URL}curated?per_page=${count}`, {
+  //       headers: {
+  //         Authorization: PEXELS_API_KEY,
+  //       },
+  //     });
+  
+  //     return response.data.photos;
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error;
+  //   }
+  // }

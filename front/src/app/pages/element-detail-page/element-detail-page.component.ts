@@ -9,6 +9,7 @@ import { EvenementService } from '../../services/evenement.service'
 import { ElementService } from '../../services/element.service'
 import { CollectionService } from '../../services/collection.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
+import { PhotoService } from '../../services/photo.service'
 
 import { FormEvenementComponent } from '../../components/form-evenement/form-evenement.component'
 
@@ -26,7 +27,8 @@ import { FormEvenementComponent } from '../../components/form-evenement/form-eve
     ElementService,
     EvenementService,
     CollectionService,
-    UtilisateurService
+    UtilisateurService,
+    PhotoService
   ],
   templateUrl: './element-detail-page.component.html',
   styleUrl: './element-detail-page.component.scss'
@@ -41,11 +43,15 @@ export class ElementDetailPageComponent implements OnInit {
   utilisateurId: any
   isCreator: boolean = false
 
+  photo: any
+
   constructor(
     private elementService: ElementService,
     private evenementService: EvenementService,
     private collectionService: CollectionService,
     private utilisateurService: UtilisateurService,
+    private photoService: PhotoService,
+
     private route: ActivatedRoute,
     public dialog: Dialog
   ) {}
@@ -55,11 +61,13 @@ export class ElementDetailPageComponent implements OnInit {
     // Récupérer l'ID de l'élément à partir de la route active
     this.route.params.subscribe((params) => {
       const elementId = params['id']
-      console.log('elementId', elementId)
+      // console.log('elementId', elementId)
       this.elementService.getElementById(elementId).subscribe((data) => {
         this.element = data
         this.loadEvenements(elementId)
         this.getCollectionByElementId(elementId)
+
+        this.getImageById()
       })
     })
   }
@@ -69,7 +77,7 @@ export class ElementDetailPageComponent implements OnInit {
     if (token) {
       this.utilisateurService.getCurrentUtilisateurSecur().subscribe(
         (utilisateurId: any) => {
-          console.log("ID de l'utilisateur connecté:", utilisateurId._id)
+          // console.log("ID de l'utilisateur connecté:", utilisateurId._id)
           this.utilisateurId = utilisateurId._id
         },
         (error: any) => {
@@ -82,6 +90,13 @@ export class ElementDetailPageComponent implements OnInit {
     }
   }
 
+  getImageById(): void {
+    if (this.element.imageUrl) {
+      this.photoService.getPhoto(this.element.imageUrl).subscribe((photo) => {
+        this.photo = photo
+      })
+    }
+  }
   loadEvenements(elementId: string) {
     this.evenementService
       .getEvenementsByElementId(elementId)
@@ -103,8 +118,8 @@ export class ElementDetailPageComponent implements OnInit {
           this.collectionService.getCollectionById(collectionId).subscribe({
             next: (collection) => {
               this.collection = collection
-              console.log('collection.userId', collection.userId)
-              console.log('this.utilisateurId', this.utilisateurId)
+              // console.log('collection.userId', collection.userId)
+              // console.log('this.utilisateurId', this.utilisateurId)
               if (collection.userId === this.utilisateurId) {
                 this.isCreator = true
               } else {

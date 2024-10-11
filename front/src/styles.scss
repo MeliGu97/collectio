@@ -637,9 +637,9 @@ input:focus, textarea:focus {
   border: 1px solid #1b1f2326;
 }
 
-// .input-btn{
-//   cursor: pointer;
-// }
+.input-btn{
+  cursor: pointer;
+}
 .input-date-S{
   width: 40px;
   height: 30px;
@@ -724,6 +724,11 @@ button {
   position: absolute;
   top: 10px;
   left: 10px;
+}
+.crud-centre{
+  position: absolute;
+  top: 10%;
+  left: 40%;
 }
 
 .btn-crud {
@@ -999,10 +1004,10 @@ button {
   background-position-y: center;
 }
 .img-tiroire{
-  background-image: url("../src/assets/images/accueil/archiveVideZoom.jpg");
+  background-image: url("../src/assets/images/accueil/archiveVideZoom.webp");
 }
 .img-admin{
-  background-image: url("../src/assets/images/accueil/pexels-tima-miroshnichenko-6549364.jpg");
+  background-image: url("../src/assets/images/accueil/pexels-tima-miroshnichenko-6549364.webp");
 }
 
 
@@ -1113,7 +1118,7 @@ button {
     display: none;
   }
   .image-fillette{
-    background-image: url("../src/assets/images/accueil/pexels-tima-miroshnichenko-6549373.jpg");
+    background-image: url("../src/assets/images/accueil/pexels-tima-miroshnichenko-6549373.webp");
     background-size: cover;
     background-position-y: center;
   }

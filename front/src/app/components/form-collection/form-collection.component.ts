@@ -1,5 +1,5 @@
 // form-collection.component = formulaire pour ajouter ou modifier une collection
-import { Component, Inject, OnInit } from '@angular/core'
+import { Component, Inject, OnInit, Input } from '@angular/core'
 import { DialogRef, DIALOG_DATA, DialogModule } from '@angular/cdk/dialog'
 import {
   FormGroup,
@@ -14,9 +14,12 @@ import { CommonModule } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 
 import { CollectionService } from '../../services/collection.service'
-import { PopupComponent } from '../../design-system/popup/popup.component'
 import { PeriodeService } from '../../services/periode.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
+import { PhotoService } from '../../services/photo.service'
+
+import { PhotoComponent } from '../photo/photo.component'
+import { PopupComponent } from '../../design-system/popup/popup.component'
 
 @Component({
   selector: 'app-form-collection',
@@ -27,22 +30,35 @@ import { UtilisateurService } from '../../services/utilisateur.service'
     FormsModule,
     DialogModule,
     ReactiveFormsModule,
-    PopupComponent
+    PopupComponent,
+    PhotoComponent
   ],
-  providers: [CollectionService, PeriodeService, UtilisateurService],
+  providers: [
+    CollectionService,
+    PeriodeService,
+    UtilisateurService,
+    PhotoService
+  ],
   templateUrl: './form-collection.component.html',
   styleUrl: './form-collection.component.scss'
 })
 export class FormCollectionComponent implements OnInit {
+  @Input() photoSelected: number | undefined
+
   collection: any = []
   newCollectionForm: FormGroup = new FormGroup({})
   newCollection: any = {}
   periodes: any
   popUpPeriodeIsOpen: boolean = false
+  popUpPhotoIsOpen: boolean = false
+
+  selectedPhoto: any
 
   constructor(
     private collectionService: CollectionService,
     private periodeService: PeriodeService,
+    private photoService: PhotoService,
+
     private formBuilder: FormBuilder,
     private utilisateurService: UtilisateurService,
     public dialogRef: DialogRef<string>,
@@ -51,6 +67,7 @@ export class FormCollectionComponent implements OnInit {
 
   ngOnInit() {
     const storage_user_id = this.utilisateurService.getCurrentUtilisateur()
+
     this.newCollectionForm = this.formBuilder.group({
       label: ['', Validators.required],
       description: [''],
@@ -67,6 +84,8 @@ export class FormCollectionComponent implements OnInit {
 
     if (this.data.isUpdate) {
       this.newCollectionForm.patchValue(this.data.collection)
+      // Si modif alors montre l'image de couv
+      this.getPhotoDetails(this.data.collection.imageUrl)
     }
 
     this.periodeService.getPeriodes().subscribe((data) => {
@@ -105,6 +124,23 @@ export class FormCollectionComponent implements OnInit {
       )
       periodesArray.removeAt(index)
     }
+  }
+
+  updateImageUrl(id: number): void {
+    this.popUpPhotoIsOpen = false
+    // on vient renseigner le champ imageUrl de la collection
+    this.newCollectionForm.patchValue({ imageUrl: id })
+    console.log('hey j ai une donnee: ', id)
+
+    this.getPhotoDetails(id)
+  }
+
+  getPhotoDetails(id: number): void {
+    this.photoService.getPhoto(id).subscribe((photo) => {
+      console.log('Photo details depuis formulaire:', photo)
+      this.photoSelected = photo.id
+      this.selectedPhoto = photo
+    })
   }
 
   createOrUpdateCollection(): void {
