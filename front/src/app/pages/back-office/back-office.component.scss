@@ -11,7 +11,8 @@
     padding: 10px;
 }
 
-.btn-crud-office{
+.btn-crud-red, 
+.btn-crud-green{
     opacity: 0.5;
     // background-color: #f0aa9b;
     border: none;
@@ -26,13 +27,33 @@
     
     width: 100%;
   }
-  .carte:hover .btn-crud-office {
+  .carte:hover .btn-crud-red, 
+  .carte:hover .btn-crud-green {
     opacity: 0.5; 
   }
-  .btn-crud-office:hover{
+  .btn-crud-red:hover{
     opacity: 1;
     background-color: #cd3217;
     color: white;
     text-decoration: none;
     transition-duration: 0.1s;
+  }
+
+  .btn-crud-green:hover{
+    opacity: 1;
+    background-color: #43A960;
+    color: white;
+    text-decoration: none;
+    transition-duration: 0.1s;
+  }
+  // .container-onglet{
+  //   box-shadow: inset 0px -40px 25px -12px rgba(0,0,0,0.1);
+  //   max-height: 430px;
+  //   overflow-y: scroll;
+  //   overflow-x: visible;
+  //   scrollbar-width: thin;
+  // }
+
+  .container-general{  
+    min-height: 700px;
   }

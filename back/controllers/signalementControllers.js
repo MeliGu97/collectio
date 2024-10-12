@@ -69,13 +69,20 @@ const getSignalementByCollId = async (req, res) => {
   // #region 
   const deleteSignalement = async (req, res) => {
     try {
-      const collectionId = req.params.collectionId;
-      const result = await Signalement.deleteMany({ collectionId });
-      res.json(result);
+      const objectId = req.params.id;
+      console.log('ObjectId:', objectId);
+      const result = await Signalement.deleteOne({ _id: objectId });
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ message: 'signalement non trouvé' });
+      }
+  
+      res.json({ message: 'signalement supprimé avec succès' });
     } catch (error) {
+      console.error('Erreur lors de la suppression du signalement:', error);
       res.status(500).json({ message: error.message });
     }
   };
+
 
 
 //   #region Export

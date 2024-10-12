@@ -25,16 +25,16 @@ export class SignalementService {
   }
 
   updateSignalement(signalement: any): Observable<any> {
-    console.log('ID du signalement :', signalement._id)
+    // console.log('ID du signalement :', signalement._id)
     return this.http.put(
       `${baseServerUrl}/signalementCollection/${signalement._id}`,
       signalement
     )
   }
 
-  deleteSignalementByCollectionId(collectionId: string): Observable<any> {
+  deleteSignalementBySignalementId(signalementId: string): Observable<any> {
     return this.http.delete(
-      `${baseServerUrl}/signalementCollection/${collectionId}`
+      `${baseServerUrl}/signalementCollection/${signalementId}`
     )
   }
 }

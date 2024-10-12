@@ -22,7 +22,7 @@ export class UneService {
     return this.http.post<any>(`${baseServerUrl}/unes`, une)
   }
 
-  deleteUneById(id: string): Observable<any> {
-    return this.http.delete(`${baseServerUrl}/unes/${id}`)
+  deleteUneById(UneId: string): Observable<any> {
+    return this.http.delete(`${baseServerUrl}/unes/${UneId}`)
   }
 }

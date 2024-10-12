@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const uneSchema = new Schema({
-  order: Number,
+  date: Date,
   collectionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Collection' },
 })
 

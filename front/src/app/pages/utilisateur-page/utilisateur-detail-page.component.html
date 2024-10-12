@@ -53,11 +53,15 @@
     <article class="marges">
         <div class="container">
             <input type="radio" id="tab1" name="tab" checked>
-            <label for="tab1">Publiques</label>
+            <label for="tab1">
+                <p class="titre-onglet">Publiques</p>
+            </label>
 
             <ng-container *ngIf="isCurrentUser; else sansPrivee">
                 <input type="radio" id="tab2" name="tab">
-                <label for="tab2">Privées</label>
+                <label for="tab2">
+                    <p class="titre-onglet">Privées</p>
+                </label>
             </ng-container>
             <div class="line"></div>
 

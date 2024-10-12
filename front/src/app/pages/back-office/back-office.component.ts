@@ -73,10 +73,8 @@ export class BackOfficeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.uneService.getUnes().subscribe((data) => {
-      this.unes = data
-      this.collections = this.unes.map((une) => une.collectionId)
-    })
+    this.refreshUne()
+
     this.periodeService.getPeriodes().subscribe((data) => {
       this.periodes = data
     })
@@ -97,6 +95,12 @@ export class BackOfficeComponent implements OnInit {
       this.publicCollections = data
     })
   }
+  refreshUne() {
+    this.uneService.getUnes().subscribe((data) => {
+      this.unes = data
+      this.collections = this.unes.map((une) => une.collectionId)
+    })
+  }
 
   openPopupSignalement(collectionId: string) {
     this.formSignalement = true
@@ -106,6 +110,33 @@ export class BackOfficeComponent implements OnInit {
 
   ClosePopupSignalement() {
     this.formSignalement = false
+  }
+
+  // Add to une
+  addToUne(collId: string) {
+    console.log('HOUHOU je passe par une pour add cet id', collId)
+
+    const une = {
+      date: new Date(),
+      collectionId: collId
+    }
+    this.uneService.addUne(une).subscribe({
+      next: (uneAjoute) => {
+        this.unes.push(uneAjoute)
+      },
+      error: (error) => {
+        console.error("Erreur lors de l'ajout de la une", error)
+      }
+    })
+    this.refreshUne()
+  }
+
+  removeUne(collId: string) {
+    console.log('HOUHOU je passe par une pour REMOVE cet id', collId)
+    this.uneService.deleteUneById(collId).subscribe(() => {
+      this.unes = this.unes.filter((une) => une._id !== collId)
+    })
+    this.refreshUne()
   }
 
   // Creer un signalement
@@ -194,7 +225,8 @@ export class BackOfficeComponent implements OnInit {
     this.getSignalements()
   }
 
-  suppSignalementCollection(collId: string) {
+  suppSignalementCollection(collId: string, signalementId: string) {
+    console.log('id du signalement', signalementId)
     this.collectionService
       .updateCollectionSignalement(collId, false)
       .subscribe({
@@ -212,12 +244,12 @@ export class BackOfficeComponent implements OnInit {
         }
       })
     this.signalementService
-      .deleteSignalementByCollectionId(collId)
+      .deleteSignalementBySignalementId(signalementId)
       .subscribe(() => {
         this.signalements = this.signalements.filter(
           (signalement) => signalement._id !== collId
         )
-        this.getSignalements()
       })
+    this.getSignalements()
   }
 }

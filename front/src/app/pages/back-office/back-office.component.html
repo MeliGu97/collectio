@@ -25,43 +25,44 @@
 
 </section>
 
-<section>
+<section class="container-general">
     <article class="marges">
-        <!-- RECHERCHE PAR MOT CLEF -->
-        <div class="centrer-en-colonne">
-            <div class="centrer-sur-horizon espacement-vertical-M">
-                <input class="input-recherche" type="search" [(ngModel)]="searchTerm"
-                    placeholder="Rechercher une collection..." />
-                <button class="btn-primary btn-medium centrer-milieu"><i
-                        class=" fa-solid fa-magnifying-glass"></i></button>
-            </div>
-        </div>
-        <!-- TITRE DES ONGLETS  -->
         <div class="container">
+            <!-- TITRE DES ONGLETS  -->
             <input type="radio" id="tab1" name="tab" checked>
-            <label for="tab1">Publiques</label>
+            <label for="tab1">
+                <p class="titre-onglet">À la une</p>
+            </label>
 
             <input type="radio" id="tab2" name="tab">
-            <label for="tab2">Signalées</label>
+            <label for="tab2">
+                <p class="titre-onglet">Signalées</p>
+            </label>
             <div class="line"></div>
             <!-- ----- -->
+
             <div class="content-container">
                 <!-- onglet 1 -->
-                <div class="content" id="c1">
-                    <div>
-                        <ul class="espacement-autour">
-                            <li *ngFor="let collection of publicCollections | filterCollection: searchTerm"
-                                class="card around small motif-fond-pointille">
-                                <app-collections [collectionId]=" collection"></app-collections>
-                                <button class="btn-crud-office espacement-entre"
-                                    (click)="openPopupSignalement(collection._id)">
-                                    <i class="fa-solid fa-triangle-exclamation"></i>
-                                    <p>Signaler</p>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="content container-onglet" id="c1">
+                    <ul>
+                        <li *ngFor="let une of unes" class="card around large motif-fond-pointille">
+                            <app-collections [collectionId]="une.collectionId"></app-collections>
+                            <!-- BOUTON RETIRER DE LA UNE -->
+                            <button class="btn-crud-red espacement-entre" (click)="removeUne(une._id)">
+                                <i class="fa-regular fa-star"></i>
+                                <p>Retirer de la une</p>
+                            </button>
+                        </li>
+                        <li *ngIf="unes.length === 0">
+                            <div class="centro-centrer-S">
+                                <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucune collection
+                                </h2>
+                            </div>
+
+                        </li>
+                    </ul>
                     <div class="espacement-vertical-XL"></div>
+
                     <!-- formulaire signalement pop up -->
                     <article *ngIf="formSignalement === true">
                         <app-popup>
@@ -95,6 +96,7 @@
                                 </form>
                             </article>
                         </app-popup>
+
                     </article>
                 </div>
 
@@ -140,7 +142,7 @@
                                         <div class="saut-de-ligne-M"></div>
                                         <div class=" espacement-autour">
                                             <button class="btn-primary btn-small"
-                                                (click)="suppSignalementCollection(signalement.collectionId._id)">Fermer
+                                                (click)="suppSignalementCollection(signalement.collectionId._id, signalement._id)">Fermer
                                                 le signalement</button>
                                         </div>
                                     </div>
@@ -159,9 +161,39 @@
                         <div class="espacement-vertical-XL"></div>
                     </div>
                 </ng-container>
-
             </div>
         </div>
-
+    </article>
+</section>
+<br>
+<section class="container-general">
+    <article class=" marges">
+        <!-- RECHERCHE PAR MOT CLEF -->
+        <div class="centrer-en-colonne">
+            <div class="centrer-sur-horizon espacement-vertical-M">
+                <input class="input-recherche" type="search" [(ngModel)]="searchTerm"
+                    placeholder="Rechercher une collection..." />
+                <button class="btn-primary btn-medium centrer-milieu"><i
+                        class=" fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+        <h2>Toutes les collections publiques</h2>
+        <ul class="espacement-autour">
+            <li *ngFor="let collection of publicCollections | filterCollection: searchTerm"
+                class="card around small motif-fond-pointille">
+                <app-collections [collectionId]=" collection"></app-collections>
+                <!-- BOUTON SIGNALER -->
+                <button class="btn-crud-red espacement-entre" (click)="openPopupSignalement(collection._id)">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <p>Signaler</p>
+                </button>
+                <br>
+                <!-- BOUTON AJOUTER A LA UNE -->
+                <button class="btn-crud-green espacement-entre" (click)="addToUne(collection._id)">
+                    <i class="fa-solid fa-star"></i>
+                    <p>Ajouter à la une</p>
+                </button>
+            </li>
+        </ul>
     </article>
 </section>

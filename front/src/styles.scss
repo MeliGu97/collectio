@@ -205,6 +205,10 @@ $favoris:#7a1a33;
   cursor: pointer;
   font-weight: bold;
 }
+.titre-onglet{
+  font-family: 'Euphorigenic';
+  font-size: 20px;
+}
 .nav-barre :hover .titre-nav{
   opacity: 1;
   transition: 0.5s ease;
@@ -589,6 +593,7 @@ li {
       top: 10px;
       display: none;
       transition: 0.25s ease;
+
     }
   }
 }

@@ -11,7 +11,7 @@
 </section>
 
 
-<section class="container-general">
+<section>
     <div class="espacement-vertical-L"></div>
     <h2 class="marges">Les collections publiques</h2>
     <article class="marges centrer-en-colonne">
@@ -39,7 +39,7 @@
             </ul>
             <div class="espacement-vertical-L"></div>
         </div>
-        <div>
+        <div class="container-general">
             <ul class="espacement-autour">
                 <li *ngFor="let collection of publicCollections | filterCollection: searchTerm"
                     class="card around medium motif-fond-pointille">
@@ -81,6 +81,7 @@
             <div class="text">
                 <div class="espacement-vertical-L"></div>
                 <h1>Partez à la découverte de collections encore insoupsonnées</h1>
+                <!-- <h1>Vos trésors toujours à portée de main</h1> -->
                 <div>
                     <div class="espacement-vertical-M"></div>
                     <!-- <button class="btn-primary btn-small espacement-vertical-S" (click)="openPopupLog(false)"><i

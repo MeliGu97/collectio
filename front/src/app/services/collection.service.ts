@@ -61,10 +61,10 @@ export class CollectionService {
                 (period: any) => period._id === periodeId
               ) && collection.userId === userId
           )
-          console.log(
-            'total Coll qui répondent à ce filtre:',
-            filteredCollections
-          )
+          // console.log(
+          //   'total Coll qui répondent à ce filtre:',
+          //   filteredCollections
+          // )
           return filteredCollections
         })
       )
@@ -91,7 +91,7 @@ export class CollectionService {
 
   // UPDATE
   updateCollection(collection: any): Observable<any> {
-    console.log('ID de la collection :', collection._id)
+    // console.log('ID de la collection :', collection._id)
     return this.http.put(
       `${baseServerUrl}/collections/${collection._id}`,
       collection

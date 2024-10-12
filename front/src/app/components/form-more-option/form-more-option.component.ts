@@ -6,6 +6,7 @@ import { ModalComponent } from '../../design-system/modal/modal.component'
 import { CollectionService } from '../../services/collection.service'
 import { ElementService } from '../../services/element.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
+import { SignalementService } from '../../services/signalement.service'
 
 @Component({
   selector: 'app-form-more-option',
@@ -13,7 +14,12 @@ import { UtilisateurService } from '../../services/utilisateur.service'
   templateUrl: './form-more-option.component.html',
   styleUrl: './form-more-option.component.scss',
   imports: [CommonModule, ModalComponent, DialogModule],
-  providers: [CollectionService, ElementService, UtilisateurService]
+  providers: [
+    CollectionService,
+    ElementService,
+    UtilisateurService,
+    SignalementService
+  ]
 })
 export class FormMoreOptionComponent {
   collection: any = {}
@@ -25,10 +31,14 @@ export class FormMoreOptionComponent {
   elementId: string = ''
   isCollection = Boolean
 
+  signalement: any = {}
+
   constructor(
     private collectionService: CollectionService,
     private elementService: ElementService,
     private utilisateurService: UtilisateurService,
+    private signalementService: SignalementService,
+
     public dialogRef: DialogRef<string>,
     @Inject(DIALOG_DATA) public data: any
   ) {
@@ -44,7 +54,7 @@ export class FormMoreOptionComponent {
   ngOnInit(): void {
     this.collection = this.data.collection
     this.element = this.data.element
-    console.log(this.data)
+    // console.log(this.data)
   }
 
   makePublicOrPrivate(id: string, isPublic: boolean): void {
@@ -71,6 +81,17 @@ export class FormMoreOptionComponent {
 
   deleteCollection(id: string): void {
     const token = localStorage.getItem('storage_token') || 'default_token_value'
+    if (this.collection.signalement) {
+      this.signalementService
+        .getSignalementByCollectionId(id)
+        .subscribe((data) => {
+          this.signalement = data
+          // console.log('id du signalement dans form :', this.signalement._id)
+          this.signalementService
+            .deleteSignalementBySignalementId(this.signalement._id)
+            .subscribe(() => {})
+        })
+    }
     this.collectionService.deleteCollectionById(id, token).subscribe({
       next: () => {
         const userId = this.utilisateurService.getCurrentUtilisateur()._id
