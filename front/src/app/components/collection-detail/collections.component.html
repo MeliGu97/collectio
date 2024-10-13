@@ -180,14 +180,15 @@
       <i class="fa-solid fa-triangle-exclamation"></i>
     </div>
   </div>
-
 </div>
+
+<!-- POPUP SIGNALEMENT -->
 <article *ngIf="formSignalement === true">
   <app-popup>
-    <div *ngIf="needReponse === false" class="crud-haut-gauche">
+    <!-- <div *ngIf="needReponse === false" class="crud-haut-gauche">
       <p class=" texte-discret texte-small">En attente de
         validation</p>
-    </div>
+    </div> -->
     <article class="centrer-sur-horizon">
       <button class="crud-haut-droite btn-discret btn-small" (click)="ClosePopupSignalement()">
         <i class="fa-solid fa-xmark"></i>
@@ -195,41 +196,56 @@
     </article>
     <article class="padding-S">
       <h3 class="no-margin">Signalement</h3>
-      <p class="texte-discret texte-small">Sans modification des éléments problématiques, vous ne pouvez pas rendre
+      <p class="texte-small texte-error">Sans modification des éléments problématiques, vous ne pouvez pas
+        rendre
         publique votre
         collection</p>
       <br>
       <div class="around motif-fond-carreaux padding-S">
+        <div *ngIf="needReponse === true">
+          <div class="centrer-sur-horizon">
+            <div class="tag tag-S error"></div>
+            <p class="texte-error">Signalement actif</p>
+          </div>
+          <div class="espacement-vertical-S"></div>
+        </div>
+        <div *ngIf="needReponse === false">
+          <div class="centrer-sur-horizon">
+            <div class="tag tag-S warning"></div>
+            <p class="texte-warning">Demande en cours d'analyse</p>
+          </div>
+          <div class="espacement-vertical-S"></div>
+        </div>
         <p style="float: right;">{{ signalement.date |
           date:'dd/MM/yyyy' }}</p>
         <br>
-        <p class="souligner">Raison du signalement :</p>
-        <p>{{ signalement.description }}</p>
+        <p class="souligner">Motif du signalement :</p>
+        <p class="padding-XS">« {{ signalement.description }} »</p>
         <br>
         <p>----------</p>
         <br>
 
         <div *ngIf="needReponse === true">
           <p class="texte-small">Vous pouvez remplir le formulaire si dessous afin d'argumenter en votre faveur et
-            demander la lever du
+            demander la levée du
             signalement</p>
           <br>
-          <form [formGroup]="updateSignalement" (ngSubmit)="updateSignalementCollection()">
-            <p>Votre réponse : *</p>
+          <form [formGroup]="updateSignalement">
+            <p class="souligner">Votre réponse :</p>
             <textarea rows="4" type="text" id="reponseUtili" formControlName="reponseUtili"
               placeholder="Voici les élements que j'ai modifié..." class="input-texte"></textarea>
             <div class="espacement-autour">
-              <button class="btn-primary btn-small">Envoyer la demande</button>
+              <button class="btn-primary btn-small" (click)="showAlertConfirmeSendMessageToAdmin()">Envoyer la
+                demande</button>
             </div>
           </form>
         </div>
-
 
         <div *ngIf="needReponse === false">
           <p style="float: right;">{{ signalement.reponseDate |
             date:'dd/MM/yyyy' }}</p>
           <p class="souligner">Votre réponse : </p>
-          <p>{{ signalement.reponseUtili }}</p>
+          <p>« {{ signalement.reponseUtili }} »</p>
         </div>
       </div>
 

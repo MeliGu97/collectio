@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute, RouterLink } from '@angular/router'
 import { Dialog, DialogModule } from '@angular/cdk/dialog'
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2'
+import Swal from 'sweetalert2'
 
 import { CollectionService } from '../../services/collection.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
@@ -34,7 +36,8 @@ import { FilterPipeCollection } from '../../services/filterByText.pipe'
     RouterLink,
     CollectionsComponent,
     FilterPipeCollection,
-    FilterByPeriodesPipe
+    FilterByPeriodesPipe,
+    SweetAlert2Module
   ]
 })
 export class UtilisateurDetailPageComponent implements OnInit {
@@ -173,8 +176,39 @@ export class UtilisateurDetailPageComponent implements OnInit {
         this.getCollectionsPrivateByUtilisateurId(
           this.route.snapshot.params['id']
         )
+        this.showAlertCreateColl()
+        this.checkTab2()
       }
       this.isDisabled = false
+    })
+  }
+
+  checkTab2() {
+    const tab2 = document.getElementById('tab2') as HTMLInputElement
+    if (tab2) {
+      tab2.checked = true
+    }
+  }
+
+  // ALERT
+  showAlertCreateColl() {
+    Swal.fire({
+      title: 'Félicitation',
+      text: 'Votre collection a été créee avec succès',
+      icon: 'success',
+      confirmButtonText: 'Ok',
+      customClass: {
+        title: 'titre-popup',
+        confirmButton: 'btn-primary btn-small text-btn-popup'
+      },
+      buttonsStyling: false,
+      timer: 2000, // Close the popup after 2 seconds (2000 milliseconds)
+      timerProgressBar: true, // Show a progress bar indicating the time remaining
+      didOpen: (toast) => {
+        // arrete le chargement si l'utilisateur survol la popup
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
     })
   }
 }

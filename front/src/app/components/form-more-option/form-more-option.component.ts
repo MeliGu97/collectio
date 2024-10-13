@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { DialogRef, DIALOG_DATA, DialogModule } from '@angular/cdk/dialog'
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2'
+import Swal from 'sweetalert2'
 
 import { ModalComponent } from '../../design-system/modal/modal.component'
 import { CollectionService } from '../../services/collection.service'
@@ -18,7 +20,8 @@ import { SignalementService } from '../../services/signalement.service'
     CollectionService,
     ElementService,
     UtilisateurService,
-    SignalementService
+    SignalementService,
+    SweetAlert2Module
   ]
 })
 export class FormMoreOptionComponent {
@@ -124,6 +127,119 @@ export class FormMoreOptionComponent {
       },
       error: (error) => {
         console.error('Error deleting element:', error)
+      }
+    })
+  }
+
+  // ALERT
+  showAlertConfirmeDeleteColl(id: string) {
+    Swal.fire({
+      title: 'Supprimer la collection',
+      text: 'Êtes vous sûr de confirmer la suppression de votre collection ? Tous les éléments qui la composent seront également supprimés',
+      icon: 'warning',
+      showCancelButton: true,
+      showConfirmButton: true,
+      cancelButtonText: 'Annuler',
+      confirmButtonText: 'Confirmer la suppression',
+
+      customClass: {
+        title: 'titre-popup',
+        icon: 'picto-popup',
+        confirmButton: 'btn-primary btn-small btn-success',
+        cancelButton: 'btn-primary btn-small btn-error'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteCollection(id)
+        Swal.fire({
+          title: 'Collection supprimée !',
+          text: 'Votre collection a bien été supprimée.',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: {
+            title: 'titre-popup',
+            confirmButton: 'btn-primary btn-small'
+          },
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Annuler',
+          text: "Votre Collection n'a pas été supprimée.",
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: {
+            title: 'titre-popup',
+            confirmButton: 'btn-primary btn-small'
+          },
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+      }
+    })
+  }
+
+  showAlertConfirmeDeleteElement(id: string) {
+    Swal.fire({
+      title: "Supprimer l'élément",
+      text: 'Êtes vous sûr de confirmer la suppression de votre élément ? Tous les événements qui le composent seront également supprimés',
+      icon: 'warning',
+      showCancelButton: true,
+      showConfirmButton: true,
+      cancelButtonText: 'Annuler',
+      confirmButtonText: 'Confirmer la suppression',
+
+      customClass: {
+        title: 'titre-popup',
+        icon: 'picto-popup',
+        confirmButton: 'btn-primary btn-small btn-success',
+        cancelButton: 'btn-primary btn-small btn-error'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteElement(id)
+        Swal.fire({
+          title: 'Élément supprimé !',
+          text: 'Votre élément a bien été supprimé.',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: {
+            title: 'titre-popup',
+            confirmButton: 'btn-primary btn-small'
+          },
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Annuler',
+          text: "Votre élément n'a pas été supprimé.",
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: {
+            title: 'titre-popup',
+            confirmButton: 'btn-primary btn-small'
+          },
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
       }
     })
   }

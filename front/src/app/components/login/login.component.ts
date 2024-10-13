@@ -34,12 +34,21 @@ import { Router } from '@angular/router'
 export class LoginComponent implements OnInit {
   @Output() utilisateurConnecte = new EventEmitter<void>()
 
+  IsLog?: boolean
+
+  IsInscription?: boolean
+  IsUpdateInfo?: boolean
+  userId?: string
+
   utilisateur: any = []
+
   newUtilisateurForm: FormGroup = new FormGroup({})
   newUtilisateur: any = {}
-  Isinscription?: boolean
+
   newConnectUtilisateurForm: FormGroup = new FormGroup({})
   errorMessage: string = ''
+
+  updateUtilisateurForm: FormGroup = new FormGroup({})
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,10 +56,33 @@ export class LoginComponent implements OnInit {
     public dialogRef: DialogRef<any>,
     @Inject(DIALOG_DATA)
     public data: LoginComponent,
-    private router: Router // private authService: AuthService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    if (this.data.IsLog) {
+      this.IsLog = true
+    } else {
+      this.IsLog = false
+    }
+    if (this.data.IsInscription) {
+      this.IsInscription = true
+    } else {
+      this.IsInscription = false
+    }
+    if (this.data.IsUpdateInfo) {
+      this.IsUpdateInfo = true
+    } else {
+      this.IsUpdateInfo = false
+    }
+    if (this.data.userId) {
+      console.log(this.data.userId)
+      this.utilisateurService
+        .getUtilisateurById(this.data.userId)
+        .subscribe((user) => {
+          this.utilisateur = user
+        })
+    }
     this.newUtilisateurForm = this.formBuilder.group(
       {
         nom: ['', Validators.required],
@@ -75,17 +107,24 @@ export class LoginComponent implements OnInit {
       nomUtilisateur: ['', Validators.required],
       motDePasse: ['', Validators.required]
     })
-    if (this.data.Isinscription) {
-      this.Isinscription = true
-    } else {
-      this.Isinscription = false
-    }
+
+    this.updateUtilisateurForm = this.formBuilder.group({
+      _id: [this.data.userId],
+      nom: ['', Validators.required],
+      prenom: ['', Validators.required],
+      nomUtilisateur: ['', Validators.required]
+    })
   }
 
   passwordMatchValidator(g: FormGroup) {
     return g.get('motDePasse')?.value === g.get('motDePasseConfirmation')?.value
       ? null
       : { mismatch: true }
+  }
+
+  openUpdateForm() {
+    this.IsUpdateInfo = true
+    this.updateUtilisateurForm.patchValue(this.utilisateur)
   }
 
   ajouterUtilisateur(): void {
@@ -107,23 +146,26 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  modifierUtilisateur(): void {
+    this.utilisateurService
+      .updateUtilisateur(this.updateUtilisateurForm.value)
+      .subscribe({
+        next: (updateUtilisateur) => {
+          this.dialogRef.close(updateUtilisateur)
+        },
+        error: (error) => {
+          console.log('updateUtilisateur', this.updateUtilisateurForm.value)
+          console.error("Erreur lors de la mise à jour de l'utili", error)
+        }
+      })
+  }
+
   connectUtilisateur(): void {
     if (this.newConnectUtilisateurForm.valid) {
       this.utilisateurService
         .connectUtilisateur(this.newConnectUtilisateurForm.value)
         .subscribe({
           next: (response) => {
-            // console.log(
-            //   'Utilisateur connecté avec succès',
-            //   response,
-            //   'response.user._id',
-            //   response.user._id,
-            //   'response.token',
-            //   response.token
-            // )
-            //  on vient enregistrer storage_user_id is in the response object
-            // localStorage.setItem('storage_user_id', response._id)
-
             localStorage.setItem('storage_user_id', response.user._id)
             // on vient enregistrer le token dans le localStorage
             localStorage.setItem('storage_token', response.token)

@@ -1,14 +1,16 @@
 <!-- menu -->
+<!-- HEADER -->
+<ngx-loading-bar [color]="'#437C90'" [height]="'5px'" [includeSpinner]="false" [fixed]="true"></ngx-loading-bar>
 <header class="nav-barre">
     <button class="btn-discret btn-small btn-flottant-haut-gauche centrer-milieu" (click)="IsOpen = true">
         <i class="fa-solid fa-bars"></i></button>
     <div class="espacement-vertical-S text-centrer">
         <a (click)="navigateHomePage()" class="titre-nav">Collectio</a>
     </div>
-
     <div *ngIf="utilisateur">
         <div class="btn-flottant-haut-droite">
-            <button class="btn-discret btn-small centrer-milieu" (click)="navigateUserPage(utilisateur?._id)">
+            <button class="btn-discret btn-small centrer-milieu disparait-sur-mobile"
+                (click)="navigateUserPage(utilisateur?._id)">
                 <div *ngIf="utilisateur.role === 'administrateur'">
                     <p><i class="fa-solid fa-crown"></i> {{ utilisateur?.nomUtilisateur }}</p>
                 </div>
@@ -23,12 +25,14 @@
         </div>
     </div>
     <div class="btn-flottant-haut-droite" *ngIf="!UserConnecte">
-        <button class="btn-discret btn-small centrer-milieu tooltip" (click)="openPopupLog(false)">
+        <button class="btn-discret btn-small centrer-milieu tooltip" (click)="openPopupLog(false, true)">
             <i class="fa-solid fa-arrow-right-to-bracket"></i>
             <span class="tooltiptext tolltiptexte-small-left">Se connecter</span>
         </button>
     </div>
 </header>
+
+<!-- ASIDE -->
 <aside *ngIf="IsOpen === true">
     <app-menu>
         <section>
@@ -97,18 +101,25 @@
         </section>
         <section>
             <article class="btn-flottant-bas-gauche">
+                <button class="btn-crud-modal" (click)="showAlert()"><i class="fa-solid fa-hippo"></i>
+                    <p>Info bonus</p>
+                </button>
                 <div *ngIf="UserConnecte === false">
                     <!-- (click)="openConnectPopUp()" -->
-                    <button class="btn-crud-modal" (click)="openPopupLog(false)">
+                    <button class="btn-crud-modal" (click)="openPopupLog(false, true)">
                         <i class="fa-solid fa-arrow-right-to-bracket"></i>
                         <p>Se connecter</p>
                     </button>
-                    <button class="btn-crud-modal" (click)="openPopupLog(true)">
+                    <button class="btn-crud-modal" (click)="openPopupLog(true, true)">
                         <i class="fa-solid fa-door-open"></i>
                         <p>S'inscrire</p>
                     </button>
                 </div>
                 <div *ngIf="UserConnecte === true">
+                    <button class="btn-crud-modal" (click)="openPopupInfo(false, false, utilisateur._id)">
+                        <i class="fa-solid fa-gear"></i>
+                        <p>Infos utilisateur</p>
+                    </button>
                     <button class="btn-crud-modal" (click)="logout()">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         <p>Se déconnecter</p>

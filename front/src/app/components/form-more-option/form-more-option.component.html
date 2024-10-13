@@ -10,7 +10,7 @@
         <article *ngIf="isCollection">
             <h4>{{ collection.label }}</h4>
             <div class="espacement-vertical-M"></div>
-            <button class="btn-crud-modal" (click)="deleteCollection(collection._id)">
+            <button class="btn-crud-modal" (click)="showAlertConfirmeDeleteColl(collection._id)">
                 <i class="fa-solid fa-trash"></i>
                 <p>Supprimer</p>
             </button>
@@ -34,7 +34,7 @@
         <article *ngIf="!isCollection">
             <h4>{{ element.label }}</h4>
             <div class="espacement-vertical-M"></div>
-            <button class="btn-crud-modal" (click)="deleteElement(element._id)">
+            <button class="btn-crud-modal" (click)="showAlertConfirmeDeleteElement(element._id)">
                 <i class="fa-solid fa-trash"></i>
                 <p>Supprimer</p>
             </button>

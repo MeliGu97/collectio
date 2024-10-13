@@ -102,6 +102,20 @@ const createConnexionByUtilisateur = async (req, res) => {
     }
   };
 
+  // #region update coll
+const updateUtilisateur = async (req, res) => {
+  try {
+    const utilisateur = await Utilisateur.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    // console.log('utilisateur', utilisateur)
+    if (!utilisateur) {
+      return res.status(404).json({ message: 'Utilisateur non trouvée' });
+    }
+    res.json(utilisateur);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 // #region export
 export{
@@ -109,5 +123,7 @@ export{
     getCurrentUtilisateur,
     
     createUtilisateur,
-    createConnexionByUtilisateur
+    createConnexionByUtilisateur,
+
+    updateUtilisateur
 }

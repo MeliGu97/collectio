@@ -54,6 +54,17 @@ export class UtilisateurService {
     return this.http.post<any>(`${baseServerUrl}/utilisateurs`, utilisateur)
   }
 
+  // UPDATE
+  updateUtilisateur(utilisateur: any): Observable<any> {
+    console.log('utilisateur :', utilisateur)
+    console.log('ID de utilisateur :', utilisateur._id)
+    return this.http.put(
+      `${baseServerUrl}/utilisateurs/${utilisateur._id}`,
+      utilisateur
+    )
+  }
+
+  // supprimer toutes ses info / collection, fav etc
   deleteUtilisateurById(id: string): Observable<any> {
     return this.http.delete(`${baseServerUrl}/utilisateurs/${id}`)
   }

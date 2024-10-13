@@ -10,3 +10,18 @@ a:hover{
     width: 200px;
     display: block;
 }
+
+// telephone
+@media (min-width: 0px) and (max-width: 768px) {
+    .image {
+        flex: 1;
+        display: block;
+      }
+        
+  .text {
+    z-index: 20;
+    text-align: left;
+    color: black;
+  }
+  
+}

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { CommonModule } from '@angular/common'
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2'
+import Swal from 'sweetalert2'
 
 import { FavorisService } from '../../services/favoris.service'
 import { CollectionService } from '../../services/collection.service'
@@ -17,7 +19,8 @@ import { FormGroup } from '@angular/forms'
     FavorisService,
     CollectionService,
     PeriodeService,
-    UtilisateurService
+    UtilisateurService,
+    SweetAlert2Module
   ],
 
   templateUrl: './utilisateur-page-favoris.component.html',
@@ -76,6 +79,8 @@ export class UtilisateurPageFavorisComponent implements OnInit {
         console.log(createFavoris)
         this.getFavorisCollectionsByUserId(this.utilisateur._id)
         this.favorisExistant = true
+
+        this.showAlertCreateFavList()
       },
       error: (error) => {
         console.log('valueFavAjoute', favorisData)
@@ -91,6 +96,7 @@ export class UtilisateurPageFavorisComponent implements OnInit {
           // Aucune liste de favori trouvé pour cet utilisateur
           this.favoris = null
           this.favorisExistant = false
+          console.log('si fav est null', this.favorisExistant)
         } else {
           this.favoris = data[0]
           if (this.favoris && this.favoris.collectionIds) {
@@ -98,8 +104,10 @@ export class UtilisateurPageFavorisComponent implements OnInit {
               (collection: any) => collection
             )
             this.favorisExistant = true
+            console.log('si fav a 0coll', this.favorisExistant)
           } else {
             this.favorisExistant = false
+            console.log('si fav a au moins 1coll', this.favorisExistant)
           }
         }
       },
@@ -112,5 +120,25 @@ export class UtilisateurPageFavorisComponent implements OnInit {
 
   navigateHomePage() {
     this.router.navigate(['/homePage'])
+  }
+
+  // ALERT
+  showAlertCreateFavList() {
+    Swal.fire({
+      title: 'Favoris',
+      text: 'Vous avez débloqué votre liste de favoris',
+      icon: 'success',
+      customClass: {
+        title: 'titre-popup'
+      },
+      buttonsStyling: false,
+      timer: 2000, // Close the popup after 2 seconds (2000 milliseconds)
+      timerProgressBar: true, // Show a progress bar indicating the time remaining
+      didOpen: (toast) => {
+        // arrete le chargement si l'utilisateur survol la popup
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
   }
 }

@@ -4,7 +4,9 @@ import {
     getCurrentUtilisateur,
 
     createUtilisateur,
-    createConnexionByUtilisateur
+    createConnexionByUtilisateur, 
+
+    updateUtilisateur
  } from "../controllers/utilisateurControllers.js";
  import verifyToken from "../middleware/verify.js";
 
@@ -14,5 +16,8 @@ import {
 
  utilisateurRoute.route("/utilisateurs").post(createUtilisateur)
  utilisateurRoute.route("/login").post(createConnexionByUtilisateur)
+
+//  ajouter le token
+ utilisateurRoute.route("/utilisateurs/:id").put(updateUtilisateur)
 
  export default utilisateurRoute

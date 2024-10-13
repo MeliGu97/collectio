@@ -21,6 +21,7 @@
   src: url(../src/font/Noto_Sans/static/NotoSans_Condensed-Regular.ttf);
 }
 
+
 // ---------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------
 // -------------- THEME --------------
@@ -44,9 +45,10 @@ $black10: #D2D4D5;
 $black5:#DADBDC;
 
 $error: #d21f0bb7;
-$succes: #43A960;
+$success: #43A960;
 $primary:  #437C90;
 $favoris:#7a1a33;
+$warning: #f57b0aee;
 
 .fond-couleur-primary{
   background-color: $primary;
@@ -94,6 +96,9 @@ $favoris:#7a1a33;
   justify-content: center;
   align-items: center;
 }
+.centrer-vetical{
+  vertical-align: middle;
+}
 .centro-centrer{
   display: flex;
   justify-content: center;
@@ -111,6 +116,12 @@ $favoris:#7a1a33;
   justify-content: center;
   align-items: center;
   height: 30vh;
+}
+.centro-centrer-XXS{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15vh;
 }
 .indienne{
   display: inline-block;
@@ -141,11 +152,15 @@ $favoris:#7a1a33;
   flex-wrap: wrap;
   justify-content: space-around;
 }
+
 .padding-M{
   padding: 20%;
 }
 .padding-S{
   padding: 5%;
+}
+.padding-XS{
+  padding: 2%;
 }
 .espacement-vertical-XL{
   margin: 50px 0px;
@@ -204,6 +219,7 @@ $favoris:#7a1a33;
   font-size: 25px;
   cursor: pointer;
   font-weight: bold;
+  // color: black;
 }
 .titre-onglet{
   font-family: 'Euphorigenic';
@@ -269,8 +285,14 @@ a {
 .texte-small{
   font-size: 12px;
 }
+.texte-success{
+  color: $success;
+}
 .texte-error{
   color: $error;
+}
+.texte-warning{
+  color: $warning;
 }
 .texte-blanc{
   color: white;
@@ -315,6 +337,7 @@ a {
   vertical-align: top;
   @include shadow;
   position: relative; 
+  min-width: 200px;
 } 
 // Apparaît au survol
 .card:hover .btn-crud {
@@ -598,11 +621,33 @@ li {
   }
 }
 
+// POPUP ALERTE
+.titre-popup{
+  font-family: 'Euphorigenic';
+  font-size: 20px;
+  padding: 0px;
+}
+.swal2-html-container{
+  font-family: 'courier-prime';
+  font-size: 1.01em !important;
+}
+.picto-popup{
+  width: 30px;
+  height: 30px;
+}
+.swal2-icon-content{
+  font-size: 1.75em !important; 
+}
+.text-btn-popup{
+  font-family: 'courier-prime';
+}
+
 
 // -------- formulaire --- 
 input, textarea{
   width: auto;
   border: 0px;
+  padding: 15px;
   // border-radius: 2px ;
   height: auto;
   margin: 0px 0px 15px 0px;
@@ -771,10 +816,12 @@ button {
   display: flex;
   justify-content: space-between;
   vertical-align: middle;
+  font-family: 'courier-prime';
 }
 
 .btn-primary:hover{
   background-color: white;
+  color: black;
   text-decoration: none;
   transition-duration: 0.1s;
 }
@@ -800,6 +847,15 @@ button {
 
 .btn-primary > i {
   margin-right: 5px;
+}
+
+.btn-success{
+  background-color: $success;
+  color: white;
+}
+.btn-error{
+  background-color: $error;
+  color: white;
 }
 // PARTICULIER
 .btn-flottant-bas-droite{
@@ -1001,7 +1057,7 @@ button {
   height: 250px;
 }
 .container-image-couverture-page-S{
-  height: 100px;
+  height: 40px;
 }
 .container-image-couverture-homePage{
   min-height: 350px;
@@ -1039,11 +1095,14 @@ button {
 
 
 .valide{
-  background-color: $succes;
+  background-color: $success;
 }
 .error{
   background-color: $error;
 } 
+.warning{
+  background-color: $warning;
+}
 .container-general{  
   min-height: 500px;
 }
@@ -1056,6 +1115,9 @@ button {
 // ------ Different support ----
 // telephone
 @media (min-width: 0px) and (max-width: 768px) {
+  .disparait-sur-mobile{
+    display: none;
+  }
   .titre-site{
     font-size: 100px;
   }

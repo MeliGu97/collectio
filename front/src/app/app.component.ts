@@ -3,14 +3,21 @@ import { CommonModule } from '@angular/common'
 import { RouterOutlet, Router } from '@angular/router'
 import { DialogModule, Dialog } from '@angular/cdk/dialog'
 import { HttpClientModule } from '@angular/common/http'
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2'
+import Swal from 'sweetalert2'
 
 import { UtilisateurService } from './services/utilisateur.service'
 
 import { MenuComponent } from './design-system/menu/menu.component'
 import { LoginComponent } from './components/login/login.component'
 
+import { RouterService } from './services/router.service'
+import { LoadingBarComponent, LoadingBarModule } from '@ngx-loading-bar/core'
+
 export interface DialogData {
-  Isinscription: boolean
+  IsInscription: boolean
+  IsLog: boolean
+  UserId: string
 }
 
 @Component({
@@ -22,9 +29,11 @@ export interface DialogData {
     DialogModule,
     HttpClientModule,
     MenuComponent,
-    LoginComponent
+    LoginComponent,
+    SweetAlert2Module,
+    LoadingBarModule
   ],
-  providers: [UtilisateurService],
+  providers: [UtilisateurService, RouterService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -39,7 +48,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private utilisateurService: UtilisateurService,
-    public dialog: Dialog
+    public dialog: Dialog,
+    private routerService: RouterService
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +62,28 @@ export class AppComponent implements OnInit {
         this.UserConnecte = true
       })
     }
+  }
+
+  showAlert() {
+    Swal.fire({
+      title: 'Un icon personnalisé',
+      text: 'Bientôt un icon à choisir pour vos collections',
+      icon: 'info',
+      confirmButtonText: 'Super',
+      customClass: {
+        title: 'titre-popup',
+        icon: 'picto-popup',
+        confirmButton: 'btn-primary btn-small text-btn-popup'
+      },
+      buttonsStyling: false,
+      timer: 2000, // Close the popup after 2 seconds (2000 milliseconds)
+      timerProgressBar: true, // Show a progress bar indicating the time remaining
+      didOpen: (toast) => {
+        // arrete le chargement si l'utilisateur survol la popup
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
   }
 
   // NE PLUS VERIFIER PAR L'ID CAR PAs SECUR
@@ -81,14 +113,15 @@ export class AppComponent implements OnInit {
       )
     }
   }
-  openPopupLog(Isinscription: boolean) {
+
+  openPopupLog(IsInscription: boolean, IsLog: boolean) {
     this.IsOpen = false
     const dialogRef = this.dialog.open<any>(LoginComponent, {
       data: {
-        Isinscription: Isinscription
+        IsInscription: IsInscription,
+        IsLog: IsLog
       }
     })
-
     dialogRef.closed.subscribe((response: any) => {
       // console.log('On ferme')
       if (response) {
@@ -99,6 +132,30 @@ export class AppComponent implements OnInit {
       }
     })
   }
+
+  openPopupInfo(IsUpdateInfo: boolean, IsLog: boolean, userId: string) {
+    console.log('userId:', userId)
+    this.IsOpen = false
+    const dialogRef = this.dialog.open<any>(LoginComponent, {
+      data: {
+        IsUpdateInfo: IsUpdateInfo,
+        IsLog: IsLog,
+        userId: userId
+      }
+    })
+    console.log('IsUpdateInfo:', IsUpdateInfo, 'IsLog:', IsLog)
+    dialogRef.closed.subscribe((response: any) => {
+      // console.log('On ferme')
+      if (response) {
+        console.log('On ferme')
+        // Il faut recharger les info utili
+        this.utilisateur = response
+        this.checkUserLoggedIn()
+      }
+    })
+  }
+
+  // NAVIGATION
   navigateHomePage() {
     this.router.navigate(['/homePage'])
     this.IsOpen = false

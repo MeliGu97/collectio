@@ -62,47 +62,11 @@
                         </li>
                     </ul>
                     <div class="espacement-vertical-XL"></div>
-
-                    <!-- formulaire signalement pop up -->
-                    <article *ngIf="formSignalement === true">
-                        <app-popup>
-                            <article class="centrer-sur-horizon">
-                                <button class="crud-haut-droite btn-discret btn-small"
-                                    (click)="ClosePopupSignalement()">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
-                            </article>
-                            <article class="padding-S">
-                                <h2>Signalement de la collection {{ collection.label }}</h2>
-
-                                <form [formGroup]="newSignalement" (ngSubmit)="createSignalementCollection()">
-                                    <article>
-                                        <div class="saut-de-ligne-M"></div>
-                                        <p>Description de la raison du signalement :</p>
-                                        <textarea rows="8" type="text" id="description" formControlName="description"
-                                            placeholder="Expliquez la raison du signalement"
-                                            class="input-texte"></textarea>
-                                        <article class="centrer-en-colonne">
-                                            <div class="saut-de-ligne-M"></div>
-                                            <div class="fixe-bottom">
-                                                <button type="submit" [disabled]="newSignalement.invalid"
-                                                    class="btn-primary">
-                                                    <i class="fa-solid fa-triangle-exclamation"></i>
-                                                    <p>Valider le signalement</p>
-                                                </button>
-                                            </div>
-                                        </article>
-                                    </article>
-                                </form>
-                            </article>
-                        </app-popup>
-
-                    </article>
                 </div>
 
                 <!-- Onglet 2 -->
                 <ng-container>
-                    <div class="content" id="c2">
+                    <div class="content container-onglet" id="c2">
                         <div class="centrer-sur-horizon centrer-milieu">
                             <p>Tous</p>
                             <label class="switch">
@@ -117,6 +81,20 @@
                             <li *ngFor="let signalement of AllSignalements"
                                 class="card around complete motif-fond-carreaux">
                                 <div class="padding-S">
+                                    <div *ngIf="signalement.reponseUtili == ''">
+                                        <div class="centrer-sur-horizon">
+                                            <div class="tag tag-S error"></div>
+                                            <p class="texte-error">Signalement actif</p>
+                                        </div>
+                                        <div class="espacement-vertical-S"></div>
+                                    </div>
+                                    <div *ngIf="signalement.reponseUtili !== ''">
+                                        <div class="centrer-sur-horizon">
+                                            <div class="tag tag-S valide"></div>
+                                            <p class="texte-success">Signalement en attente d'analyse</p>
+                                        </div>
+                                        <div class="espacement-vertical-S"></div>
+                                    </div>
                                     <p style="float: right;">{{ signalement.date |
                                         date:'dd/MM/yyyy' }}</p>
                                     <p>N°: {{ signalement._id }}</p>
@@ -124,21 +102,22 @@
                                             [routerLink]="['/collections', signalement.collectionId._id]">" {{
                                             signalement.collectionId.label }} "</strong>
                                     </p>
-                                    <br>
-                                    <p class="souligner">Raison du signalement envoyée :</p>
-                                    <p>{{ signalement.description }}</p>
+                                    <div class="espacement-vertical-M"></div>
+                                    <p class="souligner">Motif du signalement :</p>
+                                    <p class="padding-XS">« {{ signalement.description }} »</p>
                                     <br>
 
                                     <div *ngIf="signalement.reponseUtili !== ''">
                                         <p>----------</p>
-                                        <div *ngIf="signalement.reponseUtili !== ''">
+                                        <!-- <div *ngIf="signalement.reponseUtili !== ''">
                                             <p class="surligner">L'utilisateur à répondu</p>
-                                        </div>
+                                        </div> -->
                                         <br>
                                         <p style="float: right;">{{ signalement.reponseDate |
                                             date:'dd/MM/yyyy' }}</p>
                                         <p class="souligner">Réponse utilisateur : </p>
-                                        <p>{{ signalement.reponseUtili }}</p>
+
+                                        <p class="padding-XS">« {{ signalement.reponseUtili }} »</p>
                                         <div class="saut-de-ligne-M"></div>
                                         <div class=" espacement-autour">
                                             <button class="btn-primary btn-small"
@@ -146,7 +125,6 @@
                                                 le signalement</button>
                                         </div>
                                     </div>
-
                                 </div>
                             </li>
                             <li *ngIf="AllSignalements.length === 0">
@@ -155,7 +133,6 @@
                                         signalement
                                     </h2>
                                 </div>
-
                             </li>
                         </ul>
                         <div class="espacement-vertical-XL"></div>
@@ -195,5 +172,37 @@
                 </button>
             </li>
         </ul>
+    </article>
+    <!-- formulaire signalement pop up -->
+    <article *ngIf="formSignalement === true">
+        <app-popup>
+            <article class="centrer-sur-horizon">
+                <button class="crud-haut-droite btn-discret btn-small" (click)="ClosePopupSignalement()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </article>
+            <article class="padding-S">
+                <h2>Signalement de la collection {{ collection.label }}</h2>
+
+                <form [formGroup]="newSignalement" (ngSubmit)="createSignalementCollection()">
+                    <article>
+                        <div class="saut-de-ligne-M"></div>
+                        <p>Description de la raison du signalement :</p>
+                        <textarea rows="8" type="text" id="description" formControlName="description"
+                            placeholder="Expliquez la raison du signalement" class="input-texte"></textarea>
+                        <article class="centrer-en-colonne">
+                            <div class="saut-de-ligne-M"></div>
+                            <div class="fixe-bottom">
+                                <button type="submit" [disabled]="newSignalement.invalid" class="btn-primary">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    <p>Valider le signalement</p>
+                                </button>
+                            </div>
+                        </article>
+                    </article>
+                </form>
+            </article>
+        </app-popup>
+
     </article>
 </section>

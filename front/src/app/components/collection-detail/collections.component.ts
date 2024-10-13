@@ -11,6 +11,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { Dialog, DialogModule } from '@angular/cdk/dialog'
 import { Observable } from 'rxjs/internal/Observable'
 import { map } from 'rxjs'
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2'
+import Swal from 'sweetalert2'
 
 import { CollectionService } from '../../services/collection.service'
 import { UtilisateurService } from '../../services/utilisateur.service'
@@ -42,7 +44,8 @@ import { PopupComponent } from '../../design-system/popup/popup.component'
     FormsModule,
     RouterLink,
     PopupComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SweetAlert2Module
   ]
 })
 export class CollectionsComponent implements OnInit {
@@ -192,6 +195,7 @@ export class CollectionsComponent implements OnInit {
     //   this.collectionsUtiliPubliques
     // )
   }
+
   getCollectionsPrivatesByUtilisateurId() {
     const token = localStorage.getItem('storage_token') || 'default_token_value'
     this.collectionService
@@ -295,6 +299,12 @@ export class CollectionsComponent implements OnInit {
 
   // ---------------------------------------
   // LES SIGNALEMENTS
+
+  openPopupSignalement(collectionId: string) {
+    this.formSignalement = true
+    this.collection = collectionId
+  }
+
   getSignalemetByCollId(collectionId: string) {
     this.signalementService
       .getSignalementByCollectionId(collectionId)
@@ -322,15 +332,18 @@ export class CollectionsComponent implements OnInit {
       this.signalementService
         .updateSignalement(updatedSignalement)
         .subscribe((data) => {
-          // console.log('Updated signalement:', data)
-          this.needReponse = false
+          this.getSignalemetByCollId(this.collection._id)
         })
+      this.needReponse = false
     }
     this.ClosePopupSignalement()
   }
 
-  // ANNEXE
+  ClosePopupSignalement() {
+    this.formSignalement = false
+  }
 
+  // ANNEXE
   filterCollectionsByPeriodes() {
     if (this.selectedPeriodes.length === 0) {
       return this.collections
@@ -403,11 +416,60 @@ export class CollectionsComponent implements OnInit {
     })
   }
 
-  openPopupSignalement(collectionId: string) {
-    this.formSignalement = true
-    this.collection = collectionId
-  }
-  ClosePopupSignalement() {
-    this.formSignalement = false
+  // ALERT
+  showAlertConfirmeSendMessageToAdmin() {
+    Swal.fire({
+      title: 'Attention',
+      text: "Vous ne pouvez envoyé qu'une argumentation. Êtes vous sûr de confirmer l'envoi ?",
+      icon: 'warning',
+      showCancelButton: true,
+      showConfirmButton: true,
+      cancelButtonText: 'Annuler',
+      confirmButtonText: "Confirmer l'envoi",
+
+      customClass: {
+        title: 'titre-popup',
+        icon: 'picto-popup',
+        confirmButton: 'btn-primary btn-small btn-success',
+        cancelButton: 'btn-primary btn-small btn-error'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.updateSignalementCollection()
+        Swal.fire({
+          title: 'Demande envoyée!',
+          text: 'Votre message a été envoyé.',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: {
+            title: 'titre-popup',
+            confirmButton: 'btn-primary btn-small'
+          },
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Annuler',
+          text: "Votre message n'a pas été envoyé.",
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: {
+            title: 'titre-popup',
+            confirmButton: 'btn-primary btn-small'
+          },
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+      }
+    })
   }
 }

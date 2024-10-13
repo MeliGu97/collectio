@@ -7,7 +7,9 @@
                 <p> Fermer</p>
             </button>
         </article>
-        <article class="padding-S" *ngIf="Isinscription === true">
+    </section>
+    <section *ngIf="IsLog === true">
+        <article class="padding-S" *ngIf="IsInscription === true">
             <h2>Devenez collectionneur</h2>
             <div class="saut-de-ligne-M"></div>
             <div class="centrer-en-colonne">
@@ -55,22 +57,92 @@
                 </form>
             </div>
         </article>
-        <article class="padding-S" *ngIf="Isinscription === false">
-            <h3>Connectez vous</h3>
+        <article class="padding-S" *ngIf="IsInscription === false">
+            <h2>Connectez vous</h2>
+            <div class="saut-de-ligne-M"></div>
+            <div class="centrer-en-colonne">
+                <form [formGroup]="newConnectUtilisateurForm" (ngSubmit)="connectUtilisateur()">
 
-            <form [formGroup]="newConnectUtilisateurForm" (ngSubmit)="connectUtilisateur()">
+                    <input class="input-texte" type="text" id="nomUtilisateur" formControlName="nomUtilisateur"
+                        placeholder="Nom d'utilisateur">
+                    <input class="input-texte" type="password" id="motDePasse" formControlName="motDePasse"
+                        placeholder="Mot de passe">
+                    <p *ngIf="errorMessage" class="texte-error texte-small">{{errorMessage}}</p><br>
+                    <div class="centrer-en-colonne">
+                        <button type="submit" [disabled]="newConnectUtilisateurForm.invalid"
+                            class="btn-primary btn-small">
+                            <p>Se connecter</p>
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-                <input class="input-texte" type="text" id="nomUtilisateur" formControlName="nomUtilisateur"
-                    placeholder="Nom d'utilisateur">
-                <input class="input-texte" type="password" id="motDePasse" formControlName="motDePasse"
-                    placeholder="Mot de passe">
-                <p *ngIf="errorMessage" class="texte-error texte-small">{{errorMessage}}</p><br>
-                <div class="centrer-en-colonne">
-                    <button type="submit" [disabled]="newConnectUtilisateurForm.invalid" class="btn-primary btn-small">
-                        <p>Se connecter</p>
-                    </button>
+        </article>
+    </section>
+    <section *ngIf="IsLog === false">
+        <article class="padding-S" *ngIf="IsUpdateInfo === false">
+            <h2>Informations utilisateur</h2>
+            <div class="saut-de-ligne-M"></div>
+            <div class="container-img-text">
+                <div class="image">
+                    <div *ngIf="utilisateur.role==='administrateur'" class="centro-centrer-XXS">
+                        <div class="centrer-en-colonne">
+                            <h2 class="fa-solid fa-crown"></h2>
+                            <p class="texte-small">{{ utilisateur.role }}</p>
+                        </div>
+
+                    </div>
+                    <div *ngIf="utilisateur.role === 'collectionneur'" class="centro-centrer-XXS">
+                        <div class="centrer-en-colonne">
+                            <h2 class="fa-solid fa-user"></h2>
+                            <p class="texte-small">{{ utilisateur.role }}</p>
+                        </div>
+
+                    </div>
                 </div>
-            </form>
+                <div class="text">
+                    <h5>Nom :</h5>
+                    <p>{{ utilisateur.nom }}</p>
+                    <br>
+                    <h5>Prénom :</h5>
+                    <p>{{ utilisateur.prenom }}</p>
+                    <br>
+                    <h5>Nom d'utilisateur :</h5>
+                    <p>{{ utilisateur.nomUtilisateur }}</p>
+                </div>
+            </div>
+            <div class="saut-de-ligne-M"></div>
+            <div class="centrer-en-colonne">
+                <button class="btn-primary btn-small" (click)="openUpdateForm()">
+                    <p>Modifier</p>
+                </button>
+            </div>
+        </article>
+        <article class="padding-S" *ngIf="IsUpdateInfo === true">
+            <h2>Modifier ses informations</h2>
+            <div class="saut-de-ligne-M"></div>
+            <div class="centrer-en-colonne">
+                <form [formGroup]="updateUtilisateurForm" (ngSubmit)="modifierUtilisateur()">
+                    <label for="nom">Nom</label>
+                    <input class="input-texte" type="text" id="nom" formControlName="nom">
+
+                    <label for="prenom">Prénom</label>
+                    <input class="input-texte" type="text" id="prenom" formControlName="prenom">
+                    <div class="espacement-vertical-S"></div>
+
+                    <label for="nomUtilisateur">Nom d'utilisateur</label>
+                    <input class="input-texte" type="text" id="nomUtilisateur" formControlName="nomUtilisateur">
+                    <!-- <input class="input-texte" type="text" id="role" formControlName="role" placeholder="Role"> -->
+                    <div class="espacement-vertical-S"></div>
+                </form>
+            </div>
+            <div class="saut-de-ligne-M"></div>
+            <div class="centrer-en-colonne">
+                <button type="submit" [disabled]="updateUtilisateurForm.invalid" class="btn-primary btn-small"
+                    (click)="modifierUtilisateur()">
+                    <p>Enregistrer</p>
+                </button>
+            </div>
         </article>
     </section>
 </app-popup>

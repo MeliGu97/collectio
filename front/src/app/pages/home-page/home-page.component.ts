@@ -14,6 +14,7 @@ import { PeriodeService } from '../../services/periode.service'
 
 export interface DialogData {
   Isinscription: boolean
+  IsLog: boolean
 }
 
 @Component({
@@ -141,16 +142,15 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  openPopupLog(Isinscription: boolean) {
+  openPopupLog(IsInscription: boolean, IsLog: boolean) {
     const dialogRef = this.dialog.open<any>(LoginComponent, {
       data: {
-        Isinscription: Isinscription
+        IsInscription: IsInscription,
+        IsLog: IsLog
       }
     })
-
-    dialogRef.closed.subscribe((result: any) => {
-      // console.log('The dialog was closed')
-      if (result) {
+    dialogRef.closed.subscribe((response: any) => {
+      if (response) {
       }
     })
   }

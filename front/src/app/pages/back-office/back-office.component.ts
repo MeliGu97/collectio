@@ -8,6 +8,8 @@ import {
   ReactiveFormsModule,
   FormsModule
 } from '@angular/forms'
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2'
+import Swal from 'sweetalert2'
 
 import { CollectionService } from '../../services/collection.service'
 import { PeriodeService } from '../../services/periode.service'
@@ -40,7 +42,8 @@ import { FilterPipeCollection } from '../../services/filterByText.pipe'
     FilterPipeCollection,
     FormsModule,
     PopupComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SweetAlert2Module
   ]
 })
 export class BackOfficeComponent implements OnInit {
@@ -123,16 +126,17 @@ export class BackOfficeComponent implements OnInit {
     this.uneService.addUne(une).subscribe({
       next: (uneAjoute) => {
         this.unes.push(uneAjoute)
+        this.showAlertAddCollToUne()
+        this.checkTab1()
+        this.refreshUne()
       },
       error: (error) => {
         console.error("Erreur lors de l'ajout de la une", error)
       }
     })
-    this.refreshUne()
   }
 
   removeUne(collId: string) {
-    console.log('HOUHOU je passe par une pour REMOVE cet id', collId)
     this.uneService.deleteUneById(collId).subscribe(() => {
       this.unes = this.unes.filter((une) => une._id !== collId)
     })
@@ -158,6 +162,10 @@ export class BackOfficeComponent implements OnInit {
 
           this.newSignalement.reset()
           this.formSignalement = false
+          this.showAlertCreateSignalement()
+          this.getSignalements()
+          // on ouvre l'onglet des signalements
+          this.checkTab2()
         },
 
         error: (error) => {
@@ -235,6 +243,8 @@ export class BackOfficeComponent implements OnInit {
             'Signalement de la Collection mit à jour avec succès',
             collectionMiseAJour
           )
+          this.showAlertRemoveSignalement()
+          this.getSignalements()
         },
         error: (error) => {
           console.error(
@@ -250,6 +260,84 @@ export class BackOfficeComponent implements OnInit {
           (signalement) => signalement._id !== collId
         )
       })
-    this.getSignalements()
+  }
+
+  // REDIRECTION ONGLETS
+  checkTab1() {
+    const tab1 = document.getElementById('tab1') as HTMLInputElement
+    if (tab1) {
+      tab1.checked = true
+    }
+  }
+
+  checkTab2() {
+    const tab2 = document.getElementById('tab2') as HTMLInputElement
+    if (tab2) {
+      tab2.checked = true
+    }
+  }
+
+  // ALERT
+  showAlertAddCollToUne() {
+    Swal.fire({
+      title: 'Félicitation',
+      text: 'La collection a été ajoutée en Une',
+      icon: 'success',
+      confirmButtonText: 'Ok',
+      customClass: {
+        title: 'titre-popup',
+        confirmButton: 'btn-primary btn-small text-btn-popup'
+      },
+      buttonsStyling: false,
+      timer: 2000, // Close the popup after 2 seconds (2000 milliseconds)
+      timerProgressBar: true, // Show a progress bar indicating the time remaining
+      didOpen: (toast) => {
+        // arrete le chargement si l'utilisateur survol la popup
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+  }
+
+  showAlertCreateSignalement() {
+    Swal.fire({
+      title: 'Attention',
+      text: 'Un signalement a été envoyé pour cette collection',
+      icon: 'warning',
+      confirmButtonText: 'Ok',
+      customClass: {
+        title: 'titre-popup',
+        confirmButton: 'btn-primary btn-small text-btn-popup'
+      },
+      buttonsStyling: false,
+      timer: 4000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        // arrete le chargement si l'utilisateur survol la popup
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+  }
+
+  showAlertRemoveSignalement() {
+    Swal.fire({
+      title: 'Signalement levé',
+      text: 'Le signalement a été levé pour cette collection',
+      icon: 'success',
+      confirmButtonText: 'Ok',
+      customClass: {
+        title: 'titre-popup',
+        confirmButton: 'btn-primary btn-small text-btn-popup'
+      },
+      buttonsStyling: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        // arrete le chargement si l'utilisateur survol la popup
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
   }
 }
