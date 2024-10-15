@@ -1,20 +1,62 @@
-# Collectio
+# 🎉 Bienvenue sur Collectio ! 🎉
 
-Projet nodejs avec Angular en Front et Express en Back. La BDD est mangoDB à l'adresse mongodb://localhost:27017
+## A. Définition du projet
 
-créer une bdd nommé "collectio"
+**Collectio** est votre nouvel outil de stockage numérique pour toutes vos collections, qu'elles soient matérielles ou immatérielles, réelles ou fictives, publiques ou privées. Imaginez un **cabinet de curiosités moderne** ou un **musée virtuel** à portée de main ! 🖼️✨ 
 
-Pour les droits de suppression et modification de données, ajouter un user avec les droits dans mongosh
-db.createUser({
-user: "meli",
-pwd: "admin",
-roles: [{ role: "readWrite", db: "collectio" }]
-})
+L'idée ? Rassembler des objets qui vous passionnent, que ce soit des œuvres d'art, des souvenirs, ou même des objets farfelus ! 🥳
 
-## Démarrer le projet
+## B. Technologies utilisées
 
-- dans un terminal (si windows, faire touche Windows+R puis taper "cmd") lancer : `mangosh`
-- - astuce : si besoin de modifier facilement la BDD, utiliser l'interface du logiciel "MongoDB Compass", puis cliquer sur "connect"
-- rentrer dans le dossier back puis `npm i` + `npm ci` + `npm run start` = http://localhost:3000/elements
-- rentrer dans le dossier front puis `npm i` + `npm ci` + `npm run start` = http://localhost:4200
-- donc, RDV à l'adresse http://localhost:4200 pour voir le site Collectio !
+- **Front-end** : Angular avec TypeScript 🚀
+- **Back-end** : Node.js 🌐
+- **Base de données** : MongoDB 🗄️
+
+## C. Structure du projet
+
+Le projet est organisé en deux sections :
+
+1. **back/** : Le cerveau de l'application (Node.js).
+2. **front/** : La belle vitrine (Angular) qui vous permet d'interagir avec vos collections.
+
+## D. Installation
+
+Avant de plonger dans l'aventure, assurez-vous d'avoir [Node.js](https://nodejs.org/) et [npm](https://www.npmjs.com/) installés sur votre machine. Prêt à commencer ? Allons-y ! 🎉
+
+### 1. Cloner le dépôt
+
+```bash
+git clone 
+cd Collectio
+```
+
+###  2.Installer les dépendances
+#### Back-end
+```bash
+cd back
+npm install
+```
+#### Front-end
+Ouvrez un second terminal
+```bash
+cd /front
+npm install
+```
+
+## E. Lancement de l'application (vous y êtes presque !) 
+###  1.Lancer le back-end
+```bash
+npm run start
+```
+
+###  2.Lancer le front-end
+```bash
+cd src
+cd app
+npm run start
+```
+## F. Accès à l'application
+🎉 Félicitations ! Une fois les deux parties lancées, ouvrez votre navigateur et rendez-vous à l'adresse suivante :
+```bash
+http://localhost:4200
+```
