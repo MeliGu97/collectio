@@ -26,7 +26,7 @@ Avant de plonger dans l'aventure, assurez-vous d'avoir [Node.js](https://nodejs.
 ### 1. Cloner le dépôt
 
 ```bash
-git clone 
+git clone https://github.com/MeliGu97/collectio.git
 cd Collectio
 ```
 
