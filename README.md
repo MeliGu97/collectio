@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # Collectio
+=======
+>>>>>>> origin/master
 # 🎉 Bienvenue sur Collectio ! 🎉
 
 ## A. Définition du projet
@@ -60,4 +63,8 @@ npm run start
 🎉 Félicitations ! Une fois les deux parties lancées, ouvrez votre navigateur et rendez-vous à l'adresse suivante :
 ```bash
 http://localhost:4200
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> origin/master
