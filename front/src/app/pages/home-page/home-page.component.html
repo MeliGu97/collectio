@@ -17,7 +17,7 @@
     <article class="marges centrer-en-colonne">
         <div class="centrer-sur-horizon espacement-vertical-M">
             <input class="input-recherche" type="search" [(ngModel)]="searchTerm"
-                placeholder="Rechercher une collection..." />
+                placeholder="Rechercher une collection..." (ngModelChange)="searchTermChanged()" />
             <button class="btn-primary btn-medium centrer-milieu"><i class=" fa-solid fa-magnifying-glass"></i></button>
         </div>
         <div>
@@ -37,10 +37,29 @@
                     </div>
                 </li>
             </ul>
-            <div class="espacement-vertical-L"></div>
+            <div class="espacement-vertical-M"></div>
         </div>
         <div class="container-general">
+
+            <div class="centrer-sur-horizon centrer-milieu">
+                <select [(ngModel)]="nbrCollPerPage" (change)="onNbrCollPerPageChange()" class=" btn-primary btn-small">
+                    <option [value]="4">4</option>
+                    <option [value]="8" selected>8</option>
+                    <option [value]="16">16</option>
+                    <option [value]="32">32</option>
+                </select>
+                <p class="padding-left-S">Collections par page </p>
+            </div>
+
+
             <ul class="espacement-autour">
+                <li *ngIf=" publicCollections.length==0">
+                    <div class="centro-centrer-XS">
+                        <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucune
+                            collection publique
+                        </h2>
+                    </div>
+                </li>
                 <li *ngFor="let collection of publicCollections | filterCollection: searchTerm"
                     class="card around medium motif-fond-pointille">
                     <app-collections [collectionId]="collection"></app-collections>
@@ -60,7 +79,7 @@
 </section>
 
 
-<section class="debordement-vertical-XL fond-couleur-black90">
+<section *ngIf=" unes.length != 0" class="debordement-vertical-XL fond-couleur-black90">
     <article class="marges">
         <h2>Collections du moment</h2>
         <div class="espacement-vertical-L"></div>

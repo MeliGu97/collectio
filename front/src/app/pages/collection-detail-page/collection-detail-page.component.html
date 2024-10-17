@@ -123,13 +123,7 @@
     <!-- List des éléments de la collection -->
     <!-- BODY -->
     <article class="marges">
-        <ul class="espacement-autour">
-            <li *ngIf="collection.elementsId && collection.elementsId.length === 0">
-                <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucun élément</h2>
-
-                <p *ngIf="isCreator === true" class="texte-discret">Vous pouvez en ajouter en cliquant sur le bouton en
-                    bas</p>
-            </li>
+        <ul *ngIf="elements.length > 0 else noElem" class="espacement-autour">
             <li *ngFor="let element of elements  | filterElement : searchTerm" class="card medium motif-fond-pointille">
                 <a [routerLink]="['/elements', element._id]">
                     <!-- fournir l'id de l'ement pour afficher son image -->
@@ -162,6 +156,12 @@
             </li>
 
         </ul>
+        <ng-template #noElem>
+            <h2 class="centrer-en-colonne"><i class="fa-solid fa-box-open"></i>Aucun élément</h2>
+
+            <p *ngIf="isCreator === true" class="texte-discret">Vous pouvez en ajouter en cliquant sur le bouton en
+                bas</p>
+        </ng-template>
         <div class="espacement-vertical-XL"></div>
     </article>
 

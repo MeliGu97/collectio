@@ -13,7 +13,7 @@
       <span class="tooltiptext tolltiptexte-small-top">Retirer des favoris</span>
     </button>
     <!-- sinon  -->
-    <button *ngIf="!isCollFav" (click)="AddToFavoris(collection._id)" class="btn-crud tooltip">
+    <button *ngIf="!isCollFav && utilisateurId" (click)="AddToFavoris(collection._id)" class="btn-crud tooltip">
       <i class="fa-regular fa-heart"></i>
       <span class="tooltiptext tolltiptexte-small-top">Ajouter aux favoris</span>
     </button>
@@ -146,8 +146,10 @@
       <p class="texte-discret">{{ collection.elementsId.length }}</p>
     </div>
   </div>
+  <div *ngIf="utilisateurId == ''" class="espacement-vertical-M"></div>
 </a>
-<div class="espacement-entre contient-texte-discret see-utili-page" (click)="navigateUserPage(utilisateur._id)">
+<div *ngIf="utilisateurId" class="espacement-entre contient-texte-discret see-utili-page"
+  (click)="navigateUserPage(utilisateur._id)">
   <p class="texte-discret">Collecté par</p>
   <p class="texte-discret">{{ utilisateur.nomUtilisateur }}</p>
 </div>

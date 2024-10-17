@@ -1,4 +1,4 @@
-<section class="container-image-couverture-homePage img-admin">
+<section *ngIf="IsAcces" class="container-image-couverture-homePage img-admin">
     <article>
         <div class="centrer-sur-horizon centrer-en-colonne">
             <h1 class="titre-site texte-blanc">Gestionnaire</h1>
@@ -6,7 +6,7 @@
     </article>
 </section>
 
-<section>
+<section *ngIf="IsAcces">
     <div class="espacement-vertical-L"></div>
     <!-- <h1 class="marges">Gestionnaire Collectio</h1> -->
     <article class="marges espacement-autour">
@@ -25,7 +25,7 @@
 
 </section>
 
-<section class="container-general">
+<section *ngIf="IsAcces" class="container-general">
     <article class="marges">
         <div class="container">
             <!-- TITRE DES ONGLETS  -->
@@ -143,7 +143,7 @@
     </article>
 </section>
 <br>
-<section class="container-general">
+<section *ngIf="IsAcces" class="container-general">
     <article class=" marges">
         <!-- RECHERCHE PAR MOT CLEF -->
         <div class="centrer-en-colonne">
@@ -205,4 +205,12 @@
         </app-popup>
 
     </article>
+</section>
+<section *ngIf="IsAcces == false">
+    <div class="centro-centrer">
+        <div class="centrer-en-colonne">
+            <h1 class="fa-solid fa-ghost"></h1>
+            <h2>Oust ! Il n'y a rien à voir</h2>
+        </div>
+    </div>
 </section>

@@ -238,6 +238,7 @@ export class CollectionsComponent implements OnInit {
       }
     )
   }
+
   CheckIfCollIsInFav(collectionId: string) {
     // Vérifier si l'identifiant de la collection courante se trouve dans le tableau collectionIds
     if (
@@ -262,6 +263,7 @@ export class CollectionsComponent implements OnInit {
             this.collectionIds.push(collectionId)
             this.isCollFav = true
             console.log('[compo] Collection ajoutée aux favoris avec succès !')
+            this.showAlertAddToFavoris()
           },
           error: (error) => {
             console.error(
@@ -283,10 +285,9 @@ export class CollectionsComponent implements OnInit {
         next: () => {
           // console.log('[compo] collectionId', collectionId)
           this.isCollFav = false
-
+          this.showAlertRemoveToFavoris()
           // Mettre à jour la liste des favoris de l'utilisateur connecté
           this.getFavorisCollectionsByUserId(utilisateurId)
-          // console.log('recharge toi')
         },
         error: (error) => {
           console.error(
@@ -472,4 +473,45 @@ export class CollectionsComponent implements OnInit {
       }
     })
   }
+
+  showAlertAddToFavoris() {
+    Swal.fire({
+      title: 'Ajout aux Favoris',
+      text: 'Cette collection a été ajouté à votre liste de favoris',
+      icon: 'success',
+      customClass: {
+        title: 'titre-popup',
+        confirmButton: 'btn-primary btn-small text-btn-popup'
+      },
+      buttonsStyling: false,
+      timer: 2000, // Close the popup after 2 seconds (2000 milliseconds)
+      timerProgressBar: true, // Show a progress bar indicating the time remaining
+      didOpen: (toast) => {
+        // arrete le chargement si l'utilisateur survol la popup
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+  }
+  showAlertRemoveToFavoris() {
+    Swal.fire({
+      title: 'Favoris',
+      text: 'Cette collection a été retiré de votre liste de favoris',
+      icon: 'error',
+      customClass: {
+        title: 'titre-popup',
+        confirmButton: 'btn-primary btn-small text-btn-popup'
+      },
+      buttonsStyling: false,
+      timer: 2000, // Close the popup after 2 seconds (2000 milliseconds)
+      timerProgressBar: true, // Show a progress bar indicating the time remaining
+      didOpen: (toast) => {
+        // arrete le chargement si l'utilisateur survol la popup
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+  }
+  // ou ne pas montrer coeur si pas de liste
+  showAlertProposeToCreateFavoris() {}
 }

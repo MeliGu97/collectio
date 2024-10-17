@@ -138,6 +138,9 @@ $warning: #f57b0aee;
 .margin-droite-S{
   right: 20px;
 }
+.margin-droite-XS{
+  right: 10px;
+}
 .no-margin{
   margin: 0px;
 }
@@ -161,6 +164,9 @@ $warning: #f57b0aee;
 }
 .padding-XS{
   padding: 2%;
+}
+.padding-left-S{
+  padding-left: 10px;
 }
 .espacement-vertical-XL{
   margin: 50px 0px;
@@ -337,7 +343,7 @@ a {
   vertical-align: top;
   @include shadow;
   position: relative; 
-  min-width: 200px;
+  min-width: 150px;
 } 
 // Apparaît au survol
 .card:hover .btn-crud {
@@ -663,7 +669,7 @@ input:focus, textarea:focus {
 
 .input-titre{
   font-family: 'Euphorigenic';
-  width: 100%;
+  width: 95%;
   height: 40px;
   font-size: 35px;
 }
@@ -672,7 +678,7 @@ input:focus, textarea:focus {
   font-size: 25px;
 }
 .input-texte{
-  width: 100%;
+  width: 95%;
   font-family: 'courier-prime';
   min-height: 30px;
 }

@@ -49,6 +49,7 @@ export class HomePageComponent implements OnInit {
 
   currentPage: number = 1
   totalPages: number = 0
+  nbrCollPerPage: number = 8
 
   periodes: any
   selectedPeriodeId: string | undefined
@@ -64,41 +65,30 @@ export class HomePageComponent implements OnInit {
     this.uneService.getUnes().subscribe((data) => {
       this.unes = data
       this.collections = this.unes.map((une) => une.collectionId)
-      // console.log('Collections récupérées :', this.collections)
     })
     this.periodeService.getPeriodes().subscribe((data) => {
       this.periodes = data
     })
     this.collectionService.getAllPublicCollections().subscribe((data) => {
-      this.collectionsAll = data // Stock toutes les coll
-      // console.log('Toutes les collections récupérées :', this.collectionsAll)
+      this.collectionsAll = data.sort((b, a) => a._id.localeCompare(b._id)) // Stock toutes les coll de la plus recente à la plus ancienne
       this.publicCollections = this.collectionService.makePagination(
         data,
         this.currentPage,
-        8
+        this.nbrCollPerPage
       )
-      // console.log('Collections paginées initiales :', this.publicCollections)
-      this.totalPages = Math.ceil(data.length / 8)
+      this.totalPages = Math.ceil(data.length / this.nbrCollPerPage)
     })
   }
 
   loadCollections() {
     this.collectionService.getAllPublicCollections().subscribe((data) => {
-      this.collectionsAll = data // Stock toutes les collections
-      // console.log(
-      //   'Toutes les collections récupérées (après changement de période) :',
-      //   this.collectionsAll
-      // )
+      this.collectionsAll = data.sort((b, a) => a._id.localeCompare(b._id)) // Stock toutes les collections de la plus recente à la plus ancienne
       this.publicCollections = this.collectionService.makePagination(
         data,
         this.currentPage,
-        8
+        this.nbrCollPerPage
       )
-      // console.log(
-      //   'Collections paginées après changement de période :',
-      //   this.publicCollections
-      // )
-      this.totalPages = Math.ceil(data.length / 8)
+      this.totalPages = Math.ceil(data.length / this.nbrCollPerPage)
     })
   }
 
@@ -114,11 +104,45 @@ export class HomePageComponent implements OnInit {
       this.publicCollections = this.collectionService.makePagination(
         this.publicCollections,
         this.currentPage,
-        8
+        this.nbrCollPerPage
       )
-      this.totalPages = Math.ceil(this.publicCollections.length / 8)
+      this.totalPages = Math.ceil(
+        this.publicCollections.length / this.nbrCollPerPage
+      )
     } else {
       // console.log('Désélection de la période :', periodeEvent.target.value)
+      this.loadCollections()
+    }
+  }
+
+  searchTermChanged() {
+    if (this.searchTerm) {
+      this.publicCollections = this.collectionsAll.filter(
+        (collection) =>
+          collection.label
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()) ||
+          collection.description
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()) ||
+          collection.categorie
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()) ||
+          collection.sousCategorie
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase())
+      )
+      // Met à jour la pagination directement à partir de la liste filtrée
+      this.currentPage = 1
+      this.publicCollections = this.collectionService.makePagination(
+        this.publicCollections,
+        this.currentPage,
+        this.nbrCollPerPage
+      )
+      this.totalPages = Math.ceil(
+        this.publicCollections.length / this.nbrCollPerPage
+      )
+    } else {
       this.loadCollections()
     }
   }
@@ -128,6 +152,7 @@ export class HomePageComponent implements OnInit {
     this.loadCollections()
   }
 
+  // PAGINATION
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--
@@ -142,6 +167,11 @@ export class HomePageComponent implements OnInit {
     }
   }
 
+  onNbrCollPerPageChange() {
+    this.currentPage = 1
+    this.loadCollections()
+  }
+  // INSCRIPTION POPUP
   openPopupLog(IsInscription: boolean, IsLog: boolean) {
     const dialogRef = this.dialog.open<any>(LoginComponent, {
       data: {

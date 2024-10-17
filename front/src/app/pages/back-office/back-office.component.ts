@@ -21,6 +21,7 @@ import { CollectionsComponent } from '../../components/collection-detail/collect
 import { PopupComponent } from '../../design-system/popup/popup.component'
 
 import { FilterPipeCollection } from '../../services/filterByText.pipe'
+import { map, Observable } from 'rxjs'
 
 @Component({
   selector: 'app-back-office',
@@ -47,6 +48,7 @@ import { FilterPipeCollection } from '../../services/filterByText.pipe'
   ]
 })
 export class BackOfficeComponent implements OnInit {
+  IsAcces: boolean = false
   collection: any = {}
   collections: any[] = []
 
@@ -70,12 +72,24 @@ export class BackOfficeComponent implements OnInit {
     private collectionService: CollectionService,
     private periodeService: PeriodeService,
     private signalementService: SignalementService,
+    private utilisateurService: UtilisateurService,
 
     private formBuilder: FormBuilder,
     public dialog: Dialog
   ) {}
 
   ngOnInit() {
+    const userId = this.utilisateurService.getCurrentUtilisateur()._id
+    this.checkUserRole(userId, 'administrateur').subscribe((isAdmin) => {
+      if (isAdmin) {
+        this.IsAcces = true
+      } else {
+        this.IsAcces = false
+        console.error(
+          "You don't have the required role to perform this action."
+        )
+      }
+    })
     this.refreshUne()
 
     this.periodeService.getPeriodes().subscribe((data) => {
@@ -93,6 +107,7 @@ export class BackOfficeComponent implements OnInit {
     })
   }
 
+  // MISE EN PLACE
   loadCollections() {
     this.collectionService.getAllPublicCollections().subscribe((data) => {
       this.publicCollections = data
@@ -105,15 +120,13 @@ export class BackOfficeComponent implements OnInit {
     })
   }
 
-  openPopupSignalement(collectionId: string) {
-    this.formSignalement = true
-    this.collectionSelect = collectionId
-    console.log(this.collectionId)
+  checkUserRole(userId: string, requiredRole: string): Observable<boolean> {
+    return this.utilisateurService
+      .getUserRoleById(userId)
+      .pipe(map((role) => role === requiredRole))
   }
 
-  ClosePopupSignalement() {
-    this.formSignalement = false
-  }
+  // UNES
 
   // Add to une
   addToUne(collId: string) {
@@ -141,6 +154,17 @@ export class BackOfficeComponent implements OnInit {
       this.unes = this.unes.filter((une) => une._id !== collId)
     })
     this.refreshUne()
+  }
+
+  // SIGNALEMENT
+  openPopupSignalement(collectionId: string) {
+    this.formSignalement = true
+    this.collectionSelect = collectionId
+    console.log(this.collectionId)
+  }
+
+  ClosePopupSignalement() {
+    this.formSignalement = false
   }
 
   // Creer un signalement
@@ -199,19 +223,6 @@ export class BackOfficeComponent implements OnInit {
         })
     }
   }
-
-  // onCheckboxChange(periodeEvent: any) {
-  //   if (periodeEvent.target.checked) {
-  //     console.log('publicColl: ', this.publicCollections)
-  //     this.publicCollections = this.publicCollections.filter((collection) =>
-  //       collection.periodesId.some(
-  //         (periode: { _id: any }) => periode._id === periodeEvent.target.value
-  //       )
-  //     )
-  //   } else {
-  //     this.loadCollections()
-  //   }
-  // }
 
   getSignalements() {
     this.signalementService.getAllSignalements().subscribe((data) => {
@@ -276,6 +287,21 @@ export class BackOfficeComponent implements OnInit {
       tab2.checked = true
     }
   }
+
+  // ANNEXE
+
+  // onCheckboxChange(periodeEvent: any) {
+  //   if (periodeEvent.target.checked) {
+  //     console.log('publicColl: ', this.publicCollections)
+  //     this.publicCollections = this.publicCollections.filter((collection) =>
+  //       collection.periodesId.some(
+  //         (periode: { _id: any }) => periode._id === periodeEvent.target.value
+  //       )
+  //     )
+  //   } else {
+  //     this.loadCollections()
+  //   }
+  // }
 
   // ALERT
   showAlertAddCollToUne() {

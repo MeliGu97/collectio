@@ -14,7 +14,6 @@ export class UneService {
   }
 
   getUneById(id: string): Observable<any> {
-    // console.log(`${baseServerUrl}/unes/${id}`);
     return this.http.get(`${baseServerUrl}/unes/${id}?populate=collectionId`)
   }
 

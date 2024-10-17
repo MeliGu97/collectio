@@ -129,7 +129,8 @@ export class UtilisateurPageFavorisComponent implements OnInit {
       text: 'Vous avez débloqué votre liste de favoris',
       icon: 'success',
       customClass: {
-        title: 'titre-popup'
+        title: 'titre-popup',
+        confirmButton: 'btn-primary btn-small text-btn-popup'
       },
       buttonsStyling: false,
       timer: 2000, // Close the popup after 2 seconds (2000 milliseconds)

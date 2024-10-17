@@ -50,6 +50,12 @@ export class UtilisateurService {
     return this.http.get(`${baseServerUrl}/utilisateurs/${id}`)
   }
 
+  getUserRoleById(userId: string): Observable<string> {
+    return this.http
+      .get<{ role: string }>(`${baseServerUrl}/utilisateurs/${userId}`)
+      .pipe(map((user) => user.role))
+  }
+
   addUtilisateur(utilisateur: any): Observable<any> {
     return this.http.post<any>(`${baseServerUrl}/utilisateurs`, utilisateur)
   }
